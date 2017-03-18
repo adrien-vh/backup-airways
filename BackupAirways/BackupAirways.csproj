@@ -28,7 +28,7 @@
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>e:\Temp\sawBin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DebugSymbols>True</DebugSymbols>
     <DebugType>Full</DebugType>
     <Optimize>False</Optimize>
@@ -97,10 +97,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-	<EmbeddedResource Include="Web\*" />
+    <EmbeddedResource Include="Web\*" />
     <EmbeddedResource Include="Web\css\**\*" />
     <EmbeddedResource Include="Web\js\**\*" />
-	<EmbeddedResource Include="Web\images\**\*" />
+    <EmbeddedResource Include="Web\images\**\*" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Synchro" />
