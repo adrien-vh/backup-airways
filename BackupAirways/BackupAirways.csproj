@@ -2,13 +2,12 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <ProjectGuid>{51FE3466-798B-424E-B380-C5EAFC79823D}</ProjectGuid>
-    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>WinExe</OutputType>
     <RootNamespace>BackupAirways</RootNamespace>
     <AssemblyName>BackupAirways</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <NoWin32Manifest>False</NoWin32Manifest>
     <SignAssembly>False</SignAssembly>
@@ -19,6 +18,8 @@
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <WarningLevel>4</WarningLevel>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -45,24 +46,15 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionsServeur.cs" />
@@ -92,21 +84,64 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebServer\WebServer.csproj">
-      <Project>{d6477c34-6db7-4bc1-8ec1-2b14681fb520}</Project>
+      <Project>{D6477C34-6DB7-4BC1-8EC1-2B14681FB520}</Project>
       <Name>WebServer</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Web\*" />
-    <EmbeddedResource Include="Web\css\**\*" />
-    <EmbeddedResource Include="Web\js\**\*" />
-    <EmbeddedResource Include="Web\images\**\*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Synchro" />
-    <Folder Include="Web" />
-    <Folder Include="Web\images" />
-    <Folder Include="Web\js" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="Web\index.html" />
+    <EmbeddedResource Include="Web\css\font-awesome.min.css" />
+    <EmbeddedResource Include="Web\css\normalize.css" />
+    <EmbeddedResource Include="Web\css\styles.css" />
+    <EmbeddedResource Include="Web\css\fonts\FontAwesome.otf" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab 700-webfont.eot" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab 700-webfont.svg" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab 700-webfont.ttf" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab 700-webfont.woff" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab 700-webfont.woff2" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab regular-webfont.eot" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab regular-webfont.svg" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab regular-webfont.ttf" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab regular-webfont.woff" />
+    <EmbeddedResource Include="Web\css\fonts\Roboto Slab regular-webfont.woff2" />
+    <EmbeddedResource Include="Web\css\fonts\fontawesome-webfont.eot" />
+    <EmbeddedResource Include="Web\css\fonts\fontawesome-webfont.svg" />
+    <EmbeddedResource Include="Web\css\fonts\fontawesome-webfont.ttf" />
+    <EmbeddedResource Include="Web\css\fonts\fontawesome-webfont.woff" />
+    <EmbeddedResource Include="Web\css\fonts\fontawesome-webfont.woff2" />
+    <EmbeddedResource Include="Web\css\fonts\icomoon.eot" />
+    <EmbeddedResource Include="Web\css\fonts\icomoon.svg" />
+    <EmbeddedResource Include="Web\css\fonts\icomoon.ttf" />
+    <EmbeddedResource Include="Web\css\fonts\icomoon.woff" />
+    <EmbeddedResource Include="Web\images\App-dropbox-icon.png" />
+    <EmbeddedResource Include="Web\images\Google-Drive-icon.png" />
+    <EmbeddedResource Include="Web\images\Microsoft-OneDrive-icon.png" />
+    <EmbeddedResource Include="Web\images\arrow-icon-1174.png" />
+    <EmbeddedResource Include="Web\images\cloud-icon-12871.png" />
+    <EmbeddedResource Include="Web\images\cloud_ico_64.png" />
+    <EmbeddedResource Include="Web\images\computer-icon-1026.png" />
+    <EmbeddedResource Include="Web\images\computer_blanc_ico_16.png" />
+    <EmbeddedResource Include="Web\images\computer_ico_16.png" />
+    <EmbeddedResource Include="Web\images\computer_ico_24.png" />
+    <EmbeddedResource Include="Web\images\dropbox_ico_36.png" />
+    <EmbeddedResource Include="Web\images\dropbox_ico_64.png" />
+    <EmbeddedResource Include="Web\images\dropbox_nb_ico_64.png" />
+    <EmbeddedResource Include="Web\images\fleche.png" />
+    <EmbeddedResource Include="Web\images\folder.png" />
+    <EmbeddedResource Include="Web\images\folder_blanc_ico_16.png" />
+    <EmbeddedResource Include="Web\images\folder_ico_16.png" />
+    <EmbeddedResource Include="Web\images\folder_ico_24.png" />
+    <EmbeddedResource Include="Web\images\gdrive_ico_36.png" />
+    <EmbeddedResource Include="Web\images\gdrive_ico_64.png" />
+    <EmbeddedResource Include="Web\images\gdrive_nb_ico_64.png" />
+    <EmbeddedResource Include="Web\images\onedrive_ico_36.png" />
+    <EmbeddedResource Include="Web\images\onedrive_ico_64.png" />
+    <EmbeddedResource Include="Web\images\onedrive_nb_ico_64.png" />
+    <EmbeddedResource Include="Web\images\television.png" />
+    <EmbeddedResource Include="Web\js\Serveur.js" />
+    <EmbeddedResource Include="Web\js\jquery.LocalBrowser.js" />
+    <EmbeddedResource Include="Web\js\main.js" />
+    <EmbeddedResource Include="Web\js\mustache.min.js" />
+  </ItemGroup>
 </Project>
