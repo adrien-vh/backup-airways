@@ -1,6 +1,0 @@
-e:\Temp\sawBin\Baw.exe.config
-e:\Temp\sawBin\Baw.exe
-e:\Temp\sawBin\Baw.pdb
-E:\Temp\BackupAirways\Baw\obj\Debug\Baw.csprojResolveAssemblyReference.cache
-E:\Temp\BackupAirways\Baw\obj\Debug\Baw.exe
-E:\Temp\BackupAirways\Baw\obj\Debug\Baw.pdb
