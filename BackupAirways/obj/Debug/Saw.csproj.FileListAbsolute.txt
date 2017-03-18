@@ -1,0 +1,27 @@
+E:\GoogleDrive\Cs\WebServer\Saw\obj\Debug\Saw.csprojResolveAssemblyReference.cache
+E:\GoogleDrive\Cs\WebServer\Saw\bin\Debug\Saw.exe.config
+E:\GoogleDrive\Cs\WebServer\Saw\bin\Debug\Saw.exe
+E:\GoogleDrive\Cs\WebServer\Saw\bin\Debug\Saw.pdb
+E:\GoogleDrive\Cs\WebServer\Saw\bin\Debug\Newtonsoft.Json.dll
+E:\GoogleDrive\Cs\WebServer\Saw\bin\Debug\WebServer.dll
+E:\GoogleDrive\Cs\WebServer\Saw\bin\Debug\WebServer.pdb
+E:\GoogleDrive\Cs\WebServer\Saw\bin\Debug\Newtonsoft.Json.xml
+E:\GoogleDrive\Cs\WebServer\Saw\obj\Debug\Saw.exe
+E:\GoogleDrive\Cs\WebServer\Saw\obj\Debug\Saw.pdb
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\bin\Debug\Saw.exe.config
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\bin\Debug\Saw.exe
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\bin\Debug\Saw.pdb
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\bin\Debug\Newtonsoft.Json.dll
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\bin\Debug\WebServer.dll
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\bin\Debug\WebServer.pdb
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\bin\Debug\Newtonsoft.Json.xml
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\obj\Debug\Saw.csprojResolveAssemblyReference.cache
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\obj\Debug\Saw.exe
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\obj\Debug\Saw.pdb
+E:\GoogleDrive\Cs\WebServer\Saw\bin\Debug\System.Data.SQLite.dll
+E:\GoogleDrive\Cs\WebServer\Saw\bin\Debug\System.Data.SQLite.xml
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\bin\Debug\System.Data.SQLite.dll
+D:\Users\vanhyftea\Google Drive\Cs\WebServer\Saw\bin\Debug\System.Data.SQLite.xml
+e:\Temp\sawBin\Saw.exe.config
+e:\Temp\sawBin\Saw.exe
+e:\Temp\sawBin\Saw.pdb

@@ -1,0 +1,6 @@
+e:\Temp\sawBin\BackupAirways.exe.config
+e:\Temp\sawBin\BackupAirways.exe
+e:\Temp\sawBin\BackupAirways.pdb
+E:\Temp\BackupAirways\BackupAirways\obj\Debug\BackupAirways.csprojResolveAssemblyReference.cache
+E:\Temp\BackupAirways\BackupAirways\obj\Debug\BackupAirways.exe
+E:\Temp\BackupAirways\BackupAirways\obj\Debug\BackupAirways.pdb

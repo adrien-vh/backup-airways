@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 5.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServer", "WebServer\WebServer.csproj", "{D6477C34-6DB7-4BC1-8EC1-2B14681FB520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupAirways", "BackupAirways\BackupAirways.csproj", "{51FE3466-798B-424E-B380-C5EAFC79823D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6477C34-6DB7-4BC1-8EC1-2B14681FB520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6477C34-6DB7-4BC1-8EC1-2B14681FB520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6477C34-6DB7-4BC1-8EC1-2B14681FB520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6477C34-6DB7-4BC1-8EC1-2B14681FB520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51FE3466-798B-424E-B380-C5EAFC79823D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51FE3466-798B-424E-B380-C5EAFC79823D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51FE3466-798B-424E-B380-C5EAFC79823D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51FE3466-798B-424E-B380-C5EAFC79823D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
