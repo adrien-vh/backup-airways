@@ -123,7 +123,7 @@ $(function () {
     
     // Récupération des chemins vers les clouds installés sur le poste
     serveur.post(CJS.ACTION__CHEMINS_DRIVES, function (data) {
-        if (typeof data[CJS.REP__CHEMIN_GDRIVE] !== undefined) {
+        if (typeof data[CJS.REP__CHEMIN_GDRIVE] !== "undefined") {
             $(".choix-cloud span.gdrive.inactif").hide();
             $(".choix-cloud span.gdrive.actif").css("display", "inline-block");
             $(".choix-cloud span.gdrive .chemin").html(data[CJS.REP__CHEMIN_GDRIVE]);

@@ -35,7 +35,11 @@ namespace Saw
 		{
 			FileAttributes attr = File.GetAttributes(chemin);
 			CheminComplet = chemin;
-			Nom = CheminComplet.Length == 3 ? (label ?? "Disque ") + " (" + CheminComplet.Substring(0, 2) + ")" : CheminComplet.Substring(CheminComplet.LastIndexOf('\\') + 1);
+			if (C.IS_LINUX) {
+				Nom = Path.GetFileName (chemin);
+			} else {
+				Nom = CheminComplet.Length == 3 ? (label ?? "Disque ") + " (" + CheminComplet.Substring (0, 2) + ")" : CheminComplet.Substring (CheminComplet.LastIndexOf ('\\') + 1);
+			}
 			EstDossier = attr.HasFlag(FileAttributes.Directory);
 			Extension = EstDossier ? "" : ExtensionFichier(chemin);
 		}

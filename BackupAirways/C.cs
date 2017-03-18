@@ -1,4 +1,6 @@
-﻿namespace Saw
+﻿using System.IO;
+
+namespace Saw
 {
 	public enum TypeTransaction { Demande, Reponse };
 	public enum TypeSynchro 	{ Esclave, Maitre, Inutilisee };
@@ -24,6 +26,8 @@
 		public static string 	NOM_CLIENT			{ get { return Conf.Instance.NomClient; } }
 		public static string 	DOSSIER_TAMPON		{ get { return Conf.Instance.DossierTampon; } }
 		public static int 		TAILLE_MAX_TAMPON	{ get { return Conf.Instance.TailleMaxTampon; } }
+
+		public static bool		IS_LINUX			{ get { return Directory.Exists ("/etc/"); } }
 	}
 	
 	static internal class CJS

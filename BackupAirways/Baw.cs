@@ -49,6 +49,8 @@ namespace Saw
 		/// </summary>
 		private Baw()
 		{
+			Logger.Log ("Is Linux :" + C.IS_LINUX);
+
 			initWebserver();
 			
 			if (_dossierTamponValide)

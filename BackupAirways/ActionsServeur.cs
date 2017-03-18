@@ -172,7 +172,7 @@ namespace Saw
 			if (parametres.ContainsKey(CJS.PARAM__DOSSIER))
 			{
 				// Retourne la liste des disques
-				if (parametres[CJS.PARAM__DOSSIER].Trim() == "")
+				if (parametres[CJS.PARAM__DOSSIER].Trim() == "" && !C.IS_LINUX)
 				{
 					listeDisques = DriveInfo.GetDrives();
 					foreach (DriveInfo disque in listeDisques)
@@ -186,7 +186,11 @@ namespace Saw
 				}
 				// Retourne la listes des sous-dossiers et fichiers
 				else
-				{					
+				{	
+					if (parametres [CJS.PARAM__DOSSIER].Trim () == "" && C.IS_LINUX) {
+						parametres [CJS.PARAM__DOSSIER] = "/";
+					}
+
 					parametres[CJS.PARAM__DOSSIER] = parametres[CJS.PARAM__DOSSIER].WithEndingSlash();
 					
 					if (Directory.Exists(parametres[CJS.PARAM__DOSSIER]))
