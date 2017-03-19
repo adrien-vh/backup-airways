@@ -3,6 +3,7 @@
 // TODO: Ne générer les demandes que si elle n'existe pas déjà
 // TODO: Gérer le déplacement d'un dossier de sauvegarde
 // TODO: Ajouter la possibilité de créer un dossier depuis l'interface web
+// TODO : Logger à passer en argument au webserver
 
 using System;
 using System.Threading;

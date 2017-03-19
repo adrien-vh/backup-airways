@@ -193,8 +193,7 @@ namespace Saw
 			foreach (string fichier in fichiers)
 			{
 				fichierTmp 	= fichier.Replace(Dossier + "\\", "");
-				if (fichierTmp.Substring(0, Math.Min(fichierTmp.Length, 14)) != ".backupAirways")
-				{
+				if (fichierTmp.Substring(0, Math.Min(fichierTmp.Length, 14)) != ".backupAirways") {
 					md5 		= U.MD5Hash(fichierTmp);
 					md5s.Add(md5 + "|" + fichierTmp);
 					compteur ++;
@@ -208,29 +207,24 @@ namespace Saw
 			
 			File.WriteAllLines(fichierListeMd5Tmp, md5s);
 			
-			if (!File.Exists(_fichierListeMd5))
-			{
+			if (!File.Exists(_fichierListeMd5)) {
 				doCopy = true;
-			}
-			else if (U.MD5Hash(File.ReadAllText(fichierListeMd5Tmp)) != U.MD5Hash(File.ReadAllText(_fichierListeMd5)))
+			} else if (U.MD5Hash(File.ReadAllText(fichierListeMd5Tmp)) != U.MD5Hash(File.ReadAllText(_fichierListeMd5)))
 			{
 				doCopy = true;
 			}
 		
-			if (doCopy) 
-			{
+			if (doCopy) {
 				File.Copy(fichierListeMd5Tmp, _fichierListeMd5, true);
 			}
 		}
 		
-			
-		public void SupprimeTransaction (Transaction transaction) 
-		{
+		
+		public void SupprimeTransaction (Transaction transaction) {
 			File.Delete(_dossierTamponSynchro + "\\" + transaction.Fichier);
 		}
 		
-		private void ecrireConfLocale ()
-		{
+		private void ecrireConfLocale () {
 			File.WriteAllText(_fichierConfLocale, JsonConvert.SerializeObject(ConfLocale));
 		}
 		

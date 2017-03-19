@@ -175,10 +175,8 @@ namespace Saw
 				if (parametres[CJS.PARAM__DOSSIER].Trim() == "" && !C.IS_LINUX)
 				{
 					listeDisques = DriveInfo.GetDrives();
-					foreach (DriveInfo disque in listeDisques)
-					{
-						if (disque.DriveType == DriveType.Fixed || disque.DriveType == DriveType.Network)
-						{
+					foreach (DriveInfo disque in listeDisques) {
+						if (disque.DriveType == DriveType.Fixed || disque.DriveType == DriveType.Network) {
 							donnees.Add(new Fichier(disque.Name, disque.VolumeLabel));
 						}
 					}
@@ -193,27 +191,21 @@ namespace Saw
 
 					parametres[CJS.PARAM__DOSSIER] = parametres[CJS.PARAM__DOSSIER].WithEndingSlash();
 					
-					if (Directory.Exists(parametres[CJS.PARAM__DOSSIER]))
-					{
-						try
-						{
-							if (!parametres.ContainsKey(CJS.PARAM__FICHIERS_SEUL))
-							{
+					if (Directory.Exists(parametres[CJS.PARAM__DOSSIER])) {
+						try {
+							if (!parametres.ContainsKey(CJS.PARAM__FICHIERS_SEUL)) {
 								
 								fichiers = Directory.GetDirectories(parametres[CJS.PARAM__DOSSIER]);
-								for (var i = 0; i< fichiers.Length; i++)
-								{
+								for (var i = 0; i< fichiers.Length; i++) {
 									if (!U.IsSystem(fichiers[i])) {
 										donnees.Add(new Fichier(fichiers[i]));
 									}
 								}		
-								
 							}
-							if (!parametres.ContainsKey(CJS.PARAM__DOSSIERS_SEUL))
-							{
+							
+							if (!parametres.ContainsKey(CJS.PARAM__DOSSIERS_SEUL)) {
 								fichiers = Directory.GetFiles(parametres[CJS.PARAM__DOSSIER]);
-								for (var i = 0; i< fichiers.Length; i++)
-								{
+								for (var i = 0; i< fichiers.Length; i++) {
 									if (!U.IsSystem(fichiers[i])) {
 										donnees.Add(new Fichier(fichiers[i]));
 									}

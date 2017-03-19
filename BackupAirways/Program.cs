@@ -63,9 +63,9 @@ namespace Saw
 			//Program.test();
 			using (var mtx = new Mutex(true, "Saw", out isFirstInstance)) {
 				if (isFirstInstance) {
-					var saw = Baw.Instance;
+					var baw = Baw.Instance;
 				} else {
-					System.Diagnostics.Process.Start(C.PREFIXE);
+					Process.Start(C.PREFIXE);
 				}
 			}
 		}

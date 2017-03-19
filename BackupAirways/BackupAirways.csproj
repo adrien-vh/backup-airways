@@ -60,13 +60,10 @@
     <Compile Include="ActionsServeur.cs" />
     <Compile Include="C.cs" />
     <Compile Include="Conf.cs" />
-    <Compile Include="FastDirectoryEnumerator.cs" />
-    <Compile Include="Fichier.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Baw.cs" />
-    <Compile Include="StringExtension.cs" />
     <Compile Include="Synchro\ConfSynchro.cs" />
     <Compile Include="Synchro\Md5Fichier.cs" />
     <Compile Include="Synchro\DeltaMd5.cs" />
@@ -76,7 +73,10 @@
     <Compile Include="Synchro\SynchroEsclave.cs" />
     <Compile Include="Synchro\SynchroMaitre.cs" />
     <Compile Include="Synchro\Transaction.cs" />
-    <Compile Include="U.cs" />
+    <Compile Include="Utiles\FastDirectoryEnumerator.cs" />
+    <Compile Include="Utiles\Fichier.cs" />
+    <Compile Include="Utiles\StringExtension.cs" />
+    <Compile Include="Utiles\U.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -143,5 +143,8 @@
     <EmbeddedResource Include="Web\js\jquery.LocalBrowser.js" />
     <EmbeddedResource Include="Web\js\main.js" />
     <EmbeddedResource Include="Web\js\mustache.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utiles" />
   </ItemGroup>
 </Project>
