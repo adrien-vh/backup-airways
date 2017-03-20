@@ -1,6 +1,8 @@
 BackupAirways.userprefs
-BackupAirways/Web/.sass-cache/
+BackupAirways/Gui/Web/.sass-cache/
 BackupAirways/bin
 WebServer/bin
 BackupAirways/obj
 WebServer/obj
+Logger/obj
+Logger/bin

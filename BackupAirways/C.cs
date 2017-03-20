@@ -1,13 +1,13 @@
 ﻿using System.IO;
 
-namespace Saw
+namespace BackupAirways
 {
 	public enum TypeTransaction { Demande, Reponse };
 	public enum TypeSynchro 	{ Esclave, Maitre, Inutilisee };
 	
 	static internal class C
 	{		
-		public const int	MAX_DEMANDES_SIMULTANEES	= 10,
+		public const int	MAX_DEMANDES_SIMULTANEES	= 50,
 							LOG_MESSAGE					= 1,
 							INTERVALLE_SYNCHRO_MINUTES	= 5;
 		
@@ -22,10 +22,6 @@ namespace Saw
 							
 							FORMAT__FICHIER_DEMANDE		= "{0}.{1}.{2}." + C.EXT__DEMANDE,
 							FORMAT__FICHIER_REPONSE		= "{0}.{1}." + C.EXT__REPONSE;
-							
-		public static string 	NOM_CLIENT			{ get { return Conf.Instance.NomClient; } }
-		public static string 	DOSSIER_TAMPON		{ get { return Conf.Instance.DossierTampon; } }
-		public static int 		TAILLE_MAX_TAMPON	{ get { return Conf.Instance.TailleMaxTampon; } }
 
 		public static bool		IS_LINUX			{ get { return Directory.Exists ("/etc/"); } }
 	}

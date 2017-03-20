@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Win32;
 using System.Security.Cryptography;
 
-namespace Saw
+namespace BackupAirways
 {
 	static internal class U
 	{
@@ -45,7 +45,7 @@ namespace Saw
 			}
 			catch (Exception e)
 			{
-				Logger.Information(e.Message);
+				Logger.Log(e.Message);
 			}
 			return null;
 		}

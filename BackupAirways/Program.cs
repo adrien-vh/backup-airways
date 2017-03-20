@@ -2,15 +2,17 @@
 using System.Threading;
 using System.Linq;
 using System.Diagnostics;
-using System.IO;
 
-namespace Saw
+using BackupAirways.GestionSynchros;
+using BackupAirways.Gui;
+
+namespace BackupAirways
 {
 	class Program
 	{
 		
 		
-		public static void test()
+		/*public static void test()
 		{
 			DateTime retval = DateTime.MinValue;
 			string retour = "";
@@ -33,37 +35,21 @@ namespace Saw
 			Logger.Log(sw.ElapsedMilliseconds.ToString());
 			
 			Logger.Log(retour);
+		}*/
+		
+		public Program() {	
+			Conf 	conf 					= Conf.getConf(C.FICHIER_CONF);			
+			var 	gestionnaireSynchros 	= new GestionnaireSynchros(conf);
+			var 	webGui 					= new WebGui(gestionnaireSynchros);
 		}
-		/*
-		public Program()
-		{	
-			//test();
-			initWebserver();
-			
-			_synchrosMaitre 	= Synchro.MaitreFromDB();
-			_synchrosEsclave 	= Synchro.EsclaveFromDB();
-									
-			while (false)
-			{
-				traiteSynchrosMaitres();
-				traiteSynchrosEsclaves();
-					
-				Thread.Sleep(60000);
-			}
-			
-			_threadServer.Join();
-		}	*/	
-		
 
-
-		
 		public static void Main(string[] args)
 		{
 			bool isFirstInstance;
 			//Program.test();
 			using (var mtx = new Mutex(true, "Saw", out isFirstInstance)) {
 				if (isFirstInstance) {
-					var baw = Baw.Instance;
+					var program = new Program();
 				} else {
 					Process.Start(C.PREFIXE);
 				}

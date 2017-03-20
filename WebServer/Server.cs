@@ -218,12 +218,12 @@ namespace WebServer
 				_listener.Start();
 				_shouldRun = true;
 			} catch (HttpListenerException ex) {
-				Logger.Error(this.GetType(), ex);
+				Logger.Log(ex.Message, global::Logger.LogLevel.ERROR);
 				_shouldRun = false;
 			}
 
 			if (_shouldRun) {
-				Logger.Information(this.GetType(), "Serveur démarré sur : " + String.Join(",", _prefixes));
+				Logger.Log("Serveur démarré sur : " + String.Join(",", _prefixes));
 			}
 			
 			while (_listener.IsListening) {
@@ -234,10 +234,10 @@ namespace WebServer
 				}
 				catch (Exception e)
 				{
-					Logger.Information(e.Message);
+					Logger.Log(e.Message, global::Logger.LogLevel.ERROR);
 				}
 			}
-			Logger.Information("Le serveur est arrêté");
+			Logger.Log("Le serveur est arrêté");
 		}
 		
 		/// <summary>
@@ -284,7 +284,7 @@ namespace WebServer
 			}
 			
 			//Logger.Information("Méthode : " + ctx.Request.HttpMethod);
-			Logger.Information(context.Request.RemoteEndPoint.ToString() + " - " + context.Request.IsLocal.ToString() + " - " + context.Request.HttpMethod + " - " + type + " - " + context.Request.Url.LocalPath);
+			Logger.Log(context.Request.RemoteEndPoint.ToString() + " - " + context.Request.IsLocal.ToString() + " - " + context.Request.HttpMethod + " - " + type + " - " + context.Request.Url.LocalPath);
 			
 			context.Response.StatusCode = codeStatus;
 			context.Response.AddHeader("Content-Type", reponse.MimeType);
@@ -308,9 +308,9 @@ namespace WebServer
 						_listener.Stop();
 					}
 				} catch (Exception ex) {
-					Logger.Error(this.GetType(), ex);
+					Logger.Log(ex.Message, global::Logger.LogLevel.ERROR);
 				}
-				Logger.Information(this.GetType(), "Web Server disposed");
+				Logger.Log("Web Server disposed");
 			}
 		}
 	}

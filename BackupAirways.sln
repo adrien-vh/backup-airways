@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServer", "WebServer\WebS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupAirways", "BackupAirways\BackupAirways.csproj", "{51FE3466-798B-424E-B380-C5EAFC79823D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{588C1878-36E6-4C39-925C-83FC77B0459B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,5 +24,9 @@ Global
 		{51FE3466-798B-424E-B380-C5EAFC79823D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51FE3466-798B-424E-B380-C5EAFC79823D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51FE3466-798B-424E-B380-C5EAFC79823D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{588C1878-36E6-4C39-925C-83FC77B0459B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{588C1878-36E6-4C39-925C-83FC77B0459B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{588C1878-36E6-4C39-925C-83FC77B0459B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{588C1878-36E6-4C39-925C-83FC77B0459B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

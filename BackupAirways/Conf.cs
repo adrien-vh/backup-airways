@@ -2,41 +2,44 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace Saw
+namespace BackupAirways
 {
-	public sealed class Conf
-	{
-		private static Conf instance = Conf.getConf();
-		public static Conf Instance { get { return instance; } }
-		
+	public class Conf
+	{		
 		private string 	_dossierTampon		= "";
 		private int 	_tailleMaxTampon	= 100;
 		private string 	_nomClient			= "";
+		private string  _fichierConf		= null;
 		
 		public 	string 	DossierTampon 	{ get { return _dossierTampon; } 	set { _dossierTampon = value; sauve(); } }
 		public 	int 	TailleMaxTampon	{ get { return _tailleMaxTampon; } 	set { _tailleMaxTampon = value; sauve(); } }
 		public 	string	NomClient		{ get { return _nomClient; } 		set { _nomClient = value; sauve(); } }
 		
-		private static Conf getConf() {
+		public static Conf getConf(string fichierConf) {
 			Conf retour;
 			
-			if (File.Exists(C.FICHIER_CONF))
-			{
-				return JsonConvert.DeserializeObject<Conf>(File.ReadAllText(C.FICHIER_CONF));
-			}
-			else
-			{	
-				retour = new Conf();
-				File.WriteAllText(C.FICHIER_CONF, JsonConvert.SerializeObject(retour));
+			if (File.Exists(fichierConf)) {
+				retour = JsonConvert.DeserializeObject<Conf>(File.ReadAllText(fichierConf));
+				retour._fichierConf = fichierConf;
+				return retour;
+			} else {	
+				retour = new Conf(fichierConf);
+				File.WriteAllText(fichierConf, JsonConvert.SerializeObject(retour));
 				return retour;
 			}
 		}
 		
-		private Conf() { }
+		private Conf(string fichierConf) {
+			_fichierConf = fichierConf;
+		}
+		
+		private Conf() {}
 		
 		private void sauve()
 		{
-			File.WriteAllText(C.FICHIER_CONF, JsonConvert.SerializeObject(this));
+			if (_fichierConf != null) {
+				File.WriteAllText(_fichierConf, JsonConvert.SerializeObject(this));
+			}
 		}
 	}
 }
