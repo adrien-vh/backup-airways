@@ -31,13 +31,15 @@ $(function () {
                 for (i = 0; i < sauvegardes.esclaves.length; i += 1) {
                     sauvegardes.esclaves[i].classe = sauvegardes.esclaves[i].Valide ? "esclave actif" : "esclave inactif";
                     rendered = Mustache.render(template, sauvegardes.esclaves[i]);
-                    $('#listeSauvegardesEsclaves').append(rendered);
+                   // $('#listeSauvegardesEsclaves').append(rendered);
+                    $('#listeSauvegardesMaitres').append(rendered);
                 }
                 
                 template = $('#tplSauvegardeInutilisee').html();
                 for (i = 0; i < sauvegardes.inutilisees.length; i += 1) {
                     rendered = Mustache.render(template, sauvegardes.inutilisees[i]);
-                    $('#listeSauvegardesInutilisees').append(rendered);
+                    //$('#listeSauvegardesInutilisees').append(rendered);
+                    $('#listeSauvegardesMaitres').append(rendered);
                 }
                 $(".sauvegarde.inutilisee .dossier-local").ChoixDossier({
                     onChange : function (chemin) {

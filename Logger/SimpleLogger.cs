@@ -141,7 +141,7 @@ namespace Logger
             }
             catch
             {
-                throw;
+            	//throw;
             }
         }
 

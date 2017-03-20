@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Linq;
 using System.Diagnostics;
+using System.IO;
 
 using BackupAirways.GestionSynchros;
 using BackupAirways.Gui;
@@ -41,17 +42,20 @@ namespace BackupAirways
 			Conf 	conf 					= Conf.getConf(C.FICHIER_CONF);			
 			var 	gestionnaireSynchros 	= new GestionnaireSynchros(conf);
 			var 	webGui 					= new WebGui(gestionnaireSynchros);
+			
+			webGui.ThreadWebServer.Join();
 		}
 
 		public static void Main(string[] args)
 		{
 			bool isFirstInstance;
 			//Program.test();
-			using (var mtx = new Mutex(true, "Saw", out isFirstInstance)) {
+			using (var mtx = new Mutex(true, C.MUTEX, out isFirstInstance)) {
 				if (isFirstInstance) {
 					var program = new Program();
 				} else {
-					Process.Start(C.PREFIXE);
+					Logger.Log("Le process est déjà démarré");
+					Process.Start(File.ReadAllText(C.FICHIER_PREFIXE_WEB));
 				}
 			}
 		}

@@ -69,7 +69,7 @@ namespace WebServer
 		}
 		
 		/// <summary>
-		/// Le serveur écoutera sur le port 8000 par défaut
+		/// Le serveur écoutera sur le premier port disponible
 		/// </summary>
 		public Server()
 		{

@@ -14,10 +14,9 @@ namespace BackupAirways
 	
 	static internal class Logger
     {
-		public static void Log(string message, int type = 1) {
-			_logger.Instance.Trace(message);
+		public static void Log(string message, LogLevel ll = LogLevel.TRACE) {
+			_logger.Instance.WriteFormattedLog(ll, message);
 			Trace.TraceInformation(message.Replace("{","").Replace("}",""));
 		}
     }
-	
 }

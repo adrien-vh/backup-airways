@@ -342,3 +342,12 @@ input {
         }
     }
 }
+
+.sauvegarde {
+    display: inline-block;
+    max-width: $largeur-max / 2 - 20px;
+    vertical-align: top;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 10px;
+}

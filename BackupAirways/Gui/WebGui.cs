@@ -17,11 +17,20 @@ namespace BackupAirways.Gui
 		private 			Server 					_webServer;
 		private				Thread					_threadWebServer;
 		
+		public				Thread					ThreadWebServer { get { return _threadWebServer; } }
+		
 		
 		public WebGui(GestionnaireSynchros gestionnaireSynchros) {
 			_gestionnaireSynchros = gestionnaireSynchros;
 			
+			#if MODE_DEMO
 			_webServer = new Server(C.PREFIXE);
+			#else
+			_webServer = new Server();
+			#endif
+			
+			
+			CJS.PREFIXE_SERVEUR = _webServer.Prefixes[0];
 			
 			_webServer.AddAssembly(Assembly.GetExecutingAssembly(), "Gui.Web");
 			
@@ -38,6 +47,8 @@ namespace BackupAirways.Gui
 			_webServer.ajouteAction(CJS.ACTION__JOINDRE_SAUVEGARDE,		this.joindreSauvegarde);
 
 			_threadWebServer = _webServer.start();
+			
+			File.WriteAllText(C.FICHIER_PREFIXE_WEB, _webServer.Prefixes[0]);
 		}
 		
 		#region Actions Serveurs
