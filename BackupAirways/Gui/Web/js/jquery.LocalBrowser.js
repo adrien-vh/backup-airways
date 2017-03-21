@@ -49,7 +49,6 @@
     
     LocalBrowser.prototype.init = function () {
         var me = this;
-        console.log(this.handler);
         $(this.handler)
             .append('<span class="parent"><a href="#" class="dossier" data-dossier=""><img src="images/computer_blanc_ico_16.png">Ordinateur</a></span>')
             .append('<div class="liste-enfants">liste</div>')

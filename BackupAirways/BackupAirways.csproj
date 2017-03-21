@@ -69,11 +69,9 @@
     <Compile Include="Synchros\Md5Fichier.cs" />
     <Compile Include="Synchros\DeltaMd5.cs" />
     <Compile Include="Synchros\Demande.cs" />
-    <Compile Include="Synchros\Reponse.cs" />
     <Compile Include="Synchros\Synchro.cs" />
     <Compile Include="Synchros\SynchroEsclave.cs" />
     <Compile Include="Synchros\SynchroMaitre.cs" />
-    <Compile Include="Synchros\Transaction.cs" />
     <Compile Include="Utiles\FastDirectoryEnumerator.cs" />
     <Compile Include="Utiles\Fichier.cs" />
     <Compile Include="Utiles\StringExtension.cs" />

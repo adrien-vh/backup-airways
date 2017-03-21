@@ -1,4 +1,12 @@
-﻿using System;
+﻿// TODO: Gérer une liste des clients à part pour retrouver les clients liés à aucune sauvegarde
+// TODO: -== FAIT ==- Ne mettre à jour le md5 que s'il y eu des modifications
+// TODO: Ne générer les demandes que si elle n'existe pas déjà
+// TODO: Gérer le déplacement d'un dossier de sauvegarde
+// TODO: Ajouter la possibilité de créer un dossier depuis l'interface web
+// TODO: -== GÉRÉ AUTREMENT ==-Logger à passer en argument au webserver
+// TODO: Avertissement si le dossier choisi pour une sauvegarde n'est pas vide
+
+using System;
 using System.Threading;
 using System.Linq;
 using System.Diagnostics;

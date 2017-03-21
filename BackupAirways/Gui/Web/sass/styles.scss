@@ -1,15 +1,19 @@
 @import "compass/css3/transition";
 
-$largeur-max: 800px;
+$largeur-max: 1200px;
 $couleur-fond: #fafafa;
-$couleur-texte: #4e443c;
-$couleur-texte-bis: #13747D;
+$couleur-texte: #34495e;
+$couleur-texte-bis: #2c3e50;
 $couleur-texte-clair: lighten($couleur-texte, 20);
 $couleur-texte-en-avant: #cf361b;
 $couleur-fond-contenu: #fafafa;
 $couleur-fond-bis: #f5f5f5;
-$couleur-bouton-inactif : #cccccc;
-$couleur-erreur : #aa0000;
+$couleur-bouton-inactif : #aaa;
+$couleur-erreur : #c0392b;
+$couleur-bordure : #16a085;
+$couleur-ok : #39AC4D;
+$couleur-interaction : #8e44ad;
+
 
 @font-face{
     font-family: roboto;
@@ -48,6 +52,7 @@ $couleur-erreur : #aa0000;
 
 * {
     box-sizing: border-box;
+    font-size: 14px;
 }
 
 body {
@@ -87,10 +92,17 @@ input {
     text-align: center;
 }
 
+.souligne {
+    text-decoration: underline;
+}
+
+.interaction {
+    color: $couleur-interaction;
+}
+
 .message-erreur {
     color: $couleur-erreur;
     display: inline-block;
-    padding-left: 10px;
 }
 
 #_hoverBg {
@@ -345,9 +357,79 @@ input {
 
 .sauvegarde {
     display: inline-block;
-    max-width: $largeur-max / 2 - 20px;
+    width: 300px;
+    height: 375px;
     vertical-align: top;
-    border: 1px solid #333;
+    border: 1px solid $couleur-bordure;
     border-radius: 5px;
-    padding: 10px;
+    padding: 0px;
+    margin: 0 20px 20px 0;
+    position: relative;
+    
+    .cont-bouton {
+        text-align: center;
+        padding: 20px 0 10px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        a {
+            display: inline-block;
+        }
+    }
+    
+    .label {
+        display: block;
+        margin: 5px 0;
+        color: $couleur-texte-bis;
+        font-style: italic;
+    }
+    
+    &.ajout {
+        .entete {
+            background-color: $couleur-bordure;
+        }
+        
+        h3 {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        
+        .form {
+            padding: 10px;
+            
+            
+        }
+    }
+    
+    .entete {
+        text-align: center;
+        color: $couleur-fond;
+        background-color: $couleur-bordure;
+        border-radius: 3px 3px 0 0;
+        padding: 10px 0;
+        font-size: 35px;
+    }
+    
+    h3 {
+        text-align: center;
+        margin: 0 0 5px 0;
+        font-size: 30px;
+    }
+    
+    h4 {
+        font-size: 16px;
+        margin: 16px 0 15px 0;
+    }
+    
+    .message-erreur {
+        font-size: 12px;
+    }
+    
+    .sous-titre {
+        text-align: center;
+    }
+    
+    .contenu {
+        padding: 10px;
+    }
 }

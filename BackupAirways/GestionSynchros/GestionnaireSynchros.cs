@@ -257,16 +257,8 @@ namespace BackupAirways.GestionSynchros
 			{
 				if (s.Valide)
 				{
-					s.GenListeFichiersDbEtFichier();
-					
-					foreach (Reponse reponse in s.ReponsesExistantes())
-					{
-						if (!s.FichierExiste(reponse))
-						{
-							Logger.Log("Suppression de la réponse " + reponse.Fichier + " car le fichier correspondant n'existe plus");
-							s.SupprimeTransaction(reponse);
-						}
-					}
+					s.GenListeFichiers();
+					s.SupprimeReponsesSansDemande();
 					
 					foreach (Demande demande in s.GetDemandes())
 					{
@@ -275,7 +267,7 @@ namespace BackupAirways.GestionSynchros
 						if (!s.FichierExiste(demande))
 						{
 							Logger.Log("Suppression de la demande " + demande.Fichier + " car le fichier correspondant n'existe plus");
-							s.SupprimeTransaction(demande);
+							s.SupprimeDemande(demande);
 						}
 						else if (s.ReponseExiste(demande) == null)
 						{
@@ -300,7 +292,7 @@ namespace BackupAirways.GestionSynchros
 			{
 				if (s.Valide)
 				{
-					s.GenListeFichiersDbEtFichier();
+					s.GenListeFichiers();
 					
 					delta 			= s.DeltaFichiersAvecMaitre();
 					demandes 		= s.GenDemandes(delta.Md5Ajoutes, 2 * C.MAX_DEMANDES_SIMULTANEES);
@@ -324,7 +316,7 @@ namespace BackupAirways.GestionSynchros
 						{
 							if (demandesFaites < C.MAX_DEMANDES_SIMULTANEES)
 							{
-								if (!s.FichierTransactionExiste(demande))
+								if (!s.FichierDemandeExiste(demande))
 								{
 									Logger.Log("Demande du fichier " + demande.Md5f.Chemin);
 									s.FaireDemande(demande);

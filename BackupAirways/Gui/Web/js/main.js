@@ -10,37 +10,42 @@ $(function () {
         listeClients = [],
         serveur = new Serveur("http://localhost:8000/");
     
+    function formatteSynchro(synchro) {
+        var i;
+                
+        for (i = 0; i < synchro.Clients.length; i += 1) {
+            synchro.Clients[i].deltaFichiers = synchro.NbFichiersMaitre - synchro.Clients[i].NbFichiers;
+            synchro.Clients[i].complete = (synchro.Clients[i].deltaFichiers === 0);
+        }
+    }
+    
     function recupSauvegardes() {
         serveur.post(
             CJS.ACTION__LISTE_SAUVEGARDES,
             function (sauvegardes) {
-                var template = $('#tplSauvegarde').html(), rendered, i;
+                var template = $('#tplSauvegarde').html(), rendered, i, j, synchros = sauvegardes.maitres.concat(sauvegardes.esclaves).concat(sauvegardes.inutilisees), synchro;
 
+                
+                
                 //Mustache.parse(template);
+                $(".sauvegarde.esclave").remove();
+                $(".sauvegarde.maitre").remove();
+                $(".sauvegarde.inutilisee").remove();
 
-                $('#listeSauvegardesMaitres').html("");
-                $('#listeSauvegardesEsclaves').html("");
-                $('#listeSauvegardesInutilisees').html("");
+                template = $('#tplSynchro').html();
                 
-                template = $('#tplSauvegardeMaitre').html();
-                for (i = 0; i < sauvegardes.maitres.length; i += 1) {
-                    sauvegardes.maitres[i].classe = sauvegardes.maitres[i].Valide ? "maitre actif" : "maitre inactif";
-                    rendered = Mustache.render(template, sauvegardes.maitres[i]);
-                    $('#listeSauvegardesMaitres').append(rendered);
-                }
-                for (i = 0; i < sauvegardes.esclaves.length; i += 1) {
-                    sauvegardes.esclaves[i].classe = sauvegardes.esclaves[i].Valide ? "esclave actif" : "esclave inactif";
-                    rendered = Mustache.render(template, sauvegardes.esclaves[i]);
-                   // $('#listeSauvegardesEsclaves').append(rendered);
+                for (i = 0; i < synchros.length; i += 1) {
+                    synchro = synchros[i];
+                    synchro.classe = synchro.Type === 1 ? "maitre " : (synchro.Type === 0 ? "esclave " : "inutilisee ");
+                    synchro.classe += synchro.Valide ? "actif" : "inactif";
+                    synchro.maitre = (synchro.Type === 1);
+                    synchro.esclave = (synchro.Type === 0);
+                    synchro.inutilisee = (synchro.Type === 2);
+                    formatteSynchro(synchro);
+                    rendered = Mustache.render(template, synchro);
                     $('#listeSauvegardesMaitres').append(rendered);
                 }
                 
-                template = $('#tplSauvegardeInutilisee').html();
-                for (i = 0; i < sauvegardes.inutilisees.length; i += 1) {
-                    rendered = Mustache.render(template, sauvegardes.inutilisees[i]);
-                    //$('#listeSauvegardesInutilisees').append(rendered);
-                    $('#listeSauvegardesMaitres').append(rendered);
-                }
                 $(".sauvegarde.inutilisee .dossier-local").ChoixDossier({
                     onChange : function (chemin) {
                         $("a.bouton[data-synchro='" + $(this).attr("data-synchro") + "']").toggleClass("inactif", chemin === "");
@@ -210,10 +215,10 @@ $(function () {
         $("#boutNouvelleSauvegarde").toggleClass("inactif", nomInValide || cheminInvalide);
         
         if (nomInValide) {
-            $("#erreurNouvelleSauvegarde").html("Le nom choisi n'est pas valide (au moins 3 caractères sans caractères spéciaux).");
+            $("#erreurNouvelleSauvegarde span").html("Le nom choisi n'est pas valide (au moins 3 caractères sans caractères spéciaux).");
             $("#erreurNouvelleSauvegarde").show();
         } else if (cheminInvalide) {
-            $("#erreurNouvelleSauvegarde").html("Le dossier choisi n'est pas valide.");
+            $("#erreurNouvelleSauvegarde span").html("Le dossier choisi n'est pas valide.");
             $("#erreurNouvelleSauvegarde").show();
         } else {
             $("#erreurNouvelleSauvegarde").hide();

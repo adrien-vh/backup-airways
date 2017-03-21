@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace BackupAirways.Synchros
 {
@@ -26,23 +27,21 @@ namespace BackupAirways.Synchros
 			return retour;
 		}
 		
-		public Reponse[] ReponsesExistantes () {
-			var fichiersReponses 	= Directory.GetFiles(_dossierTamponSynchro, "*." + C.EXT__REPONSE, SearchOption.TopDirectoryOnly);
-			var retour				= new Reponse[fichiersReponses.Length];
-			var compteur			= 0;
+		public void SupprimeReponsesSansDemande () {
+			string nomFichierSansExtension;
 			
-			foreach (string fichierReponse in fichiersReponses)
-			{
-				retour[compteur] = new Reponse(fichierReponse);
-				compteur++;
+			foreach (string fichierReponse in Directory.GetFiles(_dossierTamponSynchro, "*." + C.EXT__REPONSE, SearchOption.TopDirectoryOnly))	{
+				nomFichierSansExtension = Path.GetFileNameWithoutExtension(fichierReponse);
+				if (Directory.GetFiles(_dossierTamponSynchro, nomFichierSansExtension + ".rep", SearchOption.TopDirectoryOnly).Length == 0) {
+					File.Delete(fichierReponse);
+				}
 			}
-			
-			return retour;
 		}
+
 		
-		public bool FichierExiste (Transaction transaction)
+		public bool FichierExiste (Demande demande)
 		{
-			var nomFichier = _dossier + "\\" + transaction.Md5f.Chemin;
+			var nomFichier = _dossier + "\\" + demande.Md5f.Chemin;
 			return nomFichier != null;
 		}
 		
@@ -51,12 +50,8 @@ namespace BackupAirways.Synchros
 		public long FourniReponse (Demande demande)
 		{
 			var fichierTampon 	= _dossierTamponSynchro + "\\" + demande.FichierReponse;
-			var fichierMeta		= fichierTampon + "." + C.EXT__META;
 			
 			File.Copy(Dossier + "\\" + demande.Md5f.Chemin, fichierTampon);
-			
-			File.WriteAllText(fichierMeta, string.Empty);
-			File.WriteAllText(fichierMeta, demande.Md5f.ToString());
 			
 			return new FileInfo(fichierTampon).Length;
 		}

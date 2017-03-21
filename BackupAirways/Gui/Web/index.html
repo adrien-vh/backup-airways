@@ -14,7 +14,7 @@
 <body>
     <div class="section entete">
         <div>
-            <span class="logo">SAW</span>
+            <span class="logo">Backup Airways</span>
         </div>
     </div>
     <div class="section principale">
@@ -88,18 +88,31 @@
         
         <!-- PAGE PRESENTANT LA LISTE DES SAUVEGARDES -->
         <div id="pageListeSauvegardes" class="page">
-            <h2>Sauvegardes de dossiers présents sur ce poste</h2>
-            <h3>Sauvegarder un dossier sur cette machine</h3>
-            <span>Nom de la sauvegarde</span>
-            <input type="text" id="inNomSauvegarde">
-            <a href="#" id="dossierASauvegarder"></a><br><br>
-            <span class="message-erreur" id="erreurNouvelleSauvegarde"></span><br><br>
-            <a href="#" class="gros bouton inactif" id="boutNouvelleSauvegarde">Sauvegarder</a>
-            <div id="listeSauvegardesMaitres"></div>
-            <h2>Sauvegardes venues d'ailleurs</h2>
-            <div id="listeSauvegardesEsclaves"></div>
-            <h2>Sauvegardes disponible</h2>
-            <div id="listeSauvegardesInutilisees"></div>
+            
+            <div id="listeSauvegardesMaitres">
+                <span class="sauvegarde ajout">
+                    <div class="entete">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="interaction">Nouvelle sauvegarde</h3>
+                    <div class="form">
+                        <span class="label">Nom de la sauvegarde :</span>
+                        <input type="text" id="inNomSauvegarde">
+                        <span class="label">Dossier à sauvegarder :</span>
+                        <a href="#" id="dossierASauvegarder"></a><br><br>
+                        <span class="message-erreur" id="erreurNouvelleSauvegarde">
+                            <i class="fa fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
+                            <span></span>
+                        </span>
+                        
+                    </div>
+                    <div class="cont-bouton">
+                        <a href="#" class="gros bouton inactif" id="boutNouvelleSauvegarde">Sauvegarder</a>
+                    </div>
+                </span>
+            </div>
+            
+            
         </div>
     </div>
     
@@ -110,48 +123,62 @@
         
     </div>
     
-    <script id="tplSauvegarde" type="x-tmpl-mustache">
-        <span class="sauvegarde {{ classe }}">
-            <span class="nom-sauvegarde">{{ Nom }}</span>
-            <span class="dossier">{{ Dossier }}</span>
-            <span class="message">{{ MessageErreur }}</span>
-            {{#Clients}}
-            <b>{{Nom}} - {{Chemin}}</b>
-            {{/Clients}}
-        </span>
-    </script>
-    <script id="tplSauvegardeMaitre" type="x-tmpl-mustache">
-        <span class="sauvegarde maitre">
+    <script id="tplSynchro" type="x-tmpl-mustache">
+        <span class="sauvegarde {{classe}}">
+            {{#maitre}}
+            <div class="entete">
+                <i class="fa fa-desktop" aria-hidden="true"></i>
+                <i class="fa fa-caret-right" aria-hidden="true"></i>
+                <i class="fa fa-cloud" aria-hidden="true"></i>
+            </div>
+            {{/maitre}}
+            {{#esclave}}
+            <div class="entete">
+                <i class="fa fa-cloud" aria-hidden="true"></i>
+                <i class="fa fa-caret-right" aria-hidden="true"></i>
+                <i class="fa fa-desktop" aria-hidden="true"></i>
+            </div>
+            {{/esclave}}
+            {{#inutilisee}}
+            <div class="entete">
+                <i class="fa fa-cloud" aria-hidden="true"></i>
+            </div>
+            {{/inutilisee}}
             <h3>{{ Nom }}</h3>
-            <h4>Dossier sauvegardé :</h4>
-            <span class="source"><b>{{ DossierSource }}</b> sur la machine <b>{{ Maitre }}</b></span><br>
-            <h4>Sauvegardes existantes :</h4>
-            {{#Clients}}
-            Sur la machine <b>{{Nom}}</b> dans le dossier <b>{{Chemin}}</b>
-            {{/Clients}}
-            {{^Clients}}
-            <span class="message-erreur">Il n'existe pas de sauvegarde de ce dossier !</span>
-            {{/Clients}}
-            <br>
-            <br>
-            <a href="#" class="bouton warning" data-synchro="{{ Nom }}">Ne plus sauvegarder ce dossier.</a>
-        </span>
-    </script>
-    <script id="tplSauvegardeInutilisee" type="x-tmpl-mustache">
-        <span class="sauvegarde inutilisee">
-            <h3>{{ Nom }}</h3>
-            <h4>Dossier sauvegardé :</h4>
-            <span class="source"><b>{{ DossierSource }}</b> sur la machine <b>{{ Maitre }}</b></span><br>
-            <h4>Sauvegardes existantes :</h4>
-            {{#Clients}}
-            Sur la machine <b>{{Nom}}</b> dans le dossier <b>{{Chemin}}</b>
-            {{/Clients}}
-            {{^Clients}}
-            <span class="message-erreur">Il n'existe pas de sauvegarde de ce dossier !</span>
-            {{/Clients}}
-            <h4>Sauvegarder ce dossier sur cette machine :</h4>
-            <a href="#" class="dossier-local" data-synchro="{{ Nom }}"></a>
-            <a href="#" class="bouton inactif" data-synchro="{{ Nom }}">Valider</a>
+            <div class="sous-titre"><b>{{ NbFichiersMaitre }}</b> fichiers depuis <b {{#maitre}}class="souligne"{{/maitre}}>{{ Maitre }}</b></div>
+            <div class="contenu">
+                <span class="label">Sauvegardes existantes :</span>
+                {{#Clients}}
+                {{^complete}}
+                <i class="fa fa-refresh fa-spin fa-fw"></i> <b>{{Client}}</b> (manque <b>{{deltaFichiers}}</b> fichiers)
+                {{/complete}}
+                {{#complete}}
+                <i class="fa fa-check fa-fw"></i> <b>{{Client}}</b> (complète)
+                {{/complete}}
+                {{/Clients}}
+                {{^Clients}}
+                <span class="message-erreur">
+                    <i class="fa fa fa-ban fa-lg" aria-hidden="true"></i>
+                </span>
+                {{/Clients}}
+                {{^maitre}}
+                {{^esclave}}
+                <h4 class="interaction">Ajouter une sauvegarde sur cette machine :</h4>
+                <span class="label">Dossier de destination :</span>
+                <a href="#" class="dossier-local" data-synchro="{{ Nom }}"></a>
+                <br>
+                <br>
+                <div class="txt-center">
+                    <a href="#" class="bouton inactif" data-synchro="{{ Nom }}">Valider</a>
+                </div>
+                {{/esclave}}
+                {{/maitre}}
+                <br>
+                <br>
+                
+
+                <!--<a href="#" class="bouton warning" data-synchro="{{ Nom }}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>-->
+            </div>
         </span>
     </script>
 

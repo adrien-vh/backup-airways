@@ -60,6 +60,8 @@ namespace BackupAirways.Synchros
 						pEsclave++;
 					}
 				}
+				
+				_nbFichiersMaitre = md5Maitre.Length;
 			}
 			
 			/*foreach(string ajout in ajouts)
@@ -79,21 +81,19 @@ namespace BackupAirways.Synchros
 		{
 			
 			string fichierSource		= _dossierTamponSynchro + "\\" + demande.FichierReponse;			
-			string fichierMeta			= _dossierTamponSynchro + "\\" + demande.FichierReponse + "." + C.EXT__META;
 			string fichierDestination;
 						
-			if (File.Exists(fichierSource) && File.Exists(fichierMeta))
+			if (File.Exists(fichierSource))
 			{
 				fichierDestination 	= Dossier + "\\" + demande.Md5f.Chemin;
 				Directory.CreateDirectory(Path.GetDirectoryName(fichierDestination));
 				File.Copy(fichierSource, fichierDestination, true);
 			
-				SupprimeTransaction(demande);
+				SupprimeDemande(demande);
 				
 				if (Directory.GetFiles(_dossierTamponSynchro, demande.Md5f.Md5 + "." + demande.NoPart + ".*." + C.EXT__DEMANDE).Length == 0)
 				{
 					File.Delete(fichierSource);
-					File.Delete(fichierMeta);
 				}
 			}		
 		}

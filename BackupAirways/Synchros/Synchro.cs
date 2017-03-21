@@ -22,16 +22,18 @@ namespace BackupAirways.Synchros
 		protected ConfSynchro					_confLocale;
 		protected string						_fichierConfLocale;
 		protected Conf							_conf;
+		protected int							_nbFichiersMaitre = 0;
 				
-		public bool 						Valide 			{ get { return _valide; } }
-		public string 						Nom 			{ get { return _nom; } }
-		public string 						Dossier 		{ get { return _dossier; } }
-		public TypeSynchro 					Type			{ get { return _type; } }	
-		public string						MessageErreur	{ get { return _messageErreur; } }
-		public string						DossierSource	{ get { return _dossierSource; } }
-		public string						Maitre			{ get { return _maitre; } }
-		public List<ConfSynchro>			Clients 		{ get { return _clients; } }
-		public ConfSynchro					ConfLocale		{ get { return _confLocale; } }
+		public bool 						Valide 				{ get { return _valide; } }
+		public string 						Nom 				{ get { return _nom; } }
+		public string 						Dossier 			{ get { return _dossier; } }
+		public TypeSynchro 					Type				{ get { return _type; } }	
+		public string						MessageErreur		{ get { return _messageErreur; } }
+		public string						DossierSource		{ get { return _dossierSource; } }
+		public string						Maitre				{ get { return _maitre; } }
+		public List<ConfSynchro>			Clients 			{ get { return _clients; } }
+		public ConfSynchro					ConfLocale			{ get { return _confLocale; } }
+		public int							NbFichiersMaitre	{ get { return _nbFichiersMaitre; } }
 		
 		
 		/// <summary>
@@ -84,6 +86,10 @@ namespace BackupAirways.Synchros
 				_maitre 		= confMaitre.Client;
 				_dossierSource 	= confMaitre.Chemin;
 				
+				if (File.Exists(_dossierTamponSynchro + "\\maitre.md5")) {
+					_nbFichiersMaitre = File.ReadAllLines(_dossierTamponSynchro + "\\maitre.md5").Length;
+				}
+				
 				if (_maitre == _conf.NomClient)
 				{
 					_dossier 			= _dossierSource;
@@ -94,7 +100,11 @@ namespace BackupAirways.Synchros
 				foreach(string fichierClient in Directory.GetFiles(_dossierTamponSynchro, "*.client"))
 				{
 					confClient = JsonConvert.DeserializeObject<ConfSynchro>(File.ReadAllText(fichierClient));
-					_clients.Add(new ConfSynchro(confClient.Client, confClient.Chemin));
+					
+					if (File.Exists(_dossierTamponSynchro + "\\" + confClient.Client + ".md5")) {
+						confClient.NbFichiers = File.ReadAllLines(_dossierTamponSynchro + "\\" + confClient.Client + ".md5").Length;
+					}
+					_clients.Add(new ConfSynchro(confClient.Client, confClient.Chemin, confClient.NbFichiers));
 					if (confClient.Client == _conf.NomClient)
 					{
 						_dossier 			= confClient.Chemin;
@@ -127,12 +137,12 @@ namespace BackupAirways.Synchros
 			return File.Exists(_dossierTamponSynchro + "\\" + demande.FichierReponse) ? demande.FichierReponse : null;
 		}
 		
-		public bool FichierTransactionExiste (Transaction t)
+		public bool FichierDemandeExiste (Demande t)
 		{
 			return File.Exists(_dossierTamponSynchro + "\\" + t.Fichier);
 		}
 		
-		public void GenListeFichiersDbEtFichier ()	
+		public void GenListeFichiers ()	
 		{
 			var 	md5s 				= new List<string>();
 			string 	md5;
@@ -162,6 +172,10 @@ namespace BackupAirways.Synchros
 			
 			File.WriteAllLines(fichierListeMd5Tmp, md5s);
 			
+			if (_type == TypeSynchro.Maitre) {
+				_nbFichiersMaitre = md5s.Count;
+			}
+			
 			if (!File.Exists(_fichierListeMd5)) {
 				doCopy = true;
 			} else if (U.MD5Hash(File.ReadAllText(fichierListeMd5Tmp)) != U.MD5Hash(File.ReadAllText(_fichierListeMd5)))
@@ -174,8 +188,8 @@ namespace BackupAirways.Synchros
 			}
 		}
 		
-		public void SupprimeTransaction (Transaction transaction) {
-			File.Delete(_dossierTamponSynchro + "\\" + transaction.Fichier);
+		public void SupprimeDemande (Demande demande) {
+			File.Delete(_dossierTamponSynchro + "\\" + demande.Fichier);
 		}
 		
 		private void ecrireConfLocale () {
