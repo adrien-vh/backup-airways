@@ -1,18 +1,8 @@
-﻿/*
- * Created by SharpDevelop.
- * User: vanhyftea
- * Date: 03/03/2017
- * Time: 13:45
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
-using System.Collections.Specialized;
+﻿using System;
 using System.Reflection;
 using System.IO;
 using System.Net;
 using System.Threading;
-using System.Text; 
 using System.Collections.Generic;
 
 namespace WebServer
@@ -23,6 +13,7 @@ namespace WebServer
 	public class Server : IDisposable
 	{
 		#region Propriétés
+		
 		/// <summary>
 		/// Propriétés volatiles (potentiellement accédées par plusieurs Threads)
 		/// </summary>
@@ -32,9 +23,9 @@ namespace WebServer
 		/// <summary>
 		/// Propriétés privées
 		/// </summary>
-		private bool 															_isDisposed;				// Indique si l'instance a été "disposée"
-		private Dictionary<string, Assembly> 									_assemblies;				// Assemblies proposant des ressources
-		private List<string> 													_ressourcesDisponibles;		// Ressources disponibles
+		private bool 																_isDisposed;				// Indique si l'instance a été "disposée"
+		private Dictionary<string, Assembly> 										_assemblies;				// Assemblies proposant des ressources
+		private List<string> 														_ressourcesDisponibles;		// Ressources disponibles
 		private Dictionary<string, Func<Dictionary<string, string>, WebReponse>> 	_actionsDefinies;			// Actions pouvant être réalisées par le serveur
 		
 		/// <summary>
@@ -124,16 +115,14 @@ namespace WebServer
 		/// </summary>
 		/// <param name="assembly">Assembly à ajouter</param>
 		/// <param name="chemin">Chemin contenant les ressources</param>
-		public void AddAssembly(Assembly assembly, string chemin)
-		{
-			var resourcesNames = assembly.GetManifestResourceNames();
-			var prefixe = assembly.FullName.Substring(0, assembly.FullName.IndexOf(',')) + "." + chemin;
+		public void AddAssembly(Assembly assembly, string chemin) {
+			var resourcesNames 	= assembly.GetManifestResourceNames();
+			var prefixe 		= assembly.FullName.Substring(0, assembly.FullName.IndexOf(',')) + "." + chemin;
 			
 			_assemblies.Add(prefixe, assembly);
 			
 			foreach (var resource in resourcesNames) {
-				if (resource.StartsWith(prefixe))
-			    {
+				if (resource.StartsWith(prefixe)) {
 					_ressourcesDisponibles.Add(resource);
 			    }
 			}
@@ -144,16 +133,14 @@ namespace WebServer
 		/// </summary>
 		/// <param name="nomAction">nom de l'action</param>
 		/// <param name="action">fonction appelée devant retournée un objet de type Reponse</param>
-		public void ajouteAction (string nomAction, Func<Dictionary<string, string>, WebReponse> action)
-		{
+		public void ajouteAction (string nomAction, Func<Dictionary<string, string>, WebReponse> action) {
 			_actionsDefinies.Add(nomAction.ToLower(), action);
 		}
 		
 		/// <summary>
 		/// Démarrage du serveur
 		/// </summary>
-		public Thread start()
-		{
+		public Thread start() {
 			Thread threadServeur = new Thread(demarreServeur);
 			threadServeur.Start();
 			return threadServeur;
@@ -162,8 +149,7 @@ namespace WebServer
 		/// <summary>
 		/// Arrêt du serveur
 		/// </summary>
-		public void stop()
-		{
+		public void stop() {
 			_shouldRun = false;
 			_listener.Stop();
 		}
@@ -177,8 +163,7 @@ namespace WebServer
 		/// </summary>
 		/// <param name="action">nom de l'action à tester</param>
 		/// <returns>True si l'action est définie, False sinon</returns>
-		private bool actionExiste(string action)
-		{
+		private bool actionExiste(string action) {
 			return _actionsDefinies.ContainsKey(action);
 		}
 		
@@ -187,12 +172,9 @@ namespace WebServer
 		/// </summary>
 		/// <param name="resource">chemin de la ressource (sans le préfixe)</param>
 		/// <returns>Le contenu de la ressource si elle existe, null sinon</returns>
-		private byte[] ContenuResource(string resource)
-		{
-			foreach(KeyValuePair<string, Assembly> assembly in _assemblies)
-			{
-				if (_ressourcesDisponibles.Contains(assembly.Key + "." + resource))
-			    {
+		private byte[] ContenuResource(string resource) {
+			foreach(KeyValuePair<string, Assembly> assembly in _assemblies) {
+				if (_ressourcesDisponibles.Contains(assembly.Key + "." + resource)) {
 			    	Stream streamResource;
 					BinaryReader readerResource;
 					
@@ -202,8 +184,6 @@ namespace WebServer
 					return U.ReadAllBytes(readerResource);
 			    }
 			}
-
-
 			return null;
 		}
 		
@@ -212,8 +192,7 @@ namespace WebServer
 		/// <summary>
 		/// Démarrage du serveur appelé dans un Thread à part
 		/// </summary>
-		private void demarreServeur()
-		{
+		private void demarreServeur() {
 			try {
 				_listener.Start();
 				_shouldRun = true;
@@ -227,16 +206,14 @@ namespace WebServer
 			}
 			
 			while (_listener.IsListening) {
-				try
-				{
+				try {
 					HttpListenerContext request = _listener.GetContext();
 					ThreadPool.QueueUserWorkItem(ProcessRequest, request); 
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					Logger.Log(e.Message, global::Logger.LogLevel.ERROR);
 				}
 			}
+			
 			Logger.Log("Le serveur est arrêté");
 		}
 		
@@ -244,8 +221,7 @@ namespace WebServer
 		/// Traitement d'une requête
 		/// </summary>
 		/// <param name="listenerContext">Contexte du listener</param>
-		private void ProcessRequest(object listenerContext)
-		{ 
+		private void ProcessRequest(object listenerContext) { 
 			Dictionary<string, string> 	parametres;
 			WebReponse 					reponse;
 			
@@ -255,35 +231,28 @@ namespace WebServer
 			var 	nomAction 		= context.Request.Url.LocalPath.Substring(1).Split('/')[0].ToLower();
 			int 	codeStatus 		= (int)HttpStatusCode.OK;
 			
-			if (cheminDemande == "") { cheminDemande = "index.html"; }
+			if (cheminDemande == "") {
+				cheminDemande = "index.html";
+			}
 			
 			byte[] 	contenuResource = ContenuResource(cheminDemande);
 			
-			if (contenuResource != null)
-			{
+			if (contenuResource != null) {
 				type = "ressource";
 				reponse = new WebReponse(Mime.mimeFromNomFichier(cheminDemande), contenuResource);	
-			}
-			else if (nomAction == "__stop")
-			{
+			} else if (nomAction == "__stop") {
 				stop();
 				return;
-			}
-			else if (actionExiste(nomAction))
-			{
+			} else if (actionExiste(nomAction)) {
 				type = "action";
 				parametres = U.lireParametres(context);
 				reponse = _actionsDefinies[nomAction](parametres);
-				//Logger.Information(reponse.Message);
-			}
-			else
-			{
+			} else {
 				type = "erreur";
 				codeStatus = (int)HttpStatusCode.NotFound;
-				reponse = new WebReponse(Mime.json, U.stringToBytes("{message : \"Message vide\"}"));				
+				reponse = new WebReponse(Mime.json, "{message : \"Message vide\"}");				
 			}
 			
-			//Logger.Information("Méthode : " + ctx.Request.HttpMethod);
 			Logger.Log(context.Request.RemoteEndPoint.ToString() + " - " + context.Request.IsLocal.ToString() + " - " + context.Request.HttpMethod + " - " + type + " - " + context.Request.Url.LocalPath);
 			
 			context.Response.StatusCode = codeStatus;

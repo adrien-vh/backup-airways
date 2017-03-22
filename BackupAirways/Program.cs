@@ -5,6 +5,7 @@
 // TODO: Ajouter la possibilité de créer un dossier depuis l'interface web
 // TODO: -== GÉRÉ AUTREMENT ==-Logger à passer en argument au webserver
 // TODO: Avertissement si le dossier choisi pour une sauvegarde n'est pas vide
+// TODO: Revoir la classe mime pour ne pas instancier à chaque requête
 
 using System;
 using System.Threading;

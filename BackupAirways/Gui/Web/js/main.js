@@ -43,7 +43,7 @@ $(function () {
                     synchro.inutilisee = (synchro.Type === 2);
                     formatteSynchro(synchro);
                     rendered = Mustache.render(template, synchro);
-                    $('#listeSauvegardesMaitres').append(rendered);
+                    $('#listeSauvegardes').append(rendered);
                 }
                 
                 $(".sauvegarde.inutilisee .dossier-local").ChoixDossier({
@@ -67,6 +67,33 @@ $(function () {
                     );
                     
                     console.log(params);
+                });
+                
+                $(".sauvegarde .cont-bouton.existant a").click(function (e) {
+                    e.preventDefault();
+                    var hauteur = $(this).parents(".sauvegarde").find(".contenant").height(),
+                        ref = $(this).attr("data-ref");
+                    
+                    $(this).parents(".sauvegarde").find(".sous-contenu." + ref).detach().insertAfter($(this).parents(".sauvegarde").find(".sous-contenu.existant"));
+                    
+                    $(this).parents(".sauvegarde").find(".cont-bouton.existant").hide();
+                    $(this).parents(".sauvegarde").find(".cont-bouton." + ref).show();
+                    
+                    $(this).parents(".sauvegarde").find(".contenu").animate({marginTop : "-" + hauteur + "px"}, 300);
+                });
+                
+                $(".sauvegarde .cont-bouton a.annuler").click(function (e) {
+                    e.preventDefault();
+                    var hauteur = $(this).parents(".sauvegarde").find(".contenant").height(),
+                        ref = $(this).attr("data-ref");
+                    
+                    //$(this).parents(".sauvegarde").find(".sous-contenu." + ref).detach().insertAfter($(this).parents(".sauvegarde").find(".sous-contenu.existant"));
+                    
+                    $(this).parents(".sauvegarde").find(".cont-bouton").hide();
+                    $(this).parents(".sauvegarde").find(".cont-bouton.existant").show();
+                    
+                    
+                    $(this).parents(".sauvegarde").find(".contenu").animate({marginTop : "0px"}, 300);
                 });
             }
         );

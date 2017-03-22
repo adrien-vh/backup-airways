@@ -8,6 +8,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace WebServer
 {
@@ -35,37 +36,32 @@ namespace WebServer
 		
 		public string Type { get; set; }
 		
-		public static implicit operator string(Mime m)
-        {
+		public static implicit operator string(Mime m) {
             return m.Type;
         }
 		
-		public static Mime html { get { return new Mime(_mimeTypes["html"]); } }
-		public static Mime css { get { return new Mime(_mimeTypes["css"]); } }
-		public static Mime ico { get { return new Mime(_mimeTypes["ico"]); } }
-		public static Mime jpg { get { return new Mime(_mimeTypes["jpg"]); } }
-		public static Mime bmp { get { return new Mime(_mimeTypes["bmp"]); } }
-		public static Mime png { get { return new Mime(_mimeTypes["png"]); } }
-		public static Mime js { get { return new Mime(_mimeTypes["js"]); } }
-		public static Mime map { get { return new Mime(_mimeTypes["map"]); } }
-		public static Mime json { get { return new Mime(_mimeTypes["json"]); } }
-		public static Mime txt { get { return new Mime(_mimeTypes["txt"]); } }
-		public static Mime defaut { get { return new Mime(_mimeTypes["*"]); } }
+		public static Mime html 	{ get { return new Mime(_mimeTypes["html"]); } }
+		public static Mime css 		{ get { return new Mime(_mimeTypes["css"]); } }
+		public static Mime ico 		{ get { return new Mime(_mimeTypes["ico"]); } }
+		public static Mime jpg 		{ get { return new Mime(_mimeTypes["jpg"]); } }
+		public static Mime bmp 		{ get { return new Mime(_mimeTypes["bmp"]); } }
+		public static Mime png 		{ get { return new Mime(_mimeTypes["png"]); } }
+		public static Mime js 		{ get { return new Mime(_mimeTypes["js"]); } }
+		public static Mime map 		{ get { return new Mime(_mimeTypes["map"]); } }
+		public static Mime json 	{ get { return new Mime(_mimeTypes["json"]); } }
+		public static Mime txt 		{ get { return new Mime(_mimeTypes["txt"]); } }
+		public static Mime defaut 	{ get { return new Mime(_mimeTypes["*"]); } }
 
-		
-		
-		public static Mime mimeFromNomFichier (string nomFichier)
-		{
-			String extension = U.ExtensionFichier(nomFichier);
+		/// <summary>
+		/// Récupère le type mime en fonction de l'extension du fichier
+		/// </summary>
+		/// <param name="nomFichier">Le chemin du fichier concerné</param>
+		/// <returns>Le type mime du fichier</returns>
+		public static Mime mimeFromNomFichier (string nomFichier) {
+			String extension = Path.GetExtension(nomFichier).Substring(1).ToLower();
 			
-			if (_mimeTypes.ContainsKey(extension))
-			{
-				return new Mime(_mimeTypes[extension]);
-			}
-			else
-			{
-				return new Mime(_mimeTypes["*"]);
-			}
+			return _mimeTypes.ContainsKey(extension) ? new Mime(_mimeTypes[extension]) : new Mime(_mimeTypes["*"]);
+			
 		}
 	}
 }

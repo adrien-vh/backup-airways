@@ -23,15 +23,12 @@ namespace BackupAirways.Gui
 		public WebGui(GestionnaireSynchros gestionnaireSynchros) {
 			_gestionnaireSynchros = gestionnaireSynchros;
 			
-			#if MODE_DEMO
+			#if DEBUG
 			_webServer = new Server(C.PREFIXE);
 			#else
 			_webServer = new Server();
 			#endif
-			
-			
-			CJS.PREFIXE_SERVEUR = _webServer.Prefixes[0];
-			
+						
 			_webServer.AddAssembly(Assembly.GetExecutingAssembly(), "Gui.Web");
 			
 			_webServer.ajouteAction(CJS.ACTION__LISTE_DOSSIERS, 		this.getDossiers);

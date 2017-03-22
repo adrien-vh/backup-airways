@@ -20,12 +20,11 @@ namespace BackupAirways
 							
 							EXT__REPONSE				= "rep",
 							EXT__DEMANDE				= "dem",
-							//EXT__META					= "meta",
 							
 							FORMAT__FICHIER_DEMANDE		= "{0}.{1}.{2}." + C.EXT__DEMANDE,
 							FORMAT__FICHIER_REPONSE		= "{0}.{1}." + C.EXT__REPONSE;
 
-		public static bool		IS_LINUX			{ get { return Directory.Exists ("/etc/"); } }
+		public static bool	IS_LINUX					{ get { return Directory.Exists ("/etc/"); } }
 	}
 	
 	static internal class CJS
@@ -56,7 +55,5 @@ namespace BackupAirways
 								REP__MESSAGE				= "message",
 								REP__CHEMIN_GDRIVE			= "chemingoogledrive",
 								REP__VALEUR					= "valeur";
-							
-		public static string	PREFIXE_SERVEUR;
 	}
 }

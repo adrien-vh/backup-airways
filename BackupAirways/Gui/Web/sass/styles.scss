@@ -14,40 +14,44 @@ $couleur-bordure : #16a085;
 $couleur-ok : #39AC4D;
 $couleur-interaction : #8e44ad;
 
-
-@font-face{
-    font-family: roboto;
-    src: url('fonts/Roboto Slab regular-webfont.eot');
-    src: url('fonts/Roboto Slab regular-webfont.eot?#iefix') format('embedded-opentype'),
-        url('fonts/Roboto Slab regular-webfont.woff2') format('woff2'),
-        url('fonts/Roboto Slab regular-webfont.woff') format('woff'),
-        url('fonts/Roboto Slab regular-webfont.ttf') format('truetype'),
-        url('fonts/Roboto Slab regular-webfont.svg#roboto_slabregular') format('svg');
-    font-weight: 400;
-    font-style: normal
+/* open-sans-regular - latin-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'),
+       url('fonts/open-sans-v13-latin-ext-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('fonts/open-sans-v13-latin-ext-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
-@font-face{
-    font-family: roboto;
-    src: url('fonts/Roboto Slab 700-webfont.eot');
-    src: url('fonts/Roboto Slab 700-webfont.eot?#iefix') format('embedded-opentype'),
-        url('fonts/Roboto Slab 700-webfont.woff2') format('woff2'),
-        url('fonts/Roboto Slab 700-webfont.woff') format('woff'),
-        url('fonts/Roboto Slab 700-webfont.ttf') format('truetype'),
-        url('fonts/Roboto Slab 700-webfont.svg#roboto_slabbold') format('svg');
-    font-weight: 700;
-    font-style: normal
+/* open-sans-italic - latin-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'),
+       url('fonts/open-sans-v13-latin-ext-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('fonts/open-sans-v13-latin-ext-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
-@font-face{
-    font-family: icomoon;
-    src: url(fonts/icomoon.eot?-s1q4tu);
-    src: url(fonts/icomoon.eot?#iefix-s1q4tu) format('embedded-opentype'),
-        url(fonts/icomoon.woff?-s1q4tu) format('woff'),
-        url(fonts/icomoon.ttf?-s1q4tu) format('truetype'),
-        url(fonts/icomoon.svg?-s1q4tu#icomoon) format('svg');
-    font-weight: 400;
-    font-style: normal
+/* open-sans-600 - latin-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Open Sans Semibold'), local('OpenSans-Semibold'),
+       url('fonts/open-sans-v13-latin-ext-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('fonts/open-sans-v13-latin-ext-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* open-sans-600italic - latin-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: local('Open Sans Semibold Italic'), local('OpenSans-SemiboldItalic'),
+       url('fonts/open-sans-v13-latin-ext-600italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('fonts/open-sans-v13-latin-ext-600italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 * {
@@ -56,7 +60,7 @@ $couleur-interaction : #8e44ad;
 }
 
 body {
-    font-family: roboto,Helvetica,Arial,sans-serif;
+    font-family: 'Open Sans',Helvetica,Arial,sans-serif;
     background-color: $couleur-fond;
     color: $couleur-texte;
     margin: 0;
@@ -66,6 +70,11 @@ body {
 
 h2, h3, h4 {
     color: $couleur-texte-bis;
+    font-weight: 600;
+}
+
+b {
+    font-weight: 600;
 }
 
 a {
@@ -355,10 +364,16 @@ input {
     }
 }
 
+$hauteur-sauvegarde : 375px;
+$hauteur-entete : 60px;
+$hauteur-titre : 60px;
+$hauteur-cont-bouton : 60px;
+$hauteur-contenu : $hauteur-sauvegarde - $hauteur-entete - $hauteur-titre - $hauteur-cont-bouton;
+
 .sauvegarde {
     display: inline-block;
     width: 300px;
-    height: 375px;
+    height: $hauteur-sauvegarde;
     vertical-align: top;
     border: 1px solid $couleur-bordure;
     border-radius: 5px;
@@ -367,13 +382,32 @@ input {
     position: relative;
     
     .cont-bouton {
+        display: none;
         text-align: center;
-        padding: 20px 0 10px;
+        padding-top: 8px;
+        height: $hauteur-cont-bouton;
+        //border-top: 1px solid $couleur-bordure;
         width: 100%;
         position: absolute;
         bottom: 0;
+        border-radius: 0 0 3px 3px;
+        background-color: #dddddd;
+        
+        &.existant { display: block; }
         a {
             display: inline-block;
+            text-decoration: none;
+            color: $couleur-interaction;
+            margin: 0 5px;
+            i {
+                font-size: 25px;
+            }
+            
+            span {
+                font-size: 11px;
+                font-weight: normal;
+                text-decoration: none;
+            }
         }
     }
     
@@ -408,6 +442,11 @@ input {
         border-radius: 3px 3px 0 0;
         padding: 10px 0;
         font-size: 35px;
+        height: $hauteur-entete;
+    }
+    
+    .titre {
+        height: $hauteur-titre;
     }
     
     h3 {
@@ -418,7 +457,7 @@ input {
     
     h4 {
         font-size: 16px;
-        margin: 16px 0 15px 0;
+        margin: 0 0 15px 0;
     }
     
     .message-erreur {
@@ -429,7 +468,16 @@ input {
         text-align: center;
     }
     
-    .contenu {
-        padding: 10px;
+    .contenant {
+        padding: 0px;
+        height: $hauteur-contenu;
+        overflow: hidden;
+        .contenu {
+            //height: 
+            .sous-contenu {
+                padding: 10px;
+                height: $hauteur-contenu;
+            }
+        }
     }
 }

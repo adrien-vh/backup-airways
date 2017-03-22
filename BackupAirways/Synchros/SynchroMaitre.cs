@@ -39,7 +39,7 @@ namespace BackupAirways.Synchros
 		}
 
 		
-		public bool FichierExiste (Demande demande)
+		public bool FichierDemandeExiste (Demande demande)
 		{
 			var nomFichier = _dossier + "\\" + demande.Md5f.Chemin;
 			return nomFichier != null;

@@ -34,7 +34,7 @@
     <DebugType>Full</DebugType>
     <Optimize>False</Optimize>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <DefineConstants>DEBUG;TRACE;MODE_DEMO</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
     <StartAction>Project</StartAction>
   </PropertyGroup>
@@ -97,26 +97,20 @@
     <EmbeddedResource Include="Gui\Web\css\font-awesome.min.css" />
     <EmbeddedResource Include="Gui\Web\css\normalize.css" />
     <EmbeddedResource Include="Gui\Web\css\styles.css" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\FontAwesome.otf" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab 700-webfont.eot" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab 700-webfont.svg" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab 700-webfont.ttf" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab 700-webfont.woff" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab 700-webfont.woff2" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab regular-webfont.eot" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab regular-webfont.svg" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab regular-webfont.ttf" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab regular-webfont.woff" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\Roboto Slab regular-webfont.woff2" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.eot" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.svg" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.ttf" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.woff" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.woff2" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\icomoon.eot" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\icomoon.svg" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\icomoon.ttf" />
-    <EmbeddedResource Include="Gui\Web\css\fonts\icomoon.woff" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\FontAwesome.otf" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.eot" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.svg" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.ttf" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.woff" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.woff2" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600italic.woff" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600italic.woff2" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600.woff" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600.woff2" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-italic.woff" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-italic.woff2" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-regular.woff" />
+	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-regular.woff2" />
     <EmbeddedResource Include="Gui\Web\images\App-dropbox-icon.png" />
     <EmbeddedResource Include="Gui\Web\images\Google-Drive-icon.png" />
     <EmbeddedResource Include="Gui\Web\images\Microsoft-OneDrive-icon.png" />

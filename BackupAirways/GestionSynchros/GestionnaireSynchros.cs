@@ -39,8 +39,10 @@ namespace BackupAirways.GestionSynchros
 		public List<SynchroEsclave> 	SynchrosEsclave 		{ get { return _synchrosEsclave; } }
 		public List<Synchro> 			SynchrosNonUtilisees 	{ get { return _synchrosNonUtilisees; } }
 		
-		//private bool					_dossierTamponValide 	{ get { return Directory.Exists(_conf.DossierTampon); } }
-		
+		/// <summary>
+		/// Constructure
+		/// </summary>
+		/// <param name="conf">Configuration de l'application</param>
 		public GestionnaireSynchros(Conf conf) {
 			_conf				= conf;
 			
@@ -58,8 +60,7 @@ namespace BackupAirways.GestionSynchros
 		/// Changement de nom du client
 		/// </summary>
 		/// <param name="nom">Nouveau nom</param>
-		public void changeNomClient(string nom)
-		{
+		public void changeNomClient(string nom) {
 			string fichierClientActuel 	= _dossierSynchros + "\\." + _nomClient + ".client";
 			string nouveauFichierClient = _dossierSynchros + "\\." + nom + ".client";
 			
@@ -68,14 +69,18 @@ namespace BackupAirways.GestionSynchros
 			}
 						
 			_conf.NomClient = nom;
+			
 			if (!File.Exists(nouveauFichierClient)) {
 				File.WriteAllText(nouveauFichierClient, string.Empty);
 			}
+			
 			DemarreSynchros();
 		}
 		
-		private void getSynchros()
-		{
+		/// <summary>
+		/// Récupère les synchros configurées en analysant le dossier Tampon
+		/// </summary>
+		private void getSynchros() {
 			ConfSynchro	confSynchro;
 			string[]	chemins;
 			
@@ -83,28 +88,24 @@ namespace BackupAirways.GestionSynchros
 			_synchrosEsclave.Clear();
 			_synchrosNonUtilisees.Clear();
 			
-			foreach(string fichier in Directory.GetFiles(_conf.DossierTampon, C.FICHIER_CONF_SYNCHRO, SearchOption.AllDirectories))
-			{
+			foreach(string fichier in Directory.GetFiles(_conf.DossierTampon, C.FICHIER_CONF_SYNCHRO, SearchOption.AllDirectories))	{
 	
 				chemins = fichier.Replace(_conf.DossierTampon + "\\", "").Split('\\');
-				if (chemins.Length == 2)
-				{
+				
+				if (chemins.Length == 2) {
 					confSynchro = JsonConvert.DeserializeObject<ConfSynchro>(File.ReadAllText(fichier));
 															
-					if (confSynchro.Client == _conf.NomClient)
-					{
+					if (confSynchro.Client == _conf.NomClient) {
 						_synchrosMaitre.Add(new SynchroMaitre(chemins[0], _conf));
 					}
-					#if MODE_DEMO
-					if (File.Exists(_conf.DossierTampon + "\\" + chemins[0] + "\\." + _conf.NomClient + ".client"))
+					
+					#if DEBUG
+					if (File.Exists(_conf.DossierTampon + "\\" + chemins[0] + "\\." + _conf.NomClient + ".client")) {
 					#else
-					else if (File.Exists(C.DOSSIER_TAMPON + "\\" + chemins[0] + "\\." + C.NOM_CLIENT + ".client"))
+					else if (File.Exists(_conf.DossierTampon + "\\" + chemins[0] + "\\." + _conf.NomClient + ".client")) {
 					#endif
-					{
 						_synchrosEsclave.Add(new SynchroEsclave(chemins[0], _conf));
-					}
-					else
-					{
+					} else {
 						_synchrosNonUtilisees.Add(new Synchro(chemins[0], _conf));
 					}
 				}
@@ -116,24 +117,15 @@ namespace BackupAirways.GestionSynchros
 		/// </summary>
 		private void recupereClients()
 		{
+			string client;
+			
 			foreach(string fichier in Directory.GetFiles(_dossierSynchros, "*.client", SearchOption.TopDirectoryOnly)) {
-				ajoutClient(Path.GetFileName(fichier).Split('.')[1]);
+				client = Path.GetFileName(fichier).Split('.')[1];
+				
+				if (!_clients.Contains(client) && client != "")	{
+					_clients.Add(client);
+				}
 			}
-		}
-		
-				/// <summary>
-		/// Ajoute un client à la liste
-		/// </summary>
-		/// <param name="client">Nom du client</param>
-		/// <returns>False si le client existe déjà dans la liste</returns>
-		private bool ajoutClient(string client)
-		{
-			if (!_clients.Contains(client) && client != "")
-			{
-				_clients.Add(client);
-				return true;
-			}
-			return false;
 		}
 			
 		/// <summary>
@@ -141,18 +133,21 @@ namespace BackupAirways.GestionSynchros
 		/// </summary>
 		/// <param name="client">Nom du client</param>
 		/// <returns>False si le client n'était pas dans la liste</returns>
-		private bool supprimeClient(string client)
-		{
-			if (_clients.Contains(client))
-			{
+		private bool supprimeClient(string client) {
+			if (_clients.Contains(client)) {
 				_clients.Remove(client);
 				return true;
 			}
 			return false;
 		}
 		
-		private void InitSynchroFolder(string nom, string maitre, string dossier)
-		{
+		/// <summary>
+		/// Initie un dossier pour une nouvelle synchro
+		/// </summary>
+		/// <param name="nom">Nom de la synchro</param>
+		/// <param name="maitre">Nom de la machine maître</param>
+		/// <param name="dossier">Dossier à synchroniser</param>
+		private void InitSynchroFolder(string nom, string maitre, string dossier) {
 			var 	confSynchro 			= new ConfSynchro(maitre, dossier);
 			string 	dossierTamponSynchro 	= _conf.DossierTampon + "\\" + nom;
 			string 	fichierConf				= dossierTamponSynchro + "\\" + C.FICHIER_CONF_SYNCHRO;
@@ -168,8 +163,7 @@ namespace BackupAirways.GestionSynchros
 		/// </summary>
 		/// <param name="dossier">Dossier à synchroniser</param>
 		/// <param name="nom">Nom de la synchro</param>
-		public void nouvelleSynchro(string dossier, string nom)
-		{
+		public void nouvelleSynchro(string dossier, string nom) {
 			InitSynchroFolder(nom, _nomClient, dossier);
 			_synchrosMaitre.Add(new SynchroMaitre(nom, _conf));
 		}
@@ -179,13 +173,10 @@ namespace BackupAirways.GestionSynchros
 		/// </summary>
 		/// <param name="dossier">Dossier local hébergeant la synchro</param>
 		/// <param name="nom">Nom de la synchro à rejoindre</param>
-		public void joindreSynchro(string dossier, string nom)
-		{
+		public void joindreSynchro(string dossier, string nom) {
 			getSynchros();
-			foreach (Synchro s in _synchrosNonUtilisees)
-			{
-				if (s.Nom == nom)
-				{
+			foreach (Synchro s in _synchrosNonUtilisees) {
+				if (s.Nom == nom) {
 					s.Rejoindre(dossier);
 				}
 			}
@@ -195,10 +186,8 @@ namespace BackupAirways.GestionSynchros
 		/// <summary>
 		/// Lancement du traitement des synchros
 		/// </summary>
-		public void DemarreSynchros()
-		{
-			if (!_traitementSynchroInitialise && Initialise)
-			{
+		public void DemarreSynchros() {
+			if (!_traitementSynchroInitialise && Initialise) {
 				Logger.Log("Récupération des infos de synchro");
 				
 				_threadSynchros					= new Thread(boucleTraitementSynchros);
@@ -227,12 +216,10 @@ namespace BackupAirways.GestionSynchros
 		/// <summary>
 		/// Boucle principale de traitement des synchros
 		/// </summary>
-		private void boucleTraitementSynchros ()
-		{
+		private void boucleTraitementSynchros () {
 			var sw = new Stopwatch();
 			
-			while (!_demandeArretSynchro)
-			{
+			while (!_demandeArretSynchro) {
 				sw.Restart();
 
 				getSynchros();
@@ -248,29 +235,24 @@ namespace BackupAirways.GestionSynchros
 		/// <summary>
 		/// Traitement des synchros maitres
 		/// </summary>
-		private void traiteSynchrosMaitres()
-		{
+		private void traiteSynchrosMaitres() {
 			long tailleDossier 	= U.tailleDossier(_dossierSynchros);
 			long tailleMax		= _conf.TailleMaxTampon * 1024 * 1024;
 			
-			foreach(SynchroMaitre s in _synchrosMaitre)
-			{
-				if (s.Valide)
-				{
+			foreach(SynchroMaitre s in _synchrosMaitre) {
+				if (s.Valide) {
 					s.GenListeFichiers();
 					s.SupprimeReponsesSansDemande();
 					
-					foreach (Demande demande in s.GetDemandes())
-					{
+					foreach (Demande demande in s.GetDemandes()) {
+						
 						if (tailleDossier > tailleMax) break;
 						
-						if (!s.FichierExiste(demande))
-						{
+						if (!s.FichierDemandeExiste(demande)) {
 							Logger.Log("Suppression de la demande " + demande.Fichier + " car le fichier correspondant n'existe plus");
 							s.SupprimeDemande(demande);
-						}
-						else if (s.ReponseExiste(demande) == null)
-						{
+							
+						} else if (s.ReponseExiste(demande) == null) {
 							Logger.Log("Fourniture du fichier " + demande.Md5f.Chemin);
 							tailleDossier += s.FourniReponse(demande);
 						}
@@ -282,16 +264,13 @@ namespace BackupAirways.GestionSynchros
 		/// <summary>
 		/// Traitement des synchros esclaves
 		/// </summary>
-		private void traiteSynchrosEsclaves()
-		{
+		private void traiteSynchrosEsclaves() {
 			DeltaMd5 		delta;
 			List<Demande> 	demandes;
 			int 			demandesFaites;
 			
-			foreach(SynchroEsclave s in _synchrosEsclave)
-			{
-				if (s.Valide)
-				{
+			foreach(SynchroEsclave s in _synchrosEsclave) {
+				if (s.Valide) {
 					s.GenListeFichiers();
 					
 					delta 			= s.DeltaFichiersAvecMaitre();
@@ -299,25 +278,18 @@ namespace BackupAirways.GestionSynchros
 					demandesFaites 	= 0;
 					
 					List<Md5Fichier> md5sSupprimes = delta.Md5Supprimes;
-					foreach (Md5Fichier md5Supprime in md5sSupprimes)
-					{
+					foreach (Md5Fichier md5Supprime in md5sSupprimes) {
 						Logger.Log("Suppression du fichier " + md5Supprime.Chemin + " car le fichier correspondant n'existe plus");
 						s.SupprimeFichier(md5Supprime);
 					}
 					
-					foreach (Demande demande in demandes)
-					{
-						if (s.ReponseExiste(demande) != null)
-						{
+					foreach (Demande demande in demandes) {
+						if (s.ReponseExiste(demande) != null) {
 							Logger.Log("Récupération du fichier " + demande.FichierReponse + " (" + demande.Md5f.Chemin + ")");
 							s.RecupereReponse(demande);
-						}
-						else
-						{
-							if (demandesFaites < C.MAX_DEMANDES_SIMULTANEES)
-							{
-								if (!s.FichierDemandeExiste(demande))
-								{
+						} else {
+							if (demandesFaites < C.MAX_DEMANDES_SIMULTANEES) {
+								if (!s.FichierDemandeExiste(demande)) {
 									Logger.Log("Demande du fichier " + demande.Md5f.Chemin);
 									s.FaireDemande(demande);
 								}
