@@ -1,0 +1,100 @@
+
+.liste-cloud {
+    display: block;
+    overflow: hidden;
+    
+}
+
+.choix-cloud {
+    margin-top: 30px;
+    
+    & > span {
+        padding-left: 110px;
+        display:inline-block;
+        margin-bottom: 10px;
+        position: relative;
+        height: 64px;
+        padding-top: 0px;    
+        width: 100%;
+
+        .logo {
+            position: absolute;
+            left: 30px;
+            top: 0;   
+        }
+        
+        i.fleche {
+            @include single-transition(all, 0.3s);
+            color: $couleur-interaction-claire;
+            position: absolute;
+            left : 0;
+            top : 0;
+            opacity: 0;
+            font-size: 64px;
+        }
+        
+        .nom-cloud {
+            font-size: 18px;
+            line-height: 35px;
+            font-weight: 600;
+        }
+        
+        .chemin {
+            font-size: 14px; 
+        }
+        
+        &.autre-cloud {
+            .chemin {
+                display: none;
+            }
+        }
+        
+        &.actif {
+            @include single-transition(all, 0.3s);
+            cursor: pointer;
+            display: none;
+            
+            .nom-cloud {
+                @include single-transition(all, 0.3s);
+                color: $couleur-texte;
+                
+            }
+            
+            &.autre-cloud {
+                display: inline-block;
+            }
+            
+            &:hover {
+                .nom-cloud { 
+                    color: $couleur-texte; 
+                    text-decoration: underline;
+                }
+                .fleche {
+                    opacity: 1;
+                }
+            }
+            
+            
+        }
+        
+        &.inactif {
+            .nom-cloud {
+                color: $couleur-texte-clair;
+            }
+            .chemin {
+                color: $couleur-texte-clair;
+            }
+        }
+        
+        &.choisi {
+            i.fleche {
+                opacity: 1;
+                color: $couleur-texte;
+            }
+            .nom-cloud {
+                color: $couleur-texte;
+                text-decoration: underline;
+            }
+        }
+    } 
+}

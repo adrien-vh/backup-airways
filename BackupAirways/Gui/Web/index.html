@@ -91,23 +91,38 @@
             
             <div id="listeSauvegardes">
                 <span class="sauvegarde ajout">
-                    <div class="entete">
+                    <!--<div class="entete">
                         <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>-->
+                    <div class="contenant">
+                        <div class="contenu">
+                            <div class="sous-contenu existant">
+                                <a href="#" class="lien-sous-contenu" data-ref="form">
+                                    <i class="fa fa-plus fa-3x" aria-hidden="true"></i><br>
+                                    Initier une nouvelle sauvegarde.
+                                </a>
+                            </div>
+                            <div class="sous-contenu form">
+                                <h3>Nouvelle sauvegarde</h3>
+                                <div class="form">
+                                    <span class="label">Nom de la sauvegarde :</span>
+                                    <input type="text" id="inNomSauvegarde">
+                                    <span class="label">Dossier à sauvegarder :</span>
+                                    <a href="#" id="dossierASauvegarder"></a><br><br>
+                                    <span class="message-erreur" id="erreurNouvelleSauvegarde">
+                                        <i class="fa fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
+                                        <span></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="interaction">Nouvelle sauvegarde</h3>
-                    <div class="form">
-                        <span class="label">Nom de la sauvegarde :</span>
-                        <input type="text" id="inNomSauvegarde">
-                        <span class="label">Dossier à sauvegarder :</span>
-                        <a href="#" id="dossierASauvegarder"></a><br><br>
-                        <span class="message-erreur" id="erreurNouvelleSauvegarde">
-                            <i class="fa fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
-                            <span></span>
-                        </span>
+                    <div class="cont-bouton existant">
                         
                     </div>
-                    <div class="cont-bouton">
-                        <a href="#" class="gros bouton inactif" id="boutNouvelleSauvegarde">Sauvegarder</a>
+                    <div class="cont-bouton form">
+                        <a href="#" id="boutNouvelleSauvegarde"><i class="fa fa-floppy-o" aria-hidden="true"></i><br><span>Enregistrer<span></a>
+                        <a href="#" id="boutNouvelleSauvegarde" class="annuler"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
                     </div>
                 </span>
             </div>
@@ -154,11 +169,20 @@
                         <span class="label">Sauvegardes existantes :</span>
                         {{#Clients}}
                         {{^complete}}
-                        <i class="fa fa-refresh fa-spin fa-fw"></i> <b>{{Client}}</b> (manque <b>{{deltaFichiers}}</b> fichiers)
+                        <i class="fa fa-refresh fa-spin fa-fw"></i>
                         {{/complete}}
                         {{#complete}}
-                        <i class="fa fa-check fa-fw"></i> <b>{{Client}}</b> (complète)
+                        <i class="fa fa-check fa-fw"></i>
                         {{/complete}}
+                         <b class="{{#estClientLocal}}souligne{{/estClientLocal}}">{{Client}}</b>
+                        {{^complete}}
+                        (manque <b>{{deltaFichiers}}</b> fichiers)
+                        {{/complete}}
+                        {{#complete}}
+                        (complète)
+                        {{/complete}}
+                        
+                        <a href="#" class="danger lien-sous-contenu bouton-supprime-client" data-ref="fin-recuperation" data-client="{{Client}}"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
                         {{/Clients}}
                         {{^Clients}}
                         <span class="message-erreur">
@@ -170,6 +194,12 @@
                         <h4>Récupérer sur cette machine :</h4>
                         <span class="label">Dossier de destination :</span>
                         <a href="#" class="dossier-local" data-synchro="{{ Nom }}"></a>
+                        <br>
+                        <br>
+                        <span class="message-erreur">
+                            <i class="fa fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
+                            <span>Le dossier sélectionné n'est pas valide</span>
+                        </span>
                         <!--<br>
                         <br>
                         <div class="txt-center">
@@ -177,10 +207,16 @@
                         </div>-->
                     </div>
                     <div class="sous-contenu fin-recuperation">
-                        Arrêter la récupération ?
+                        <br>
+                        <br>
+                        <span class="danger txt-grand txt-justify">
+                            Êtes-vous sûr de vouloir arrêter de récupérer une sauvegarde de <b>&laquo;&nbsp;{{ Nom }}&nbsp;&raquo;</b> sur <b>&laquo;&nbsp;<span class="nom-client"></span>&nbsp;&raquo;</b> (aucun fichier ne sera supprimé) ?
+                        </span>
                     </div>
                     <div class="sous-contenu suppression">
-                        Supprimer cette sauvegarde
+                        <br>
+                        <br>
+                        <span class="danger txt-grand txt-justify">Êtes-vous sûr de vouloir supprimer la sauvegarde <b>&laquo; {{ Nom }} &raquo;</b> (aucun fichier ne sera supprimé) ?</span>
                     </div>
 
 
@@ -188,20 +224,19 @@
                 </div>
             </div>
             <div class="cont-bouton existant">
-                {{#esclave}}<a href="#" data-ref="fin-recuperation"><i class="fa fa-hand-paper-o" aria-hidden="true"></i><br><span>Ne plus récupérer<span></a>{{/esclave}}
-                {{#inutilisee}}<a href="#" data-ref="recuperation"><i class="fa fa-cloud-download" aria-hidden="true"></i><br><span>Récupérer<span></a>{{/inutilisee}}
-                <a href="#" data-ref="suppression"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
+                {{#inutilisee}}<a href="#" data-ref="recuperation" class="lien-sous-contenu"><i class="fa fa-cloud-download" aria-hidden="true"></i><br><span>Récupérer<span></a>{{/inutilisee}}
+                <a href="#" data-ref="suppression" class="lien-sous-contenu"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
             </div>
             <div class="cont-bouton recuperation">
-                <a href="#"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
+                <a href="#" class="inactif"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
                 <a href="#" class="annuler"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
             </div>
             <div class="cont-bouton fin-recuperation">
-                <a href="#"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
+                <a href="#" data-synchro="{{Nom}}" data-client="" class="confirme-fin-recuperation"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
                 <a href="#" class="annuler"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
             </div>
             <div class="cont-bouton suppression">
-                <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
+                <a href="#" class="confirme-suppression" data-synchro="{{Nom}}"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
                 <a href="#" class="annuler"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
             </div>
             

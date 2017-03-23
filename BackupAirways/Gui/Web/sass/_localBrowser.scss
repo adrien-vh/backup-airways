@@ -1,0 +1,73 @@
+.bout-choix-dossier {
+    text-decoration: none;
+    span.chemin-choisi {
+        display: inline-block;
+        color: $couleur-texte-clair;
+        font-weight: normal;
+        font-size: 14px;
+    }
+    
+    .bouton {
+        margin-left: 10px;
+    }
+}
+
+
+.local-browser {
+    font-size: 13px;
+    
+    .parent {
+        border-radius: 3px;
+        display: inline-block;
+        margin-bottom: 15px;
+        width: 100%;
+        background-color: $couleur-texte;
+        padding: 3px 5px 5px 5px;
+        color: $couleur-fond;
+        font-weight: 600;
+        
+        a.dossier {
+            color: $couleur-fond;
+                i {
+                color: $couleur-fond;
+            }
+        }
+    }
+    
+    .liste-enfants {
+        height: 200px;
+        overflow: auto;
+        padding: 0 10px;
+        margin-bottom: 10px;
+    }
+    
+    a.dossier {
+        display: inline-block;
+        font-size: 13px;
+        font-weight: normal;
+        text-decoration: none;
+        color: $couleur-interaction;
+        position: relative;
+        margin: 2px 0;
+        
+        i {
+            color: $couleur-texte;
+        }
+        
+        &:hover {
+            text-decoration: underline;
+        }
+        
+        img {
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+        
+        &.in-liste {
+            width: $largeur-max / 2 - 50px;
+            
+        }
+    }
+}
+

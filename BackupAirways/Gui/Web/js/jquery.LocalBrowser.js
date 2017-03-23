@@ -29,10 +29,10 @@
             }
             arbo = chemin.split("\\");
             
-            retour.push('<a href="#" class="dossier" data-dossier=""><img src="images/computer_blanc_ico_16.png">Ordinateur</a>');
+            retour.push('<a href="#" class="dossier" data-dossier=""><i class="fa fa-desktop fa-lg" aria-hidden="true"></i> Ordinateur</a>');
             
             for (i = 0; i < arbo.length - 1; i += 1) {
-                retour.push('<a href="#" class="dossier" data-dossier="' + arbo.slice(0, i + 1).join("\\") + '"><img src="images/folder_blanc_ico_16.png">' + arbo[i] + '</a>');
+                retour.push('<a href="#" class="dossier" data-dossier="' + arbo.slice(0, i + 1).join("\\") + '"><i class="fa fa-folder-o" aria-hidden="true"></i> ' + arbo[i] + '</a>');
             }
                         
             if (arbo[i] !== "") { retour.push(arbo[i]); }
@@ -50,7 +50,7 @@
     LocalBrowser.prototype.init = function () {
         var me = this;
         $(this.handler)
-            .append('<span class="parent"><a href="#" class="dossier" data-dossier=""><img src="images/computer_blanc_ico_16.png">Ordinateur</a></span>')
+            .append('<span class="parent"><a href="#" class="dossier" data-dossier=""><i class="fa fa-desktop fa-lg" aria-hidden="true"></i> Ordinateur</a></span>')
             .append('<div class="liste-enfants">liste</div>')
             .append('<a href="#" class="bouton bout-annuler">Annuler</a> ')
             .append('<a href="#" class="bouton bout-confirme-choix">Choisir ce dossier</a><span class="dossier-choisi"></span>');
@@ -82,10 +82,10 @@
                 var i;
                 $(me.handler).find(".liste-enfants").html("");
                 if (parent !== "") {
-                    $(me.handler).find(".liste-enfants").append('<a href="#" class="dossier" data-dossier="' + getParent(parent) + '"><img src="images/folder_ico_16.png"> ..</a><br>');
+                    $(me.handler).find(".liste-enfants").append('<a href="#" class="dossier" data-dossier="' + getParent(parent) + '"><i class="fa fa-folder-o fa-lg" aria-hidden="true"></i> ..</a><br>');
                 }
                 for (i = 0; i < dossiers.length; i += 1) {
-                    $(me.handler).find(".liste-enfants").append('<a href="#" class="dossier in-liste" data-dossier="' + dossiers[i].CheminComplet + '"><img src="images/folder_ico_16.png"> ' + dossiers[i].Nom + '</a>');
+                    $(me.handler).find(".liste-enfants").append('<a href="#" class="dossier in-liste" data-dossier="' + dossiers[i].CheminComplet + '"><i class="fa fa-folder-o fa-lg" aria-hidden="true"></i> ' + dossiers[i].Nom + '</a>');
                 }
 
                 $(".dossier").click(function (e) {

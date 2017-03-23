@@ -31,17 +31,20 @@ namespace BackupAirways.Gui
 						
 			_webServer.AddAssembly(Assembly.GetExecutingAssembly(), "Gui.Web");
 			
-			_webServer.ajouteAction(CJS.ACTION__LISTE_DOSSIERS, 		this.getDossiers);
-			_webServer.ajouteAction(CJS.ACTION__C_JS,			 		this.getConstantes);
-			_webServer.ajouteAction(CJS.ACTION__CHEMINS_DRIVES, 		this.getDrivesPaths);
-			_webServer.ajouteAction(CJS.ACTION__SET_DOSSIER_TAMPON,		this.setDossierTampon);
-			_webServer.ajouteAction(CJS.ACTION__LISTE_SAUVEGARDES,		this.getSauvegardes);
-			_webServer.ajouteAction(CJS.ACTION__ETAT_INITIALISATION,	this.etatInitialisation);
-			_webServer.ajouteAction(CJS.ACTION__GET_NOM_MACHINE,		this.getNomMachine);
-			_webServer.ajouteAction(CJS.ACTION__CHANGE_NOM_CLIENT,		this.changeNomClient);
-			_webServer.ajouteAction(CJS.ACTION__GET_LISTE_CLIENTS,		this.getListeClients);
-			_webServer.ajouteAction(CJS.ACTION__NOUVELLE_SAUVEGARDE,	this.nouvelleSynchro);
-			_webServer.ajouteAction(CJS.ACTION__JOINDRE_SAUVEGARDE,		this.joindreSauvegarde);
+			_webServer.ajouteAction(CJS.ACTION__LISTE_DOSSIERS, 			this.getDossiers);
+			_webServer.ajouteAction(CJS.ACTION__C_JS,			 			this.getConstantes);
+			_webServer.ajouteAction(CJS.ACTION__CHEMINS_DRIVES, 			this.getDrivesPaths);
+			_webServer.ajouteAction(CJS.ACTION__SET_DOSSIER_TAMPON,			this.setDossierTampon);
+			_webServer.ajouteAction(CJS.ACTION__LISTE_SAUVEGARDES,			this.getSauvegardes);
+			_webServer.ajouteAction(CJS.ACTION__ETAT_INITIALISATION,		this.etatInitialisation);
+			_webServer.ajouteAction(CJS.ACTION__GET_NOM_MACHINE,			this.getNomMachine);
+			_webServer.ajouteAction(CJS.ACTION__CHANGE_NOM_CLIENT,			this.changeNomClient);
+			_webServer.ajouteAction(CJS.ACTION__GET_LISTE_CLIENTS,			this.getListeClients);
+			_webServer.ajouteAction(CJS.ACTION__NOUVELLE_SAUVEGARDE,		this.nouvelleSynchro);
+			_webServer.ajouteAction(CJS.ACTION__JOINDRE_SAUVEGARDE,			this.joindreSauvegarde);
+			_webServer.ajouteAction(CJS.ACTION__SUPPRIME_SYNCHRO,			this.supprimeSynchro);
+			_webServer.ajouteAction(CJS.ACTION__SUPPRIME_CLIENT_SYNCHRO,	this.supprimeClientSynchro);
+
 
 			_threadWebServer = _webServer.start();
 			
@@ -112,7 +115,8 @@ namespace BackupAirways.Gui
 		{	
 			return new WebReponse(
 				Mime.json,
-				"{ \"maitres\" : " + JsonConvert.SerializeObject(_gestionnaireSynchros.SynchrosMaitre) + 
+				"{ \"nomClient\" : \"" + _gestionnaireSynchros.Conf.NomClient + "\"," +
+				"  \"maitres\" : " + JsonConvert.SerializeObject(_gestionnaireSynchros.SynchrosMaitre) +
 				", \"esclaves\" : " + JsonConvert.SerializeObject(_gestionnaireSynchros.SynchrosEsclave) +
 				", \"inutilisees\" : " + JsonConvert.SerializeObject(_gestionnaireSynchros.SynchrosNonUtilisees) + 				
 				"}");
@@ -153,9 +157,9 @@ namespace BackupAirways.Gui
 		
 		public WebReponse joindreSauvegarde (Dictionary<string, string> parametres)
 		{
-			if (parametres.ContainsKey(CJS.PARAM__DOSSIER) && parametres.ContainsKey(CJS.PARAM__NOM_SAUVEGARDE))
+			if (parametres.ContainsKey(CJS.PARAM__DOSSIER) && parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO))
 			{
-				_gestionnaireSynchros.joindreSynchro(parametres[CJS.PARAM__DOSSIER], parametres[CJS.PARAM__NOM_SAUVEGARDE]);
+				_gestionnaireSynchros.joindreSynchro(parametres[CJS.PARAM__DOSSIER], parametres[CJS.PARAM__NOM_SYNCHRO]);
 			}
 			
 			return new WebReponse(Mime.json, "{\"Erreur\" : \"erreur\"}");
@@ -181,9 +185,9 @@ namespace BackupAirways.Gui
 		
 		public WebReponse nouvelleSynchro (Dictionary<string, string> parametres)
 		{
-			if (parametres.ContainsKey(CJS.PARAM__DOSSIER) && parametres.ContainsKey(CJS.PARAM__NOM_SAUVEGARDE))
+			if (parametres.ContainsKey(CJS.PARAM__DOSSIER) && parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO))
 			{
-				_gestionnaireSynchros.nouvelleSynchro(parametres[CJS.PARAM__DOSSIER],parametres[CJS.PARAM__NOM_SAUVEGARDE]);
+				_gestionnaireSynchros.nouvelleSynchro(parametres[CJS.PARAM__DOSSIER],parametres[CJS.PARAM__NOM_SYNCHRO]);
 				return WebReponse.OnePropJson(CJS.REP__ERREUR, "OK");
 			}
 			else
@@ -191,6 +195,26 @@ namespace BackupAirways.Gui
 				return WebReponse.OnePropJson(CJS.REP__ERREUR, "La demande ne contient pas les paramètres requis.");
 			}
 		}
+		
+		
+		public WebReponse supprimeSynchro (Dictionary<string, string> parametres) {
+			if (parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO)) {
+				_gestionnaireSynchros.supprimeSynchro(parametres[CJS.PARAM__NOM_SYNCHRO]);
+				return WebReponse.OnePropJson(CJS.REP__MESSAGE, "OK");
+			} else {
+				return WebReponse.OnePropJson(CJS.REP__ERREUR, "La demande ne contient pas les paramètres requis.");
+			}
+		}
+		
+		public WebReponse supprimeClientSynchro (Dictionary<string, string> parametres) {
+			if (parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO) && parametres.ContainsKey(CJS.PARAM__NOM_MACHINE)) {
+				_gestionnaireSynchros.supprimeClientSynchro(parametres[CJS.PARAM__NOM_SYNCHRO], parametres[CJS.PARAM__NOM_MACHINE]);
+				return WebReponse.OnePropJson(CJS.REP__MESSAGE, "OK");
+			} else {
+				return WebReponse.OnePropJson(CJS.REP__ERREUR, "La demande ne contient pas les paramètres requis.");
+			}
+		}
+		
 		
 		/// <summary>
 		/// Renvoie les sous dossiers et/ou fichiers d'un dossier

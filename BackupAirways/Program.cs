@@ -6,6 +6,7 @@
 // TODO: -== GÉRÉ AUTREMENT ==-Logger à passer en argument au webserver
 // TODO: Avertissement si le dossier choisi pour une sauvegarde n'est pas vide
 // TODO: Revoir la classe mime pour ne pas instancier à chaque requête
+// TODO: Changer sauvegarde en synchro
 
 using System;
 using System.Threading;

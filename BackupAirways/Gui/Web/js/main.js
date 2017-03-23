@@ -8,7 +8,8 @@ $(function () {
     var params = {},
         cloudsAffiches = true,
         listeClients = [],
-        serveur = new Serveur("http://localhost:8000/");
+        serveur = new Serveur("http://localhost:8000/"),
+        nomClient = "";
     
     function formatteSynchro(synchro) {
         var i;
@@ -16,6 +17,8 @@ $(function () {
         for (i = 0; i < synchro.Clients.length; i += 1) {
             synchro.Clients[i].deltaFichiers = synchro.NbFichiersMaitre - synchro.Clients[i].NbFichiers;
             synchro.Clients[i].complete = (synchro.Clients[i].deltaFichiers === 0);
+            synchro.Clients[i].estClientLocal = synchro.Clients[i].Client === nomClient;
+            
         }
     }
     
@@ -25,7 +28,7 @@ $(function () {
             function (sauvegardes) {
                 var template = $('#tplSauvegarde').html(), rendered, i, j, synchros = sauvegardes.maitres.concat(sauvegardes.esclaves).concat(sauvegardes.inutilisees), synchro;
 
-                
+                nomClient = sauvegardes.nomClient;
                 
                 //Mustache.parse(template);
                 $(".sauvegarde.esclave").remove();
@@ -56,7 +59,7 @@ $(function () {
                     e.preventDefault();
                     var params = {};
                     params[CJS.PARAM__DOSSIER] = $("a.dossier-local[data-synchro='" + $(this).attr("data-synchro") + "']").attr("data-chemin");
-                    params[CJS.PARAM__NOM_SAUVEGARDE] = $(this).attr("data-synchro");
+                    params[CJS.PARAM__NOM_SYNCHRO] = $(this).attr("data-synchro");
                     
                     serveur.post(
                         CJS.ACTION__JOINDRE_SAUVEGARDE,
@@ -69,7 +72,7 @@ $(function () {
                     console.log(params);
                 });
                 
-                $(".sauvegarde .cont-bouton.existant a").click(function (e) {
+                $(".sauvegarde a.lien-sous-contenu").click(function (e) {
                     e.preventDefault();
                     var hauteur = $(this).parents(".sauvegarde").find(".contenant").height(),
                         ref = $(this).attr("data-ref");
@@ -94,6 +97,41 @@ $(function () {
                     
                     
                     $(this).parents(".sauvegarde").find(".contenu").animate({marginTop : "0px"}, 300);
+                });
+                
+                $(".bouton-supprime-client").click(function (e) {
+                    $(this).parents(".sauvegarde").find(".cont-bouton.fin-recuperation .confirme-fin-recuperation").attr("data-client", $(this).attr("data-client"));
+                    $(this).parents(".sauvegarde").find(".sous-contenu.fin-recuperation .nom-client").html($(this).attr("data-client"));
+                });
+                
+                $(".sauvegarde .confirme-suppression").click(function (e) {
+                    e.preventDefault();
+                    
+                    var params = {};
+                    params[CJS.PARAM__NOM_SYNCHRO] = $(this).attr("data-synchro");
+                    
+                    serveur.post(
+                        CJS.ACTION__SUPPRIME_SYNCHRO,
+                        params,
+                        function () {
+                            recupSauvegardes();
+                        }
+                    );
+                });
+                
+                $(".sauvegarde .confirme-fin-recuperation").click(function (e) {
+                    e.preventDefault();
+                    var params = {};
+                    params[CJS.PARAM__NOM_SYNCHRO] = $(this).attr("data-synchro");
+                    params[CJS.PARAM__NOM_MACHINE] = $(this).attr("data-client");
+                    
+                    serveur.post(
+                        CJS.ACTION__SUPPRIME_CLIENT_SYNCHRO,
+                        params,
+                        function () {
+                            recupSauvegardes();
+                        }
+                    );
                 });
             }
         );
@@ -132,6 +170,8 @@ $(function () {
         );
     }
     
+    $("#inNomSauvegarde").val("");
+    
     // Récupération de l'état de l'application
     serveur.post(
         CJS.ACTION__ETAT_INITIALISATION,
@@ -139,6 +179,8 @@ $(function () {
             $(".page").hide();
             if (etat[CJS.PARAM__EST_INITIALISE]) {
                 $("#pageListeSauvegardes").show();
+                //$("#pageChoixNom").show();
+                //$("#pageChoixTampon").show();
                 recupSauvegardes();
             } else {
                 $("#pageChoixTampon").show();
@@ -265,7 +307,7 @@ $(function () {
         e.preventDefault();
         var params = {};
         params[CJS.PARAM__DOSSIER] = $("#dossierASauvegarder").attr("data-chemin");
-        params[CJS.PARAM__NOM_SAUVEGARDE] = $("#inNomSauvegarde").val();
+        params[CJS.PARAM__NOM_SYNCHRO] = $("#inNomSauvegarde").val();
         serveur.post(
             CJS.ACTION__NOUVELLE_SAUVEGARDE,
             params,

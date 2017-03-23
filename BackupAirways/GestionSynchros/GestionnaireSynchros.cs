@@ -38,6 +38,7 @@ namespace BackupAirways.GestionSynchros
 		public List<SynchroMaitre> 		SynchrosMaitre 			{ get { return _synchrosMaitre; } }
 		public List<SynchroEsclave> 	SynchrosEsclave 		{ get { return _synchrosEsclave; } }
 		public List<Synchro> 			SynchrosNonUtilisees 	{ get { return _synchrosNonUtilisees; } }
+		public Conf						Conf					{ get { return _conf; } }
 		
 		/// <summary>
 		/// Constructure
@@ -166,6 +167,35 @@ namespace BackupAirways.GestionSynchros
 		public void nouvelleSynchro(string dossier, string nom) {
 			InitSynchroFolder(nom, _nomClient, dossier);
 			_synchrosMaitre.Add(new SynchroMaitre(nom, _conf));
+		}
+		
+		/// <summary>
+		/// Suppression d'une synchro existante
+		/// </summary>
+		/// <param name="nom">Nom de la synchro</param>
+		public void supprimeSynchro(string nom) {
+			Directory.Delete(_dossierSynchros + "\\" + nom, true);
+			getSynchros();
+		}
+		
+		/// <summary>
+		/// Détachement d'un client d'une synchro
+		/// </summary>
+		/// <param name="nomSynchro">Nom de la synchro</param>
+		/// <param name="client">Nom du client</param>
+		public void supprimeClientSynchro(string nomSynchro, string client) {
+			string fichierMd5 			= _dossierSynchros + "\\" + nomSynchro + "\\" + client + ".md5";
+			string fichierConfClient 	= _dossierSynchros + "\\" + nomSynchro + "\\." + client + ".client";
+			
+			if (File.Exists(fichierMd5)) {
+				File.Delete(fichierMd5);
+			}
+			
+			if (File.Exists(fichierConfClient)) {
+				File.Delete(fichierConfClient);
+			}
+			
+			getSynchros();
 		}
 		
 		/// <summary>

@@ -1,75 +1,42 @@
 @import "compass/css3/transition";
+@import "compass/css3/text-shadow";
+@import "copic";
+@import "polices";
+
 
 $largeur-max: 1200px;
-$couleur-fond: #fafafa;
-$couleur-texte: #34495e;
-$couleur-texte-bis: #2c3e50;
+$couleur-fond: $CC0;
+$couleur-texte: $CC10;
+$couleur-titre: $CC8;
 $couleur-texte-clair: lighten($couleur-texte, 20);
-$couleur-texte-en-avant: #cf361b;
-$couleur-fond-contenu: #fafafa;
-$couleur-fond-bis: #f5f5f5;
 $couleur-bouton-inactif : #aaa;
-$couleur-erreur : #c0392b;
-$couleur-bordure : #16a085;
-$couleur-ok : #39AC4D;
-$couleur-interaction : #8e44ad;
+$couleur-erreur : $CR29;
+$couleur-erreur-claire : lighten($couleur-erreur, 15);
+$couleur-interaction : $CBG78;
+$couleur-interaction-claire : lighten($couleur-interaction, 15);
+$couleur-blanc : #ffffff;
 
-/* open-sans-regular - latin-ext */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'),
-       url('fonts/open-sans-v13-latin-ext-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('fonts/open-sans-v13-latin-ext-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-
-/* open-sans-italic - latin-ext */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 400;
-  src: local('Open Sans Italic'), local('OpenSans-Italic'),
-       url('fonts/open-sans-v13-latin-ext-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('fonts/open-sans-v13-latin-ext-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-
-/* open-sans-600 - latin-ext */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Open Sans Semibold'), local('OpenSans-Semibold'),
-       url('fonts/open-sans-v13-latin-ext-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('fonts/open-sans-v13-latin-ext-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-
-/* open-sans-600italic - latin-ext */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 600;
-  src: local('Open Sans Semibold Italic'), local('OpenSans-SemiboldItalic'),
-       url('fonts/open-sans-v13-latin-ext-600italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('fonts/open-sans-v13-latin-ext-600italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
+@import "localBrowser";
+@import "page.listeClouds";
+@import "carteSauvegarde";
 
 * {
+    font-family: 'Open Sans',Helvetica,Arial,sans-serif;
     box-sizing: border-box;
-    font-size: 14px;
+    
 }
 
 body {
-    font-family: 'Open Sans',Helvetica,Arial,sans-serif;
     background-color: $couleur-fond;
-    color: $couleur-texte;
     margin: 0;
     padding: 0;
+    color: $couleur-texte;
+    font-size: 14px;
 }
 
 
 h2, h3, h4 {
-    color: $couleur-texte-bis;
+    color: $couleur-titre;
     font-weight: 600;
 }
 
@@ -77,41 +44,30 @@ b {
     font-weight: 600;
 }
 
-a {
-    @include single-transition(all, 0.3s);
-    text-decoration: underline;
-    color: $couleur-texte-bis;
-    font-weight: bold;
-    
-    &:hover {
-        color: $couleur-texte;
-    }
-}
+a { color: $couleur-interaction; }
 
 input {
-    font-family: roboto,Helvetica,Arial,sans-serif;
     font-size: 24px;
     color: $couleur-texte;
     width: 100%;
     padding: 3px 10px;
     margin-bottom: 15px;
+    border: 1px solid $couleur-texte-clair;
+    
+    &:focus { outline: none; }
 }
 
-.txt-center {
-    text-align: center;
-}
 
-.souligne {
-    text-decoration: underline;
-}
-
-.interaction {
-    color: $couleur-interaction;
-}
+.txt-center { text-align: center; }
+.txt-grand { font-size: 16px; }
+.txt-justify { text-align: justify;}
+.souligne { text-decoration: underline; }
+.interaction { color: $couleur-interaction; }
+.danger { color: $couleur-erreur; }
 
 .message-erreur {
     color: $couleur-erreur;
-    display: inline-block;
+    display: block;
 }
 
 #_hoverBg {
@@ -121,7 +77,7 @@ input {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     padding-top: 50px;
     
     & > div {
@@ -134,7 +90,7 @@ input {
 
 .bouton {
     @include single-transition(all, 0.2s);
-    background-color: $couleur-texte-bis !important;
+    background-color: $couleur-interaction !important;
     display: inline-block !important;
     border-radius: 3px !important;
     color: $couleur-fond !important;
@@ -142,6 +98,10 @@ input {
     font-weight: normal;
     font-size: 14px;
     text-decoration: none;
+    
+    &:hover {
+        background-color: $couleur-interaction-claire !important;
+    }
     
     &.inactif {
         pointer-events: none;
@@ -155,43 +115,28 @@ input {
     &.warning {
         background-color: $couleur-erreur !important;
         &:hover {
-            background-color: lighten($couleur-erreur, 15) !important;
+            background-color: $couleur-erreur-claire !important;
         }
     }
-    
-    &:hover {
-        background-color: lighten($couleur-texte-bis, 15) !important;
-    }
-}
-
-.bout-choix-dossier {
-    text-decoration: none;
-    span.chemin-choisi {
-        display: inline-block;
-        color: $couleur-texte-clair;
-        font-weight: normal;
-        font-size: 14px;
-    }
-    
-    .bouton {
-        margin-left: 10px;
-    }
-}
-
-.logo {
-    font-size: 60px;
 }
 
 .section {
-    &.principale {
-        background-color: $couleur-fond-bis;
-    }
-    
     & > div {
         max-width: $largeur-max;
         margin: auto;
         padding: 20px 10px;
     }
+    
+    &.entete {
+        background-color: $couleur-texte;
+        .logo {
+            color: $couleur-fond;
+            font-size: 60px;
+        }
+    }
+    
+    &.principale {
+    } 
 }
 
 .page {
@@ -199,285 +144,3 @@ input {
 }
 
 
-.liste-cloud {
-   // @include single-transition(all, 0.3s);
-    display: block;
-    overflow: hidden;
-    
-}
-
-.choix-cloud {
-    margin-top: 30px;
-    
-    & > span {
-        padding-left: 110px;
-        display:inline-block;
-        margin-bottom: 10px;
-        position: relative;
-        height: 64px;
-        padding-top: 0px;    
-        width: 100%;
-
-        .logo {
-            position: absolute;
-            left: 30px;
-            top: 0;
-            
-        }
-        
-        i.fleche {
-            @include single-transition(all, 0.3s);
-            color: $couleur-texte-clair;
-            position: absolute;
-            left : 0;
-            top : 0;
-            opacity: 0;
-            font-size: 64px;
-        }
-        
-        .nom-cloud {
-            font-size: 18px;
-            line-height: 35px;
-            font-weight: 700;
-        }
-        
-        .chemin {
-            font-size: 14px; 
-        }
-        
-        &.autre-cloud {
-            .chemin {
-                display: none;
-            }
-        }
-        
-        &.actif {
-            @include single-transition(all, 0.3s);
-            cursor: pointer;
-            display: none;
-            
-            &.autre-cloud {
-                display: inline-block;
-            }
-            
-            &:hover {
-                //background-color: #fff;
-                .nom-cloud {
-                    color: $couleur-texte;
-                }
-                .fleche {
-                    opacity: 1;
-                }
-            }
-            
-            .nom-cloud {
-                @include single-transition(all, 0.3s);
-                color: $couleur-texte-bis;
-                text-decoration: underline;
-            }
-
-            .chemin {
-                color: $couleur-texte-clair;           
-            }
-        }
-        
-        &.inactif {
-            .nom-cloud {
-                color: $couleur-texte-clair;
-            }
-            .chemin {
-                color: $couleur-texte-clair;
-            }
-        }
-        
-        &.choisi {
-            i.fleche {
-                opacity: 1;
-                color: $couleur-texte-bis;
-            }
-            .nom-cloud {
-                color: $couleur-texte;
-            }
-        }
-    }
-    
-    
-}
-
-
-.autre-dossier {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    padding: 15px 0;
-    text-decoration: underline;
-}
-
-#contBrowser {
-    opacity: 0;
-}
-
-.local-browser {
-    font-size: 13px;
-    
-    .parent {
-        display: inline-block;
-        margin-bottom: 15px;
-        width: 100%;
-        background-color: $couleur-texte-bis;
-        padding: 3px 5px 5px 5px;
-        color: $couleur-fond;
-        
-        
-        a.dossier {
-            color: $couleur-fond;
-        }
-    }
-    
-    .liste-enfants {
-        height: 200px;
-        overflow: auto;
-        padding: 0 10px;
-        margin-bottom: 10px;
-    }
-    
-    a.dossier {
-        display: inline-block;
-        font-size: 13px;
-        font-weight: normal;
-        text-decoration: underline;
-        position: relative;
-        padding-left: 20px;
-        margin: 2px 0;
-        
-        img {
-            position: absolute;
-            left: 0;
-            right: 0;
-        }
-        
-        &.in-liste {
-            width: $largeur-max / 2 - 50px;
-            
-        }
-    }
-}
-
-$hauteur-sauvegarde : 375px;
-$hauteur-entete : 60px;
-$hauteur-titre : 60px;
-$hauteur-cont-bouton : 60px;
-$hauteur-contenu : $hauteur-sauvegarde - $hauteur-entete - $hauteur-titre - $hauteur-cont-bouton;
-
-.sauvegarde {
-    display: inline-block;
-    width: 300px;
-    height: $hauteur-sauvegarde;
-    vertical-align: top;
-    border: 1px solid $couleur-bordure;
-    border-radius: 5px;
-    padding: 0px;
-    margin: 0 20px 20px 0;
-    position: relative;
-    
-    .cont-bouton {
-        display: none;
-        text-align: center;
-        padding-top: 8px;
-        height: $hauteur-cont-bouton;
-        //border-top: 1px solid $couleur-bordure;
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        border-radius: 0 0 3px 3px;
-        background-color: #dddddd;
-        
-        &.existant { display: block; }
-        a {
-            display: inline-block;
-            text-decoration: none;
-            color: $couleur-interaction;
-            margin: 0 5px;
-            i {
-                font-size: 25px;
-            }
-            
-            span {
-                font-size: 11px;
-                font-weight: normal;
-                text-decoration: none;
-            }
-        }
-    }
-    
-    .label {
-        display: block;
-        margin: 5px 0;
-        color: $couleur-texte-bis;
-        font-style: italic;
-    }
-    
-    &.ajout {
-        .entete {
-            background-color: $couleur-bordure;
-        }
-        
-        h3 {
-            font-size: 20px;
-            margin-top: 10px;
-        }
-        
-        .form {
-            padding: 10px;
-            
-            
-        }
-    }
-    
-    .entete {
-        text-align: center;
-        color: $couleur-fond;
-        background-color: $couleur-bordure;
-        border-radius: 3px 3px 0 0;
-        padding: 10px 0;
-        font-size: 35px;
-        height: $hauteur-entete;
-    }
-    
-    .titre {
-        height: $hauteur-titre;
-    }
-    
-    h3 {
-        text-align: center;
-        margin: 0 0 5px 0;
-        font-size: 30px;
-    }
-    
-    h4 {
-        font-size: 16px;
-        margin: 0 0 15px 0;
-    }
-    
-    .message-erreur {
-        font-size: 12px;
-    }
-    
-    .sous-titre {
-        text-align: center;
-    }
-    
-    .contenant {
-        padding: 0px;
-        height: $hauteur-contenu;
-        overflow: hidden;
-        .contenu {
-            //height: 
-            .sous-contenu {
-                padding: 10px;
-                height: $hauteur-contenu;
-            }
-        }
-    }
-}

@@ -1,0 +1,159 @@
+
+$hauteur-sauvegarde : 375px;
+$hauteur-entete : 60px;
+$hauteur-titre : 60px;
+$hauteur-cont-bouton : 60px;
+$hauteur-contenu : $hauteur-sauvegarde - $hauteur-entete - $hauteur-titre - $hauteur-cont-bouton;
+
+$couleur-ajout: $CG14;
+$couleur-maitre: $CBV04;
+$couleur-esclave: $CV99;
+$couleur-inutilisee: $CT7;
+$couleur-fond-boutons : $CT2;
+
+.sauvegarde {
+    display: inline-block;
+    width: 300px;
+    height: $hauteur-sauvegarde;
+    vertical-align: top;
+    border: 1px solid $couleur-texte;
+    border-radius: 5px;
+    padding: 0px;
+    margin: 0 20px 20px 0;
+    position: relative;
+    background-color: $couleur-blanc;
+    
+    .cont-bouton {
+        display: none;
+        text-align: center;
+        padding-top: 8px;
+        height: $hauteur-cont-bouton;
+        //border-top: 1px solid $couleur-bordure;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        border-radius: 0 0 4px 4px;
+        //background-color: $couleur-fond-boutons;
+        
+        &.existant { display: block; }
+        
+        a {
+            @include single-transition(all, 0.2s);
+            display: inline-block;
+            text-decoration: none;
+            color: $couleur-interaction;
+            margin: 0 5px;
+            &:hover {
+                text-decoration: underline;
+            }
+            
+            &.inactif {
+                pointer-events: none;
+                color: $couleur-bouton-inactif;
+            }
+            
+            i {
+                font-size: 25px;
+            }
+            
+            span {
+                font-size: 11px;
+                font-weight: normal;
+                text-decoration: none;
+            }
+        }
+    }
+    
+    .label {
+        display: block;
+        margin: 5px 0;
+        color: $couleur-texte;
+        font-style: italic;
+    }
+    
+    &.ajout {
+        border-color: $couleur-ajout;
+        
+        .sous-contenu.existant, .cont-bouton.existant {
+            background-color: $couleur-ajout;
+        }
+        
+        .sous-contenu.existant {
+            text-align: center;
+            
+            padding-top: 100px !important;
+            a {
+                font-size: 25px;
+                color: $couleur-fond;
+                text-decoration: none;
+                
+                &:hover { text-decoration: underline;}
+                
+            }
+            
+            
+        }
+        
+        .contenant, .sous-contenu {
+            height: $hauteur-sauvegarde - $hauteur-cont-bouton !important;
+        }
+        
+        .form {
+            padding: 10px;
+        }
+    }
+    
+    &.maitre {
+        border-color: $couleur-maitre;
+        .entete {
+            background-color: $couleur-maitre;
+        }
+    }
+    &.esclave {
+        border-color: $couleur-esclave;
+        .entete {
+            background-color: $couleur-esclave;
+        }
+    }
+    &.inutilisee  {
+        border-color: $couleur-inutilisee;
+        .entete {
+            background-color: $couleur-inutilisee;
+        }
+    }
+    
+    .entete {
+        text-align: center;
+        color: $couleur-fond;
+        border-radius: 3px 3px 0 0;
+        padding: 10px 0;
+        font-size: 35px;
+        height: $hauteur-entete;
+    }
+    
+    .titre {
+        height: $hauteur-titre;
+    }
+    
+    h3 {
+        text-align: center;
+        margin: 0 0 5px 0;
+        font-size: 30px;
+    }
+            
+    .sous-titre {
+        text-align: center;
+    }
+    
+    .contenant {
+        padding: 0px;
+        height: $hauteur-contenu;
+        overflow: hidden;
+        .contenu {
+            .sous-contenu {
+                padding: 10px;
+                height: $hauteur-contenu;
+            }
+        }
+    }
+}
