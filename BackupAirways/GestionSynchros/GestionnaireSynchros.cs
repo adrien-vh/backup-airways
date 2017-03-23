@@ -289,7 +289,7 @@ namespace BackupAirways.GestionSynchros
 							s.RecupereReponse(demande);
 						} else {
 							if (demandesFaites < C.MAX_DEMANDES_SIMULTANEES) {
-								if (!s.FichierDemandeExiste(demande)) {
+								if (!s.FichierDeDemandeExiste(demande)) {
 									Logger.Log("Demande du fichier " + demande.Md5f.Chemin);
 									s.FaireDemande(demande);
 								}

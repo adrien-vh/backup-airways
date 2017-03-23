@@ -137,9 +137,8 @@ namespace BackupAirways.Synchros
 			return File.Exists(_dossierTamponSynchro + "\\" + demande.FichierReponse) ? demande.FichierReponse : null;
 		}
 		
-		public bool FichierDemandeExiste (Demande t)
-		{
-			return File.Exists(_dossierTamponSynchro + "\\" + t.Fichier);
+		public bool FichierDeDemandeExiste (Demande demande) {
+			return File.Exists(_dossierTamponSynchro + "\\" + demande.Fichier);
 		}
 		
 		public void GenListeFichiers ()	

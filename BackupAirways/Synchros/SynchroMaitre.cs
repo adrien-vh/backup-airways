@@ -32,7 +32,7 @@ namespace BackupAirways.Synchros
 			
 			foreach (string fichierReponse in Directory.GetFiles(_dossierTamponSynchro, "*." + C.EXT__REPONSE, SearchOption.TopDirectoryOnly))	{
 				nomFichierSansExtension = Path.GetFileNameWithoutExtension(fichierReponse);
-				if (Directory.GetFiles(_dossierTamponSynchro, nomFichierSansExtension + ".rep", SearchOption.TopDirectoryOnly).Length == 0) {
+				if (Directory.GetFiles(_dossierTamponSynchro, nomFichierSansExtension + ".*." + C.EXT__DEMANDE, SearchOption.TopDirectoryOnly).Length == 0) {
 					File.Delete(fichierReponse);
 				}
 			}
@@ -42,7 +42,7 @@ namespace BackupAirways.Synchros
 		public bool FichierDemandeExiste (Demande demande)
 		{
 			var nomFichier = _dossier + "\\" + demande.Md5f.Chemin;
-			return nomFichier != null;
+			return File.Exists(nomFichier);
 		}
 		
 		
