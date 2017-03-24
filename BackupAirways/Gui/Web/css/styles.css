@@ -69,14 +69,31 @@
 .local-browser .parent a.dossier i {
   color: #F0F3ED;
 }
-/* line 37, ../sass/_localBrowser.scss */
+/* line 36, ../sass/_localBrowser.scss */
+.local-browser .parent .valide-nouveau-dossier {
+  color: #F0F3ED;
+}
+/* line 38, ../sass/_localBrowser.scss */
+.local-browser .parent .valide-nouveau-dossier.inactif {
+  color: #81787c;
+  pointer-events: none;
+}
+/* line 44, ../sass/_localBrowser.scss */
+.local-browser .parent .in-nouveau-dossier {
+  display: inline-block;
+  font-size: 13px;
+  width: 150px;
+  padding: 2px;
+  margin: 0;
+}
+/* line 53, ../sass/_localBrowser.scss */
 .local-browser .liste-enfants {
   height: 200px;
   overflow: auto;
   padding: 0 10px;
   margin-bottom: 10px;
 }
-/* line 44, ../sass/_localBrowser.scss */
+/* line 60, ../sass/_localBrowser.scss */
 .local-browser a.dossier {
   display: inline-block;
   font-size: 13px;
@@ -86,21 +103,21 @@
   position: relative;
   margin: 2px 0;
 }
-/* line 53, ../sass/_localBrowser.scss */
+/* line 69, ../sass/_localBrowser.scss */
 .local-browser a.dossier i {
   color: #4C4749;
 }
-/* line 57, ../sass/_localBrowser.scss */
+/* line 73, ../sass/_localBrowser.scss */
 .local-browser a.dossier:hover {
   text-decoration: underline;
 }
-/* line 61, ../sass/_localBrowser.scss */
+/* line 77, ../sass/_localBrowser.scss */
 .local-browser a.dossier img {
   position: absolute;
   left: 0;
   right: 0;
 }
-/* line 67, ../sass/_localBrowser.scss */
+/* line 83, ../sass/_localBrowser.scss */
 .local-browser a.dossier.in-liste {
   width: 550px;
 }

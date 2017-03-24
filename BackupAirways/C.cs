@@ -42,6 +42,7 @@ namespace BackupAirways
 								ACTION__JOINDRE_SAUVEGARDE		= "joindresauvegarde",
 								ACTION__SUPPRIME_SYNCHRO		= "supprimesynchro",
 								ACTION__SUPPRIME_CLIENT_SYNCHRO	= "supprimeclientsynchro",
+								ACTION__CREATION_DOSSIER		= "creationdossier",
 			
 								PARAM__NOM_SYNCHRO				= "nomsynchro",
 								PARAM__DOSSIER 					= "dossier",

@@ -44,6 +44,7 @@ namespace BackupAirways.Gui
 			_webServer.ajouteAction(CJS.ACTION__JOINDRE_SAUVEGARDE,			this.joindreSauvegarde);
 			_webServer.ajouteAction(CJS.ACTION__SUPPRIME_SYNCHRO,			this.supprimeSynchro);
 			_webServer.ajouteAction(CJS.ACTION__SUPPRIME_CLIENT_SYNCHRO,	this.supprimeClientSynchro);
+			_webServer.ajouteAction(CJS.ACTION__CREATION_DOSSIER,			this.creerDossier);
 
 
 			_threadWebServer = _webServer.start();
@@ -215,6 +216,14 @@ namespace BackupAirways.Gui
 			}
 		}
 		
+		public WebReponse creerDossier (Dictionary<string, string> parametres) {
+			if (parametres.ContainsKey(CJS.PARAM__DOSSIER)) {
+				Directory.CreateDirectory(parametres[CJS.PARAM__DOSSIER]);
+				return WebReponse.OnePropJson(CJS.REP__MESSAGE, "OK");
+			} else {
+				return WebReponse.OnePropJson(CJS.REP__ERREUR, "La demande ne contient pas les paramètres requis.");
+			}
+		}
 		
 		/// <summary>
 		/// Renvoie les sous dossiers et/ou fichiers d'un dossier

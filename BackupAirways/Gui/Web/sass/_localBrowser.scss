@@ -32,6 +32,22 @@
                 color: $couleur-fond;
             }
         }
+        
+        .valide-nouveau-dossier {
+            color: $couleur-fond;
+            &.inactif {
+                color: lighten($couleur-texte, 20);
+                pointer-events: none;
+            }
+        }
+        
+        .in-nouveau-dossier {
+            display: inline-block;
+            font-size: 13px;
+            width: 150px;
+            padding: 2px;
+            margin: 0;
+        }
     }
     
     .liste-enfants {

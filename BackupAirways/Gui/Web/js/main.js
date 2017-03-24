@@ -51,14 +51,15 @@ $(function () {
                 
                 $(".sauvegarde.inutilisee .dossier-local").ChoixDossier({
                     onChange : function (chemin) {
-                        $("a.bouton[data-synchro='" + $(this).attr("data-synchro") + "']").toggleClass("inactif", chemin === "");
+                        $(this).parents(".sauvegarde").find(".cont-bouton.recuperation .confirme-recuperation").toggleClass("inactif", chemin === "");
+                        $(this).parents(".sauvegarde").find(".sous-contenu.recuperation .message-erreur").toggle(chemin === "");
                     }
                 });
                 
-                $(".sauvegarde.inutilisee a.bouton").click(function (e) {
+                $(".sauvegarde.inutilisee .confirme-recuperation").click(function (e) {
                     e.preventDefault();
                     var params = {};
-                    params[CJS.PARAM__DOSSIER] = $("a.dossier-local[data-synchro='" + $(this).attr("data-synchro") + "']").attr("data-chemin");
+                    params[CJS.PARAM__DOSSIER] = $(this).parents(".sauvegarde").find(".sous-contenu.recuperation .dossier-local").attr("data-chemin");
                     params[CJS.PARAM__NOM_SYNCHRO] = $(this).attr("data-synchro");
                     
                     serveur.post(
@@ -312,6 +313,10 @@ $(function () {
             CJS.ACTION__NOUVELLE_SAUVEGARDE,
             params,
             function () {
+                $("#inNomSauvegarde").val("");
+                $(".sauvegarde.ajout .cont-bouton.form").hide();
+                $(".sauvegarde.ajout .cont-bouton.existant").show();
+                $(".sauvegarde.ajout .contenu").css("margin-top", 0);
                 recupSauvegardes();
             }
         );
