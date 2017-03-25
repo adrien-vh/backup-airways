@@ -14,10 +14,13 @@ namespace BackupAirways.Gui
 	public class WebGui
 	{
 		private readonly 	GestionnaireSynchros 	_gestionnaireSynchros;
+		private readonly	WebReponse				_reponseOk 				= WebReponse.OnePropJson(CJS.REP__MESSAGE, 	CJS.VAL__OK);
+		private readonly	WebReponse				_reponseErreurParams 	= WebReponse.OnePropJson(CJS.REP__ERREUR, 	"Ereur de paramètres");
 		private 			Server 					_webServer;
 		private				Thread					_threadWebServer;
 		
 		public				Thread					ThreadWebServer { get { return _threadWebServer; } }
+		
 		
 		
 		public WebGui(GestionnaireSynchros gestionnaireSynchros) {
@@ -41,7 +44,7 @@ namespace BackupAirways.Gui
 			_webServer.ajouteAction(CJS.ACTION__CHANGE_NOM_CLIENT,			this.changeNomClient);
 			_webServer.ajouteAction(CJS.ACTION__GET_LISTE_CLIENTS,			this.getListeClients);
 			_webServer.ajouteAction(CJS.ACTION__NOUVELLE_SAUVEGARDE,		this.nouvelleSynchro);
-			_webServer.ajouteAction(CJS.ACTION__JOINDRE_SAUVEGARDE,			this.joindreSauvegarde);
+			_webServer.ajouteAction(CJS.ACTION__JOINDRE_SAUVEGARDE,			this.joindreSynchro);
 			_webServer.ajouteAction(CJS.ACTION__SUPPRIME_SYNCHRO,			this.supprimeSynchro);
 			_webServer.ajouteAction(CJS.ACTION__SUPPRIME_CLIENT_SYNCHRO,	this.supprimeClientSynchro);
 			_webServer.ajouteAction(CJS.ACTION__CREATION_DOSSIER,			this.creerDossier);
@@ -59,14 +62,12 @@ namespace BackupAirways.Gui
 		/// </summary>
 		/// <param name="parametres">Non utilisé</param>
 		/// <returns>Reponse WebServer des constantes au format json</returns>
-		public WebReponse getConstantes (Dictionary<string, string> parametres)
-		{
+		public WebReponse getConstantes (Dictionary<string, string> parametres) {
 			var constantes 	= typeof(CJS).GetFields();
 			var retours 	= new List<string>();
 			
 			
-			foreach (FieldInfo constante in constantes)
-			{
+			foreach (FieldInfo constante in constantes) {
 				retours.Add(constante.Name + " : \"" + constante.GetValue(null) + "\"");
 			}
 			
@@ -74,15 +75,19 @@ namespace BackupAirways.Gui
 		}
 		
 		
+		
+		
 		/// <summary>
 		/// Transmet le nom de la machine
 		/// </summary>
 		/// <param name="parametres">Non utilisé</param>
 		/// <returns>{ CJS.PARAM__NOM_MACHINE : nom de la machine }</returns>
-		public WebReponse getNomMachine (Dictionary<string, string> parametres)
-		{
-			return new WebReponse(Mime.json, "{\"" + CJS.PARAM__NOM_MACHINE + "\" : \"" + System.Net.Dns.GetHostEntry("").HostName.Split('.')[0] + "\"}");
+		public WebReponse getNomMachine (Dictionary<string, string> parametres)	{
+			return WebReponse.OnePropJson(CJS.PARAM__NOM_MACHINE, System.Net.Dns.GetHostEntry("").HostName.Split('.')[0]);
 		}
+		
+		
+		
 		
 		
 		/// <summary>
@@ -90,10 +95,12 @@ namespace BackupAirways.Gui
 		/// </summary>
 		/// <param name="parametres">Non utilisé</param>
 		/// <returns></returns>
-		public WebReponse etatInitialisation(Dictionary<string, string> parametres)
-		{
-			return new WebReponse(Mime.json, "{\"" + CJS.PARAM__EST_INITIALISE + "\" : " + (_gestionnaireSynchros.Initialise ? "true" : "false") + "}");
+		public WebReponse etatInitialisation(Dictionary<string, string> parametres)	{
+			return new WebReponse("{\"" + CJS.PARAM__EST_INITIALISE + "\" : " + (_gestionnaireSynchros.Initialise ? "true" : "false") + "}");
 		}
+		
+		
+		
 		
 		
 		/// <summary>
@@ -101,9 +108,8 @@ namespace BackupAirways.Gui
 		/// </summary>
 		/// <param name="parametres">Non utilisé</param>
 		/// <returns></returns>
-		public WebReponse getListeClients(Dictionary<string, string> parametres)
-		{
-			return new WebReponse(Mime.json, JsonConvert.SerializeObject(_gestionnaireSynchros.Clients));
+		public WebReponse getListeClients(Dictionary<string, string> parametres) {
+			return new WebReponse(JsonConvert.SerializeObject(_gestionnaireSynchros.Clients));
 		}
 		
 		
@@ -112,16 +118,18 @@ namespace BackupAirways.Gui
 		/// </summary>
 		/// <param name="parametres">Non utilisé</param>
 		/// <returns>{ maitres : [sauvegardes dont le client est maitre], esclaves : [sauvegardes dont le client est esclave], inutilisees : [sauvegardes disponibles] }</returns>
-		public WebReponse getSauvegardes (Dictionary<string, string> parametres)
-		{	
-			return new WebReponse(
-				Mime.json,
-				"{ \"nomClient\" : \"" + _gestionnaireSynchros.Conf.NomClient + "\"," +
-				"  \"maitres\" : " + JsonConvert.SerializeObject(_gestionnaireSynchros.SynchrosMaitre) +
-				", \"esclaves\" : " + JsonConvert.SerializeObject(_gestionnaireSynchros.SynchrosEsclave) +
-				", \"inutilisees\" : " + JsonConvert.SerializeObject(_gestionnaireSynchros.SynchrosNonUtilisees) + 				
-				"}");
+		public WebReponse getSauvegardes (Dictionary<string, string> parametres) {	
+			Dictionary<string, Object> retour = new Dictionary<string, object>();
+			
+			retour.Add(CJS.PARAM__NOM_MACHINE,			_gestionnaireSynchros.Conf.NomClient);
+			retour.Add(CJS.PARAM__SYNCHROS_MAITRES, 	_gestionnaireSynchros.SynchrosMaitre);
+			retour.Add(CJS.PARAM__SYNCHROS_ESCLAVES, 	_gestionnaireSynchros.SynchrosEsclave);
+			retour.Add(CJS.PARAM__SYNCHROS_INUTILISEES, _gestionnaireSynchros.SynchrosInutilisees);
+			
+			return new WebReponse(JsonConvert.SerializeObject(retour));
 		}
+		
+		
 		
 		
 		/// <summary>
@@ -129,15 +137,14 @@ namespace BackupAirways.Gui
 		/// </summary>
 		/// <param name="parametres">CJS.PARAM__DOSSIER_TAMPON : dossier tampon</param>
 		/// <returns></returns>
-		public WebReponse setDossierTampon (Dictionary<string, string> parametres)
-		{
-			if (parametres.ContainsKey(CJS.PARAM__DOSSIER_TAMPON))
-			{
+		public WebReponse setDossierTampon (Dictionary<string, string> parametres) {
+			
+			if (parametres.ContainsKey(CJS.PARAM__DOSSIER_TAMPON)) {
 				_gestionnaireSynchros.setDossierTampon(parametres[CJS.PARAM__DOSSIER_TAMPON]);
-				return new WebReponse(Mime.json, "{\"Message\" : \"ok\"}");
+				return _reponseOk;
 			}
 			
-			return new WebReponse(Mime.json, "{\"Erreur\" : \"erreur\"}");			
+			return _reponseErreurParams;			
 		}
 		
 		
@@ -146,104 +153,140 @@ namespace BackupAirways.Gui
 		/// </summary>
 		/// <param name="parametres">CJS.PARAM__NOM_MACHINE : nom du client</param>
 		/// <returns></returns>
-		public WebReponse changeNomClient (Dictionary<string, string> parametres)
-		{
+		public WebReponse changeNomClient (Dictionary<string, string> parametres) {
 			if (parametres.ContainsKey(CJS.PARAM__NOM_MACHINE)) {				
 				_gestionnaireSynchros.changeNomClient(parametres[CJS.PARAM__NOM_MACHINE]);
-				return new WebReponse(Mime.json, "{\"Message\" : \"ok\"}");
+				return _reponseOk;
 			}
 			
-			return new WebReponse(Mime.json, "{\"Erreur\" : \"erreur\"}");			
+			return _reponseErreurParams;			
 		}
 		
-		public WebReponse joindreSauvegarde (Dictionary<string, string> parametres)
-		{
-			if (parametres.ContainsKey(CJS.PARAM__DOSSIER) && parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO))
-			{
+		
+		
+		
+		/// <summary>
+		/// Configure une récupération locale d'une synchro existante
+		/// </summary>
+		/// <param name="parametres"> - CJS.PARAM__DOSSIER : dossier qui hébergera la synchro
+		/// - CJS.PARAM__NOM_SYNCHRO : Nom de la synchro à rejoindre</param>
+		/// <returns></returns>
+		public WebReponse joindreSynchro (Dictionary<string, string> parametres) {
+			if (parametres.ContainsKey(CJS.PARAM__DOSSIER) && parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO)) {
 				_gestionnaireSynchros.joindreSynchro(parametres[CJS.PARAM__DOSSIER], parametres[CJS.PARAM__NOM_SYNCHRO]);
+				return _reponseOk;
 			}
 			
-			return new WebReponse(Mime.json, "{\"Erreur\" : \"erreur\"}");
+			return _reponseErreurParams;
 		}
+		
+		
+		
 		
 		/// <summary>
 		/// Récupère les chemins des cloud installés sur la machine
 		/// </summary>
-		/// <param name="parametres"></param>
+		/// <param name="parametres">Non utilisé</param>
 		/// <returns></returns>
-		public WebReponse getDrivesPaths (Dictionary<string, string> parametres)
-		{
+		public WebReponse getDrivesPaths (Dictionary<string, string> parametres) {
 			var retour 				= new Dictionary<string, string>();
 			var cheminGoogleDrive 	= System.Environment.GetEnvironmentVariable("USERPROFILE") + "\\Google Drive";
 			
-			if (Directory.Exists(cheminGoogleDrive))
-			{
+			if (Directory.Exists(cheminGoogleDrive)) {
 				retour.Add(CJS.REP__CHEMIN_GDRIVE, cheminGoogleDrive);
 			}
 			
-			return new WebReponse(Mime.json, JsonConvert.SerializeObject(retour));
+			return new WebReponse(JsonConvert.SerializeObject(retour));
 		}
 		
-		public WebReponse nouvelleSynchro (Dictionary<string, string> parametres)
-		{
-			if (parametres.ContainsKey(CJS.PARAM__DOSSIER) && parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO))
-			{
+		
+		
+		/// <summary>
+		/// Création d'une nouvelle synchro depuis un dossier local
+		/// </summary>
+		/// <param name="parametres"> - CJS.PARAM__DOSSIER : le dossier à synchroniser
+		/// - CJS.PARAM__NOM_SYNCHRO : le nom de la synchro</param>
+		/// <returns></returns>
+		public WebReponse nouvelleSynchro (Dictionary<string, string> parametres) {
+			if (parametres.ContainsKey(CJS.PARAM__DOSSIER) && parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO)) {
 				_gestionnaireSynchros.nouvelleSynchro(parametres[CJS.PARAM__DOSSIER],parametres[CJS.PARAM__NOM_SYNCHRO]);
-				return WebReponse.OnePropJson(CJS.REP__ERREUR, "OK");
+				return _reponseOk;
 			}
-			else
-			{
-				return WebReponse.OnePropJson(CJS.REP__ERREUR, "La demande ne contient pas les paramètres requis.");
-			}
+			
+			return _reponseErreurParams;
 		}
 		
 		
+		
+		/// <summary>
+		/// Suppression d'une synchro existante
+		/// </summary>
+		/// <param name="parametres">CJS.PARAM__NOM_SYNCHRO : nom de la synchro à supprimer</param>
+		/// <returns></returns>
 		public WebReponse supprimeSynchro (Dictionary<string, string> parametres) {
+			
 			if (parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO)) {
 				_gestionnaireSynchros.supprimeSynchro(parametres[CJS.PARAM__NOM_SYNCHRO]);
-				return WebReponse.OnePropJson(CJS.REP__MESSAGE, "OK");
-			} else {
-				return WebReponse.OnePropJson(CJS.REP__ERREUR, "La demande ne contient pas les paramètres requis.");
+				return _reponseOk;
 			}
+			
+			return _reponseErreurParams;
 		}
 		
+		
+		/// <summary>
+		/// Suppression d'un client d'une synchro
+		/// </summary>
+		/// <param name="parametres"> - CJS.PARAM__NOM_MACHINE : nom du client à désynchroniser
+		/// - CJS.PARAM__NOM_SYNCHRO : le nom de la synchro</param>
+		/// <returns></returns>
 		public WebReponse supprimeClientSynchro (Dictionary<string, string> parametres) {
+			
 			if (parametres.ContainsKey(CJS.PARAM__NOM_SYNCHRO) && parametres.ContainsKey(CJS.PARAM__NOM_MACHINE)) {
 				_gestionnaireSynchros.supprimeClientSynchro(parametres[CJS.PARAM__NOM_SYNCHRO], parametres[CJS.PARAM__NOM_MACHINE]);
-				return WebReponse.OnePropJson(CJS.REP__MESSAGE, "OK");
-			} else {
-				return WebReponse.OnePropJson(CJS.REP__ERREUR, "La demande ne contient pas les paramètres requis.");
-			}
+				return _reponseOk;
+			} 
+			
+			return _reponseErreurParams;
 		}
 		
+		
+		/// <summary>
+		/// Création d'un dossier en local
+		/// </summary>
+		/// <param name="parametres">CJS.PARAM__DOSSIER : chemin du dossier à créer</param>
+		/// <returns></returns>
 		public WebReponse creerDossier (Dictionary<string, string> parametres) {
+			
 			if (parametres.ContainsKey(CJS.PARAM__DOSSIER)) {
 				Directory.CreateDirectory(parametres[CJS.PARAM__DOSSIER]);
-				return WebReponse.OnePropJson(CJS.REP__MESSAGE, "OK");
-			} else {
-				return WebReponse.OnePropJson(CJS.REP__ERREUR, "La demande ne contient pas les paramètres requis.");
+				return _reponseOk;
 			}
+			
+			return _reponseErreurParams;
 		}
+		
+		
+		
 		
 		/// <summary>
 		/// Renvoie les sous dossiers et/ou fichiers d'un dossier
 		/// </summary>
-		/// <param name="parametres"> - CJS.PARAM__DOSSIER : dossier à parcourir
+		/// <param name="parametres"> - CJS.PARAM__DOSSIER : dossier à parcourir ("" si racine)
 		///  - CJS.PARAM__FICHIERS_SEUL : renvoie uniquement les fichiers si défini
 		///  - CJS.PARAM__DOSSIERS_SEUL : renvoie uniquement les dossiers si défini.</param>
 		/// <returns></returns>
-		public WebReponse getDossiers (Dictionary<string, string> parametres)
-		{
+		public WebReponse getDossiers (Dictionary<string, string> parametres) {
 			string[] 	fichiers;
 			DriveInfo[] listeDisques;
 			
 			var donnees 	= new List<Fichier>();
 			
-			if (parametres.ContainsKey(CJS.PARAM__DOSSIER))
-			{
+			if (parametres.ContainsKey(CJS.PARAM__DOSSIER)) {
+				
 				// Retourne la liste des disques
-				if (parametres[CJS.PARAM__DOSSIER].Trim() == "" && !C.IS_LINUX)
-				{
+				if (parametres[CJS.PARAM__DOSSIER].Trim() == "" && !C.IS_LINUX) {
+					
 					listeDisques = DriveInfo.GetDrives();
 					foreach (DriveInfo disque in listeDisques) {
 						if (disque.DriveType == DriveType.Fixed || disque.DriveType == DriveType.Network) {
@@ -251,10 +294,9 @@ namespace BackupAirways.Gui
 						}
 					}
 					return new WebReponse(Mime.json, JsonConvert.SerializeObject(donnees));
-				}
-				// Retourne la listes des sous-dossiers et fichiers
-				else
-				{	
+					
+				// retourne la liste des sous-dossiers / fichiers
+				} else {	
 					if (parametres [CJS.PARAM__DOSSIER].Trim () == "" && C.IS_LINUX) {
 						parametres [CJS.PARAM__DOSSIER] = "/";
 					}
@@ -282,22 +324,17 @@ namespace BackupAirways.Gui
 								}
 							}
 						}
-						catch (Exception e)
-						{
-							return new WebReponse(Mime.json, "{\"" + CJS.REP__ERREUR + "\":\"" + e.Message.Replace(@"\",@"\\") + "\"}");
+						catch (Exception e)	{
+							return WebReponse.OnePropJson(CJS.REP__ERREUR,  e.Message.Replace(@"\",@"\\"));
 						}
 										
-						return new WebReponse(Mime.json, JsonConvert.SerializeObject(donnees));
-					}
-					else
-					{
-						return new WebReponse(Mime.json, "{\"" + CJS.REP__ERREUR + "\" : \"Le disque " + parametres[CJS.PARAM__DOSSIER] + " n'existe pas\"}");
+						return new WebReponse(JsonConvert.SerializeObject(donnees));
+					} else {
+						return WebReponse.OnePropJson(CJS.REP__ERREUR,  "Le disque " + parametres[CJS.PARAM__DOSSIER] + " n'existe pas");
 					}
 				}
-			}
-			else
-			{
-				return new WebReponse(Mime.json, "{\"" + CJS.REP__ERREUR + "\" : \"Le paramètre disque est absent\"}");
+			} else {
+				return _reponseErreurParams;
 			}
 		}
 		#endregion

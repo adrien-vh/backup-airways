@@ -37,7 +37,7 @@ namespace BackupAirways.GestionSynchros
 		
 		public List<SynchroMaitre> 		SynchrosMaitre 			{ get { return _synchrosMaitre; } }
 		public List<SynchroEsclave> 	SynchrosEsclave 		{ get { return _synchrosEsclave; } }
-		public List<Synchro> 			SynchrosNonUtilisees 	{ get { return _synchrosNonUtilisees; } }
+		public List<Synchro> 			SynchrosInutilisees 	{ get { return _synchrosNonUtilisees; } }
 		public Conf						Conf					{ get { return _conf; } }
 		
 		/// <summary>

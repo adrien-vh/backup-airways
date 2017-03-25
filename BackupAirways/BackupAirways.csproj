@@ -20,6 +20,7 @@
     <WarningLevel>4</WarningLevel>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <ApplicationIcon>backupairways.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -97,45 +98,28 @@
     <EmbeddedResource Include="Gui\Web\css\font-awesome.min.css" />
     <EmbeddedResource Include="Gui\Web\css\normalize.css" />
     <EmbeddedResource Include="Gui\Web\css\styles.css" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\FontAwesome.otf" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.eot" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.svg" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.ttf" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.woff" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.woff2" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600italic.woff" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600italic.woff2" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600.woff" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600.woff2" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-italic.woff" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-italic.woff2" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-regular.woff" />
-	<EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-regular.woff2" />
-    <EmbeddedResource Include="Gui\Web\images\App-dropbox-icon.png" />
-    <EmbeddedResource Include="Gui\Web\images\Google-Drive-icon.png" />
-    <EmbeddedResource Include="Gui\Web\images\Microsoft-OneDrive-icon.png" />
-    <EmbeddedResource Include="Gui\Web\images\arrow-icon-1174.png" />
-    <EmbeddedResource Include="Gui\Web\images\cloud-icon-12871.png" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\FontAwesome.otf" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.eot" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.svg" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.ttf" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.woff" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\fontawesome-webfont.woff2" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600italic.woff" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600italic.woff2" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600.woff" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-600.woff2" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-italic.woff" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-italic.woff2" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-regular.woff" />
+    <EmbeddedResource Include="Gui\Web\css\fonts\open-sans-v13-latin-ext-regular.woff2" />
+    <EmbeddedResource Include="Gui\Web\images\logo.png" />
     <EmbeddedResource Include="Gui\Web\images\cloud_ico_64.png" />
-    <EmbeddedResource Include="Gui\Web\images\computer-icon-1026.png" />
-    <EmbeddedResource Include="Gui\Web\images\computer_blanc_ico_16.png" />
-    <EmbeddedResource Include="Gui\Web\images\computer_ico_16.png" />
-    <EmbeddedResource Include="Gui\Web\images\computer_ico_24.png" />
-    <EmbeddedResource Include="Gui\Web\images\dropbox_ico_36.png" />
     <EmbeddedResource Include="Gui\Web\images\dropbox_ico_64.png" />
     <EmbeddedResource Include="Gui\Web\images\dropbox_nb_ico_64.png" />
-    <EmbeddedResource Include="Gui\Web\images\fleche.png" />
-    <EmbeddedResource Include="Gui\Web\images\folder.png" />
-    <EmbeddedResource Include="Gui\Web\images\folder_blanc_ico_16.png" />
-    <EmbeddedResource Include="Gui\Web\images\folder_ico_16.png" />
-    <EmbeddedResource Include="Gui\Web\images\folder_ico_24.png" />
-    <EmbeddedResource Include="Gui\Web\images\gdrive_ico_36.png" />
     <EmbeddedResource Include="Gui\Web\images\gdrive_ico_64.png" />
     <EmbeddedResource Include="Gui\Web\images\gdrive_nb_ico_64.png" />
-    <EmbeddedResource Include="Gui\Web\images\onedrive_ico_36.png" />
     <EmbeddedResource Include="Gui\Web\images\onedrive_ico_64.png" />
     <EmbeddedResource Include="Gui\Web\images\onedrive_nb_ico_64.png" />
-    <EmbeddedResource Include="Gui\Web\images\television.png" />
     <EmbeddedResource Include="Gui\Web\js\Serveur.js" />
     <EmbeddedResource Include="Gui\Web\js\jquery.LocalBrowser.js" />
     <EmbeddedResource Include="Gui\Web\js\main.js" />

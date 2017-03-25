@@ -53,10 +53,15 @@ namespace BackupAirways
 								PARAM__DOSSIER_TAMPON			= "dossiertampon",
 								PARAM__NOM_MACHINE				= "nommachine",
 								PARAM__EST_INITIALISE			= "estinitialise",
+								PARAM__SYNCHROS_MAITRES			= "synchrosmaitres",
+								PARAM__SYNCHROS_ESCLAVES		= "synchrosesclaves",
+								PARAM__SYNCHROS_INUTILISEES		= "synchrosinutilisees",
 		
 								REP__ERREUR						= "erreur",
 								REP__MESSAGE					= "message",
 								REP__CHEMIN_GDRIVE				= "chemingoogledrive",
-								REP__VALEUR						= "valeur";
+								REP__VALEUR						= "valeur",
+								
+								VAL__OK							= "ok";
 	}
 }

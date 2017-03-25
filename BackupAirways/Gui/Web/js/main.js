@@ -26,9 +26,9 @@ $(function () {
         serveur.post(
             CJS.ACTION__LISTE_SAUVEGARDES,
             function (sauvegardes) {
-                var template = $('#tplSauvegarde').html(), rendered, i, j, synchros = sauvegardes.maitres.concat(sauvegardes.esclaves).concat(sauvegardes.inutilisees), synchro;
+                var template = $('#tplSauvegarde').html(), rendered, i, j, synchros = sauvegardes[CJS.PARAM__SYNCHROS_MAITRES].concat(sauvegardes[CJS.PARAM__SYNCHROS_ESCLAVES]).concat(sauvegardes[CJS.PARAM__SYNCHROS_INUTILISEES]), synchro;
 
-                nomClient = sauvegardes.nomClient;
+                nomClient = sauvegardes[CJS.PARAM__NOM_MACHINE];
                 
                 //Mustache.parse(template);
                 $(".sauvegarde.esclave").remove();
