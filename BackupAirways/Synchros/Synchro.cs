@@ -41,10 +41,12 @@ namespace BackupAirways.Synchros
 		/// </summary>
 		/// <param name="nom">Nom de la synchro (correspond au nom du sous dossier dans le dossier tampon)</param>
 	 	/// <param name="conf">Configuration</param>
-		public Synchro(string nom, Conf conf)
+	 	/// <param name="type">Type de synchro</param>
+		public Synchro(string nom, Conf conf, TypeSynchro type)
 		{
 			ConfSynchro confClient, confMaitre;
 			
+			_type					= type;
 			_conf					= conf;
 			_nom 					= nom;
 			_dossierTamponSynchro 	= conf.DossierTampon + "\\" + Nom;
@@ -90,23 +92,22 @@ namespace BackupAirways.Synchros
 					_nbFichiersMaitre = File.ReadAllLines(_dossierTamponSynchro + "\\maitre.md5").Length;
 				}
 				
-				if (_maitre == _conf.NomClient)
-				{
+				if (_type == TypeSynchro.Maitre) {
 					_dossier 			= _dossierSource;
 					_confLocale 		= confMaitre;
 					_fichierConfLocale 	= _fichierConf;
 				}
 				
-				foreach(string fichierClient in Directory.GetFiles(_dossierTamponSynchro, "*.client"))
-				{
+				foreach(string fichierClient in Directory.GetFiles(_dossierTamponSynchro, "*.client")) {
+					
 					confClient = JsonConvert.DeserializeObject<ConfSynchro>(File.ReadAllText(fichierClient));
 					
 					if (File.Exists(_dossierTamponSynchro + "\\" + confClient.Client + ".md5")) {
 						confClient.NbFichiers = File.ReadAllLines(_dossierTamponSynchro + "\\" + confClient.Client + ".md5").Length;
 					}
 					_clients.Add(new ConfSynchro(confClient.Client, confClient.Chemin, confClient.NbFichiers));
-					if (confClient.Client == _conf.NomClient)
-					{
+					
+					if (confClient.Client == _conf.NomClient && _type == TypeSynchro.Esclave) {
 						_dossier 			= confClient.Chemin;
 						_confLocale 		= confClient;
 						_fichierConfLocale 	= fichierClient;
@@ -117,15 +118,13 @@ namespace BackupAirways.Synchros
 				
 			}
 			
-			if (!Directory.Exists(_dossier))
-			{
+			if (!Directory.Exists(_dossier)) {
 				_valide = false;
 				_messageErreur = "Le dossier à synchroniser n'existe pas.";
 			}
 		}	
 
-		public void Rejoindre(string dossier)
-		{
+		public void Rejoindre(string dossier) {
 			var confSynchro = new ConfSynchro(_conf.NomClient, dossier);
 			
 			_fichierConfLocale 	= _dossierTamponSynchro + "\\." + _conf.NomClient + ".client";
@@ -134,7 +133,7 @@ namespace BackupAirways.Synchros
 		}
 		
 		public string ReponseExiste (Demande demande) {
-			return File.Exists(_dossierTamponSynchro + "\\" + demande.FichierReponse) ? demande.FichierReponse : null;
+			return File.Exists(demande.FichierReponseExistant(_dossierTamponSynchro)) ? demande.FichierReponseExistant(_dossierTamponSynchro) : null;
 		}
 		
 		public bool FichierDeDemandeExiste (Demande demande) {
@@ -146,7 +145,7 @@ namespace BackupAirways.Synchros
 			var 	md5s 				= new List<string>();
 			string 	md5;
 			string 	fichierTmp;
-			string 	fichierListeMd5Tmp 	= _nom + ".md5";
+			string 	fichierListeMd5Tmp 	= _nom + (Type == TypeSynchro.Maitre ? ".maitre" : ".esclave") + ".md5";
 			bool	doCopy				= false;
 			int		compteur			= 0;
 			

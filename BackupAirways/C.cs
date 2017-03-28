@@ -9,7 +9,8 @@ namespace BackupAirways
 	{		
 		public const int	MAX_DEMANDES_SIMULTANEES	= 50,
 							LOG_MESSAGE					= 1,
-							INTERVALLE_SYNCHRO_MINUTES	= 5;
+							INTERVALLE_SYNCHRO_MINUTES	= 5,
+							TAILLE_MAX_FICHIER			= 20;
 		
 		public const string PREFIXE 					= "http://localhost:8000/",
 							MUTEX						= "backupairways",
@@ -17,12 +18,13 @@ namespace BackupAirways
 							FICHIER_CONF_SYNCHRO		= ".conf",
 							FICHIER_CONF				= ".conf",
 							FICHIER_PREFIXE_WEB			= "current_url.txt",
+							DOSSIER_TRAVAIL				= ".backupAirways",
 							
 							EXT__REPONSE				= "rep",
 							EXT__DEMANDE				= "dem",
 							
 							FORMAT__FICHIER_DEMANDE		= "{0}.{1}.{2}." + C.EXT__DEMANDE,
-							FORMAT__FICHIER_REPONSE		= "{0}.{1}." + C.EXT__REPONSE;
+							FORMAT__FICHIER_REPONSE		= "{0}.{1}.{2}." + C.EXT__REPONSE;
 
 		public static bool	IS_LINUX					{ get { return Directory.Exists ("/etc/"); } }
 	}

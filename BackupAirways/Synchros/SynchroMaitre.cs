@@ -7,9 +7,7 @@ namespace BackupAirways.Synchros
 	public class SynchroMaitre : Synchro
 	{	
 		
-		public SynchroMaitre(string nom, Conf conf) : base(nom, conf)
-		{
-			_type				= TypeSynchro.Maitre;
+		public SynchroMaitre(string nom, Conf conf) : base(nom, conf, TypeSynchro.Maitre) {
 			_fichierListeMd5 	= _dossierTamponSynchro + "\\" + C.FICHIER_MAITRE;
 		}
 				
@@ -39,19 +37,31 @@ namespace BackupAirways.Synchros
 		}
 
 		
-		public bool FichierDemandeExiste (Demande demande)
-		{
+		public bool FichierDemandeExiste (Demande demande) {
 			var nomFichier = _dossier + "\\" + demande.Md5f.Chemin;
 			return File.Exists(nomFichier);
 		}
 		
 		
 		
-		public long FourniReponse (Demande demande)
-		{
-			var fichierTampon 	= _dossierTamponSynchro + "\\" + demande.FichierReponse;
-			
-			File.Copy(Dossier + "\\" + demande.Md5f.Chemin, fichierTampon);
+		public long FourniReponse (Demande demande) {
+			string fichierTampon;
+			var fichierTemp		= demande.Md5f.Md5 + ".temp";
+			var fichierDemandé	= Dossier + "\\" + demande.Md5f.Chemin;
+			var infosFichier 	= new FileInfo(fichierDemandé);
+        	var taille 			= infosFichier.Length;
+        	
+        	if (taille > C.TAILLE_MAX_FICHIER * 1024 * 1024) {
+        		
+        		fichierTampon 	= _dossierTamponSynchro + "\\" + demande.FichierReponse(U.ExtractFilePart(fichierDemandé, fichierTemp, demande.NoPart, C.TAILLE_MAX_FICHIER)) ;
+        		if (!File.Exists(fichierTampon)) {
+        			File.Copy(fichierTemp, fichierTampon);
+        		}
+        	} else {
+        		fichierTampon 	= _dossierTamponSynchro + "\\" + demande.FichierReponse(0);
+        		
+        		File.Copy(fichierDemandé, fichierTampon);
+        	}
 			
 			return new FileInfo(fichierTampon).Length;
 		}

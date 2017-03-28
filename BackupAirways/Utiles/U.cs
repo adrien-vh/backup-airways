@@ -9,6 +9,74 @@ namespace BackupAirways
 {
 	static internal class U
 	{
+		/// <summary>
+		/// Extrait une partie d'un fichier
+		/// </summary>
+		/// <param name="fichierIn">fichier dont il faut extraire les données</param>
+		/// <param name="fichierOut">fichier à écrire</param>
+		/// <param name="debut">où commencer à lire dans le fichier</param>
+		/// <param name="longueur">taille à lire en MO</param>
+		/// <returns>position du curseur à la fin de la lecture</returns>
+		public static long ExtractFilePart(string fichierIn, string fichierOut, long debut, int longueur) {
+			const 	int 	BUFFER_SIZE = 20 * 1024;
+					byte[] 	buffer 		= new byte[BUFFER_SIZE];
+		    		long	retour		= 0;
+		    		
+		    using (Stream input = File.OpenRead(fichierIn)) {
+		    	input.Seek(debut, SeekOrigin.Begin);
+		    	using (Stream output = File.Create(fichierOut)) {
+		    		int restantALire = longueur * 1024 * 1024;
+		    		int nbOctetsLus  = 0;
+		    		while (restantALire > 0 && (nbOctetsLus = input.Read(buffer, 0, Math.Min(restantALire, BUFFER_SIZE))) > 0) {
+		    			output.Write(buffer, 0, nbOctetsLus);
+		    			restantALire -= nbOctetsLus;
+		    		}
+		    		if (nbOctetsLus == 0) {
+		    			retour = 0;
+		    		} else {
+		    			retour = input.Position;
+		    		}
+		    	}
+		    }
+		   
+		    return retour;
+		}
+		
+		public static void AssembleFileParts(string[] fichiersIn, string fichierOut) {
+			using (Stream output = File.Create(fichierOut)) {
+				foreach (string fichierIn in fichiersIn) {
+					using (Stream input = File.OpenRead(fichierIn)) {
+						input.CopyTo(output);
+					}
+				}
+			}
+		}
+		
+		/*public static void SplitFile(string inputFile, int chunkSize, string path)
+		{
+		    const int BUFFER_SIZE = 20 * 1024;
+		    byte[] buffer = new byte[BUFFER_SIZE];
+		
+		    using (Stream input = File.OpenRead(inputFile))
+		    {
+		        int index = 0;
+		        while (input.Position < input.Length)
+		        {
+		            using (Stream output = File.Create(path + "\\" + index))
+		            {
+		                int remaining = chunkSize, bytesRead;
+		                while (remaining > 0 && (bytesRead = input.Read(buffer, 0,
+		                        Math.Min(remaining, BUFFER_SIZE))) > 0)
+		                {
+		                    output.Write(buffer, 0, bytesRead);
+		                    remaining -= bytesRead;
+		                }
+		            }
+		            index++;
+		            Thread.Sleep(500); // experimental; perhaps try it
+		        }
+		    }
+		}*/
 		
 		/// <summary>
 		/// Détermine si le path passé en paramètre correspond à un fichier/dossier système

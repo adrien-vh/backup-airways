@@ -7,9 +7,8 @@ namespace BackupAirways.Synchros
 	public class SynchroEsclave : Synchro
 	{	
 		
-		public SynchroEsclave(string nom, Conf conf) : base(nom, conf)
+		public SynchroEsclave(string nom, Conf conf) : base(nom, conf, TypeSynchro.Esclave)
 		{
-			_type 				= TypeSynchro.Esclave;
 			_fichierListeMd5 	= _dossierTamponSynchro + "\\" + conf.NomClient + ".md5";
 		}
 		
@@ -76,33 +75,79 @@ namespace BackupAirways.Synchros
 			
 			return new DeltaMd5(ajouts, suppressions);
 		}
-				
-		public void RecupereReponse (Demande demande) 
+		
+		/// <summary>
+		/// Récupère la réponse à une demande
+		/// </summary>
+		/// <param name="demande">Demande faite par le client</param>
+		/// <param name="fichierReponse">Fichier de réponse du maitre</param>
+		/// <returns>True si toutes les parties du fichiers sont rassemblées </returns>
+		public Demande RecupereReponse (Demande demande, string fichierReponse) 
 		{
+			string[]	partsExistantes;
+			string 		fichierDestination;
+			Demande		retour = null;
 			
-			string fichierSource		= _dossierTamponSynchro + "\\" + demande.FichierReponse;			
-			string fichierDestination;
-						
-			if (File.Exists(fichierSource))
-			{
-				fichierDestination 	= Dossier + "\\" + demande.Md5f.Chemin;
-				Directory.CreateDirectory(Path.GetDirectoryName(fichierDestination));
-				File.Copy(fichierSource, fichierDestination, true);
+			var				infos 		= Path.GetFileName(fichierReponse).Split('.');
+			List<long> 		curseurs;
+			List<string> 	parts;
 			
-				SupprimeDemande(demande);
+			if (infos[2] == "0") {
+				partsExistantes = Directory.GetFiles(_dossier + "\\" + C.DOSSIER_TRAVAIL, demande.Md5f.Md5 + ".*", SearchOption.TopDirectoryOnly);
+				if (partsExistantes.Length > 0) {
+					curseurs 	= new List<long>();
+					parts		= new List<string>();
+					
+					foreach (string part in partsExistantes) {
+						curseurs.Add(long.Parse(Path.GetFileName(part).Split('.')[1]));
+					}
+					curseurs.Sort();
+					curseurs.Add(0);
+					
+					fichierDestination	= Dossier + "\\" + C.DOSSIER_TRAVAIL + "\\" + demande.Md5f.Md5 + "." + infos[2];
+					Directory.CreateDirectory(Path.GetDirectoryName(fichierDestination));
+					File.Copy(fichierReponse, fichierDestination, true);
+					
+					foreach(long curseur in curseurs) {
+						parts.Add(_dossier + "\\" + C.DOSSIER_TRAVAIL + "\\" + demande.Md5f.Md5 + "." + curseur);
+					}
+					
+					fichierDestination 	= Dossier + "\\" + demande.Md5f.Chemin;
+					
+					U.AssembleFileParts(parts.ToArray(), fichierDestination);
+					
+					foreach (string part in parts) {
+						File.Delete(part);
+					}
 				
-				if (Directory.GetFiles(_dossierTamponSynchro, demande.Md5f.Md5 + "." + demande.NoPart + ".*." + C.EXT__DEMANDE).Length == 0)
-				{
-					File.Delete(fichierSource);
+				} else {
+					fichierDestination 	= Dossier + "\\" + demande.Md5f.Chemin;
+					Directory.CreateDirectory(Path.GetDirectoryName(fichierDestination));
+					File.Copy(fichierReponse, fichierDestination, true);
 				}
-			}		
+				
+			} else {
+				fichierDestination	= Dossier + "\\" + C.DOSSIER_TRAVAIL + "\\" + demande.Md5f.Md5 + "." + infos[2];
+				Directory.CreateDirectory(Path.GetDirectoryName(fichierDestination));
+				File.Copy(fichierReponse, fichierDestination, true);
+				
+				retour = new Demande(demande.Md5f, _confLocale.Client, long.Parse(infos[2]));
+			}
+			
+			SupprimeDemande(demande);
+			
+			if (Directory.GetFiles(_dossierTamponSynchro, demande.Md5f.Md5 + "." + demande.NoPart + ".*." + C.EXT__DEMANDE).Length == 0) {
+				File.Delete(fichierReponse);
+			}	
+			
+			return retour;
 		}
 		
 		public void FaireDemande (Demande demande) 
 		{
 			var fichierDemande = _dossierTamponSynchro + "\\" + demande.Fichier;
-			if (!File.Exists(fichierDemande))
-			{
+			
+			if (!File.Exists(fichierDemande)) {
 				File.WriteAllText(fichierDemande, demande.Md5f.ToString());
 			}
 			
@@ -110,15 +155,29 @@ namespace BackupAirways.Synchros
 		
 		public List<Demande> GenDemandes (List<Md5Fichier> md5fs, int nbMax)
 		{
-			var	retour		= new List<Demande>();
+			var			retour		= new List<Demande>();
+			string[] 	partsExistantes;
+			long		posCurseur	= 0;
 			
-			foreach (Md5Fichier md5f in md5fs)
-			{
-				if (retour.Count > nbMax) 
-				{
+			foreach (Md5Fichier md5f in md5fs) {
+				if (retour.Count > nbMax) {
 					break;
 				}
-				retour.Add(new Demande(md5f, _conf.NomClient));
+				
+				try {
+					partsExistantes = Directory.GetFiles(_dossier + "\\" + C.DOSSIER_TRAVAIL, md5f.Md5 + ".*", SearchOption.TopDirectoryOnly);
+				} catch (Exception e) {
+					Logger.Log(e.Message, global::Logger.LogLevel.ERROR);
+					partsExistantes = new string[0];
+				}
+				
+				if (partsExistantes.Length > 0) {
+					foreach (string part in partsExistantes) {
+						posCurseur = Math.Max(posCurseur, long.Parse(Path.GetFileName(part).Split('.')[1]));
+					}
+				}
+				
+				retour.Add(new Demande(md5f, _conf.NomClient, posCurseur));
 			}
 						
 			return retour;
@@ -128,8 +187,8 @@ namespace BackupAirways.Synchros
 		{
 			if (File.Exists(_dossier + "\\" + md5f.Chemin))
 			{
-				Directory.CreateDirectory(Path.GetDirectoryName(_dossier + "\\.backupAirways\\" + md5f.Chemin));
-				File.Move(_dossier + "\\" + md5f.Chemin, _dossier + "\\.backupAirways\\" + md5f.Chemin);
+				Directory.CreateDirectory(Path.GetDirectoryName(_dossier + "\\" + C.DOSSIER_TRAVAIL + "\\" + md5f.Chemin));
+				File.Move(_dossier + "\\" + md5f.Chemin, _dossier + "\\" + C.DOSSIER_TRAVAIL + "\\" + md5f.Chemin);
 			}
 			
 			foreach (string fichier in Directory.GetFiles(_dossierTamponSynchro, md5f.Md5 + "*." + _conf.NomClient + "*.dem"))

@@ -107,7 +107,7 @@ namespace BackupAirways.GestionSynchros
 					#endif
 						_synchrosEsclave.Add(new SynchroEsclave(chemins[0], _conf));
 					} else {
-						_synchrosNonUtilisees.Add(new Synchro(chemins[0], _conf));
+						_synchrosNonUtilisees.Add(new Synchro(chemins[0], _conf, TypeSynchro.Inutilisee));
 					}
 				}
 			}
@@ -174,7 +174,12 @@ namespace BackupAirways.GestionSynchros
 		/// </summary>
 		/// <param name="nom">Nom de la synchro</param>
 		public void supprimeSynchro(string nom) {
-			Directory.Delete(_dossierSynchros + "\\" + nom, true);
+			try {
+				Directory.Delete(_dossierSynchros + "\\" + nom, true);	
+			} catch (Exception e) {
+				Logger.Log(e.Message, global::Logger.LogLevel.ERROR);
+			}
+			
 			getSynchros();
 		}
 		
@@ -259,6 +264,8 @@ namespace BackupAirways.GestionSynchros
 				Logger.Log("Fin du traitement des synchros : " + sw.ElapsedMilliseconds + "ms");
 				sw.Stop();
 				Thread.Sleep(C.INTERVALLE_SYNCHRO_MINUTES * 60 * 1000);
+				//Thread.Sleep(2000);
+
 			}
 		}
 		
@@ -298,6 +305,7 @@ namespace BackupAirways.GestionSynchros
 			DeltaMd5 		delta;
 			List<Demande> 	demandes;
 			int 			demandesFaites;
+			string			fichierReponse;
 			
 			foreach(SynchroEsclave s in _synchrosEsclave) {
 				if (s.Valide) {
@@ -314,9 +322,12 @@ namespace BackupAirways.GestionSynchros
 					}
 					
 					foreach (Demande demande in demandes) {
-						if (s.ReponseExiste(demande) != null) {
-							Logger.Log("Récupération du fichier " + demande.FichierReponse + " (" + demande.Md5f.Chemin + ")");
-							s.RecupereReponse(demande);
+						fichierReponse = s.ReponseExiste(demande);
+					
+						if (fichierReponse != null) {
+							Logger.Log("Récupération du fichier " + fichierReponse + " (" + demande.Md5f.Chemin + ")");
+							s.RecupereReponse(demande, fichierReponse);
+							
 						} else {
 							if (demandesFaites < C.MAX_DEMANDES_SIMULTANEES) {
 								if (!s.FichierDeDemandeExiste(demande)) {
