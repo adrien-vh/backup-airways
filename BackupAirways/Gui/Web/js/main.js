@@ -24,7 +24,7 @@ $(function () {
     
     function recupSauvegardes() {
         serveur.post(
-            CJS.ACTION__LISTE_SAUVEGARDES,
+            CJS.ACTION__LISTE_SYNCHROS,
             function (sauvegardes) {
                 var template = $('#tplSauvegarde').html(), rendered, i, j, synchros = sauvegardes[CJS.PARAM__SYNCHROS_MAITRES].concat(sauvegardes[CJS.PARAM__SYNCHROS_ESCLAVES]).concat(sauvegardes[CJS.PARAM__SYNCHROS_INUTILISEES]), synchro;
 
@@ -63,7 +63,7 @@ $(function () {
                     params[CJS.PARAM__NOM_SYNCHRO] = $(this).attr("data-synchro");
                     
                     serveur.post(
-                        CJS.ACTION__JOINDRE_SAUVEGARDE,
+                        CJS.ACTION__JOINDRE_SYNCHRO,
                         params,
                         function (retour) {
                             recupSauvegardes();
@@ -310,7 +310,7 @@ $(function () {
         params[CJS.PARAM__DOSSIER] = $("#dossierASauvegarder").attr("data-chemin");
         params[CJS.PARAM__NOM_SYNCHRO] = $("#inNomSauvegarde").val();
         serveur.post(
-            CJS.ACTION__NOUVELLE_SAUVEGARDE,
+            CJS.ACTION__NOUVELLE_SYNCHRO,
             params,
             function () {
                 $("#inNomSauvegarde").val("");

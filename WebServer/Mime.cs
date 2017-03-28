@@ -34,23 +34,23 @@ namespace WebServer
 			{"*", "application/octet-stream" },
 		};
 		
-		public string Type { get; set; }
+		public string Type { get; private set; }
 		
 		public static implicit operator string(Mime m) {
             return m.Type;
         }
 		
-		public static Mime html 	{ get { return new Mime(_mimeTypes["html"]); } }
-		public static Mime css 		{ get { return new Mime(_mimeTypes["css"]); } }
-		public static Mime ico 		{ get { return new Mime(_mimeTypes["ico"]); } }
-		public static Mime jpg 		{ get { return new Mime(_mimeTypes["jpg"]); } }
-		public static Mime bmp 		{ get { return new Mime(_mimeTypes["bmp"]); } }
-		public static Mime png 		{ get { return new Mime(_mimeTypes["png"]); } }
-		public static Mime js 		{ get { return new Mime(_mimeTypes["js"]); } }
-		public static Mime map 		{ get { return new Mime(_mimeTypes["map"]); } }
-		public static Mime json 	{ get { return new Mime(_mimeTypes["json"]); } }
-		public static Mime txt 		{ get { return new Mime(_mimeTypes["txt"]); } }
-		public static Mime defaut 	{ get { return new Mime(_mimeTypes["*"]); } }
+		public static Mime html 	= new Mime(_mimeTypes["html"]);
+		public static Mime css 		= new Mime(_mimeTypes["css"]);
+		public static Mime ico 		= new Mime(_mimeTypes["ico"]);
+		public static Mime jpg 		= new Mime(_mimeTypes["jpg"]);
+		public static Mime bmp 		= new Mime(_mimeTypes["bmp"]);
+		public static Mime png 		= new Mime(_mimeTypes["png"]);
+		public static Mime js 		= new Mime(_mimeTypes["js"]);
+		public static Mime map 		= new Mime(_mimeTypes["map"]);
+		public static Mime json 	= new Mime(_mimeTypes["json"]);
+		public static Mime txt 		= new Mime(_mimeTypes["txt"]);
+		public static Mime defaut 	= new Mime(_mimeTypes["*"]);
 
 		/// <summary>
 		/// Récupère le type mime en fonction de l'extension du fichier
@@ -60,7 +60,7 @@ namespace WebServer
 		public static Mime mimeFromNomFichier (string nomFichier) {
 			String extension = Path.GetExtension(nomFichier).Substring(1).ToLower();
 			
-			return _mimeTypes.ContainsKey(extension) ? new Mime(_mimeTypes[extension]) : new Mime(_mimeTypes["*"]);
+			return _mimeTypes.ContainsKey(extension) ? new Mime(_mimeTypes[extension]) : Mime.defaut;
 			
 		}
 	}

@@ -38,13 +38,13 @@ namespace BackupAirways.Gui
 			_webServer.ajouteAction(CJS.ACTION__C_JS,			 			this.getConstantes);
 			_webServer.ajouteAction(CJS.ACTION__CHEMINS_DRIVES, 			this.getDrivesPaths);
 			_webServer.ajouteAction(CJS.ACTION__SET_DOSSIER_TAMPON,			this.setDossierTampon);
-			_webServer.ajouteAction(CJS.ACTION__LISTE_SAUVEGARDES,			this.getSauvegardes);
+			_webServer.ajouteAction(CJS.ACTION__LISTE_SYNCHROS,				this.getSynchros);
 			_webServer.ajouteAction(CJS.ACTION__ETAT_INITIALISATION,		this.etatInitialisation);
 			_webServer.ajouteAction(CJS.ACTION__GET_NOM_MACHINE,			this.getNomMachine);
 			_webServer.ajouteAction(CJS.ACTION__CHANGE_NOM_CLIENT,			this.changeNomClient);
 			_webServer.ajouteAction(CJS.ACTION__GET_LISTE_CLIENTS,			this.getListeClients);
-			_webServer.ajouteAction(CJS.ACTION__NOUVELLE_SAUVEGARDE,		this.nouvelleSynchro);
-			_webServer.ajouteAction(CJS.ACTION__JOINDRE_SAUVEGARDE,			this.joindreSynchro);
+			_webServer.ajouteAction(CJS.ACTION__NOUVELLE_SYNCHRO,			this.nouvelleSynchro);
+			_webServer.ajouteAction(CJS.ACTION__JOINDRE_SYNCHRO,			this.joindreSynchro);
 			_webServer.ajouteAction(CJS.ACTION__SUPPRIME_SYNCHRO,			this.supprimeSynchro);
 			_webServer.ajouteAction(CJS.ACTION__SUPPRIME_CLIENT_SYNCHRO,	this.supprimeClientSynchro);
 			_webServer.ajouteAction(CJS.ACTION__CREATION_DOSSIER,			this.creerDossier);
@@ -117,8 +117,8 @@ namespace BackupAirways.Gui
 		/// Renvoie les listes des sauvegardes
 		/// </summary>
 		/// <param name="parametres">Non utilisé</param>
-		/// <returns>{ maitres : [sauvegardes dont le client est maitre], esclaves : [sauvegardes dont le client est esclave], inutilisees : [sauvegardes disponibles] }</returns>
-		public WebReponse getSauvegardes (Dictionary<string, string> parametres) {	
+		/// <returns>{ maitres : [synchros dont le client est maitre], esclaves : [synchros dont le client est esclave], inutilisees : [synchros disponibles] }</returns>
+		public WebReponse getSynchros (Dictionary<string, string> parametres) {	
 			Dictionary<string, Object> retour = new Dictionary<string, object>();
 			
 			retour.Add(CJS.PARAM__NOM_MACHINE,			_gestionnaireSynchros.Conf.NomClient);

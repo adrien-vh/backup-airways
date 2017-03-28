@@ -1,11 +1,11 @@
-﻿// TODO: Gérer une liste des clients à part pour retrouver les clients liés à aucune sauvegarde
+﻿// TODO: -== FAIT ==- Gérer une liste des clients à part pour retrouver les clients liés à aucune synchro
 // TODO: -== FAIT ==- Ne mettre à jour le md5 que s'il y eu des modifications
-// TODO: Ne générer les demandes que si elle n'existe pas déjà
-// TODO: Gérer le déplacement d'un dossier de sauvegarde
-// TODO: Ajouter la possibilité de créer un dossier depuis l'interface web
+// TODO: -== FAIT ==- Ne générer les demandes que si elle n'existe pas déjà
+// TODO: Gérer le déplacement d'un dossier de synchro
+// TODO: -== FAIT ==- Ajouter la possibilité de créer un dossier depuis l'interface web
 // TODO: -== GÉRÉ AUTREMENT ==-Logger à passer en argument au webserver
-// TODO: Avertissement si le dossier choisi pour une sauvegarde n'est pas vide
-// TODO: Revoir la classe mime pour ne pas instancier à chaque requête
+// TODO: Avertissement si le dossier choisi pour une synchro n'est pas vide
+// TODO: -== FAIT ==- Revoir la classe mime pour ne pas instancier à chaque requête
 // TODO: Changer sauvegarde en synchro
 
 using System;

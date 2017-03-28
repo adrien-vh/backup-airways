@@ -30,7 +30,7 @@ namespace BackupAirways
 	static internal class CJS
 	{
 		public const string 	ACTION__LISTE_DOSSIERS 			= "listedossiers",
-								ACTION__LISTE_SAUVEGARDES		= "listesauvegardes",
+								ACTION__LISTE_SYNCHROS			= "listesynchros",
 								ACTION__C_JS 					= "c.js",
 								ACTION__CHEMINS_DRIVES			= "cheminsdrives",
 								ACTION__SET_DOSSIER_TAMPON		= "setdossiertampon",
@@ -38,8 +38,8 @@ namespace BackupAirways
 								ACTION__GET_NOM_MACHINE			= "getnommachine",
 								ACTION__CHANGE_NOM_CLIENT		= "changenomclient",
 								ACTION__GET_LISTE_CLIENTS		= "getlisteclients",
-								ACTION__NOUVELLE_SAUVEGARDE		= "nouvellesauvegarde",
-								ACTION__JOINDRE_SAUVEGARDE		= "joindresauvegarde",
+								ACTION__NOUVELLE_SYNCHRO		= "nouvellesynchro",
+								ACTION__JOINDRE_SYNCHRO			= "joindresynchro",
 								ACTION__SUPPRIME_SYNCHRO		= "supprimesynchro",
 								ACTION__SUPPRIME_CLIENT_SYNCHRO	= "supprimeclientsynchro",
 								ACTION__CREATION_DOSSIER		= "creationdossier",
