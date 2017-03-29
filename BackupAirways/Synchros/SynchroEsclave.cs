@@ -93,6 +93,13 @@ namespace BackupAirways.Synchros
 			List<string> 	parts;
 			
 			if (infos[2] == "0") {
+			
+				fichierDestination 	= Dossier + "\\" + demande.Md5f.Chemin;
+				Directory.CreateDirectory(Path.GetDirectoryName(fichierDestination));
+				File.Copy(fichierReponse, fichierDestination, true);
+				
+			} else if (infos[2] == "1") {
+				
 				partsExistantes = Directory.GetFiles(_dossier + "\\" + C.DOSSIER_TRAVAIL, demande.Md5f.Md5 + ".*", SearchOption.TopDirectoryOnly);
 				if (partsExistantes.Length > 0) {
 					curseurs 	= new List<long>();
@@ -102,7 +109,7 @@ namespace BackupAirways.Synchros
 						curseurs.Add(long.Parse(Path.GetFileName(part).Split('.')[1]));
 					}
 					curseurs.Sort();
-					curseurs.Add(0);
+					curseurs.Add(1);
 					
 					fichierDestination	= Dossier + "\\" + C.DOSSIER_TRAVAIL + "\\" + demande.Md5f.Md5 + "." + infos[2];
 					Directory.CreateDirectory(Path.GetDirectoryName(fichierDestination));
@@ -119,13 +126,7 @@ namespace BackupAirways.Synchros
 					foreach (string part in parts) {
 						File.Delete(part);
 					}
-				
-				} else {
-					fichierDestination 	= Dossier + "\\" + demande.Md5f.Chemin;
-					Directory.CreateDirectory(Path.GetDirectoryName(fichierDestination));
-					File.Copy(fichierReponse, fichierDestination, true);
 				}
-				
 			} else {
 				fichierDestination	= Dossier + "\\" + C.DOSSIER_TRAVAIL + "\\" + demande.Md5f.Md5 + "." + infos[2];
 				Directory.CreateDirectory(Path.GetDirectoryName(fichierDestination));
@@ -136,7 +137,7 @@ namespace BackupAirways.Synchros
 			
 			SupprimeDemande(demande);
 			
-			if (Directory.GetFiles(_dossierTamponSynchro, demande.Md5f.Md5 + "." + demande.NoPart + ".*." + C.EXT__DEMANDE).Length == 0) {
+			if (Directory.GetFiles(_dossierTamponSynchro, demande.Md5f.Md5 + "." + demande.PartStart + ".*." + C.EXT__DEMANDE).Length == 0) {
 				File.Delete(fichierReponse);
 			}	
 			
@@ -145,7 +146,7 @@ namespace BackupAirways.Synchros
 		
 		public void FaireDemande (Demande demande) 
 		{
-			var fichierDemande = _dossierTamponSynchro + "\\" + demande.Fichier;
+			var fichierDemande = _dossierTamponSynchro + "\\" + demande.FichierDemande;
 			
 			if (!File.Exists(fichierDemande)) {
 				File.WriteAllText(fichierDemande, demande.Md5f.ToString());

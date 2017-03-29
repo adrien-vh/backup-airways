@@ -10,7 +10,7 @@ namespace BackupAirways
 		public const int	MAX_DEMANDES_SIMULTANEES	= 50,
 							LOG_MESSAGE					= 1,
 							INTERVALLE_SYNCHRO_MINUTES	= 5,
-							TAILLE_MAX_FICHIER			= 20;
+							TAILLE_MAX_FICHIER			= 50;
 		
 		public const string PREFIXE 					= "http://localhost:8000/",
 							MUTEX						= "backupairways",

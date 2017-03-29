@@ -25,11 +25,19 @@ namespace BackupAirways.Synchros
 			return retour;
 		}
 		
+		
+		
+		
+		/// <summary>
+		/// Supprime les fichiers réponses ne correspondant plus à aucune demande
+		/// </summary>
 		public void SupprimeReponsesSansDemande () {
 			string nomFichierSansExtension;
 			
 			foreach (string fichierReponse in Directory.GetFiles(_dossierTamponSynchro, "*." + C.EXT__REPONSE, SearchOption.TopDirectoryOnly))	{
-				nomFichierSansExtension = Path.GetFileNameWithoutExtension(fichierReponse);
+				
+				nomFichierSansExtension = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(fichierReponse));
+				
 				if (Directory.GetFiles(_dossierTamponSynchro, nomFichierSansExtension + ".*." + C.EXT__DEMANDE, SearchOption.TopDirectoryOnly).Length == 0) {
 					File.Delete(fichierReponse);
 				}
@@ -53,14 +61,16 @@ namespace BackupAirways.Synchros
         	
         	if (taille > C.TAILLE_MAX_FICHIER * 1024 * 1024) {
         		
-        		fichierTampon 	= _dossierTamponSynchro + "\\" + demande.FichierReponse(U.ExtractFilePart(fichierDemandé, fichierTemp, demande.NoPart, C.TAILLE_MAX_FICHIER)) ;
+        		fichierTampon 	= _dossierTamponSynchro + "\\" + demande.FichierReponse(U.ExtractFilePart(fichierDemandé, fichierTemp, demande.PartStart, C.TAILLE_MAX_FICHIER)) ;
+        		
         		if (!File.Exists(fichierTampon)) {
         			File.Copy(fichierTemp, fichierTampon);
         		}
         	} else {
         		fichierTampon 	= _dossierTamponSynchro + "\\" + demande.FichierReponse(0);
-        		
-        		File.Copy(fichierDemandé, fichierTampon);
+        		if (!File.Exists(fichierTampon)) {
+        			File.Copy(fichierDemandé, fichierTampon);
+        		}
         	}
 			
 			return new FileInfo(fichierTampon).Length;

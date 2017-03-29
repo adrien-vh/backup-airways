@@ -9,6 +9,7 @@
 // TODO: Changer sauvegarde en synchro
 // TODO: Gérer les gros fichiers
 // TODO: Revoir la fonction SynchroMaitre.SupprimeReponsesSansDemande (modification du format des fichiers de réponse)
+// TODO: Faire le ménage dans dossier de travail
 
 using System;
 using System.Threading;
@@ -63,6 +64,8 @@ namespace BackupAirways
 			U.AssembleFileParts(parts, @"D:\Temp\test.final.jpg");*/
 		
 			//Logger.Log(U.ExtractFilePart(@"D:\Temp\test.jpg", @"D:\Temp\test.jpg.part1", 0, 20).ToString());
+			
+			//Logger.Log(File.Exists(@"D:\Users\vanhyftea\Google Drive\.saw\TestGrosFichier\3BC5632A6925E045DBCB151FA4B694D6.125829120.1.rep").ToString());
 			
 			Conf 	conf 					= Conf.getConf(C.FICHIER_CONF);
 			var 	gestionnaireSynchros 	= new GestionnaireSynchros(conf);

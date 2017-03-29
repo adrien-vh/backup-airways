@@ -263,8 +263,8 @@ namespace BackupAirways.GestionSynchros
 				traiteSynchrosEsclaves();
 				Logger.Log("Fin du traitement des synchros : " + sw.ElapsedMilliseconds + "ms");
 				sw.Stop();
-				Thread.Sleep(C.INTERVALLE_SYNCHRO_MINUTES * 60 * 1000);
-				//Thread.Sleep(2000);
+				//Thread.Sleep(C.INTERVALLE_SYNCHRO_MINUTES * 60 * 1000);
+				Thread.Sleep(2000);
 
 			}
 		}
@@ -286,10 +286,10 @@ namespace BackupAirways.GestionSynchros
 						if (tailleDossier > tailleMax) break;
 						
 						if (!s.FichierDemandeExiste(demande)) {
-							Logger.Log("Suppression de la demande " + demande.Fichier + " car le fichier correspondant n'existe plus");
+							Logger.Log("Suppression de la demande " + demande.FichierDemande + " car le fichier correspondant n'existe plus");
 							s.SupprimeDemande(demande);
 							
-						} else if (s.ReponseExiste(demande) == null) {
+						} else if (demande.FichierReponseExistant(s.DossierTampon) == null) {
 							Logger.Log("Fourniture du fichier " + demande.Md5f.Chemin);
 							tailleDossier += s.FourniReponse(demande);
 						}
@@ -306,6 +306,7 @@ namespace BackupAirways.GestionSynchros
 			List<Demande> 	demandes;
 			int 			demandesFaites;
 			string			fichierReponse;
+			Demande			demandeSuiteFichier;
 			
 			foreach(SynchroEsclave s in _synchrosEsclave) {
 				if (s.Valide) {
@@ -322,11 +323,17 @@ namespace BackupAirways.GestionSynchros
 					}
 					
 					foreach (Demande demande in demandes) {
-						fichierReponse = s.ReponseExiste(demande);
+						fichierReponse = demande.FichierReponseExistant(s.DossierTampon);
 					
 						if (fichierReponse != null) {
 							Logger.Log("Récupération du fichier " + fichierReponse + " (" + demande.Md5f.Chemin + ")");
-							s.RecupereReponse(demande, fichierReponse);
+							demandeSuiteFichier = s.RecupereReponse(demande, fichierReponse);
+							
+							if (demandeSuiteFichier != null) {
+								Logger.Log("Demande du fichier " + demandeSuiteFichier.Md5f.Chemin);
+								s.FaireDemande(demandeSuiteFichier);
+								demandesFaites++;
+							}
 							
 						} else {
 							if (demandesFaites < C.MAX_DEMANDES_SIMULTANEES) {

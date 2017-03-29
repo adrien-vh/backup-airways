@@ -34,6 +34,7 @@ namespace BackupAirways.Synchros
 		public List<ConfSynchro>			Clients 			{ get { return _clients; } }
 		public ConfSynchro					ConfLocale			{ get { return _confLocale; } }
 		public int							NbFichiersMaitre	{ get { return _nbFichiersMaitre; } }
+		public string						DossierTampon		{ get { return _dossierTamponSynchro; } }
 		
 		
 		/// <summary>
@@ -132,12 +133,12 @@ namespace BackupAirways.Synchros
 			_clients.Add(confSynchro);
 		}
 		
-		public string ReponseExiste (Demande demande) {
+		/*public string ReponseExiste (Demande demande) {
 			return File.Exists(demande.FichierReponseExistant(_dossierTamponSynchro)) ? demande.FichierReponseExistant(_dossierTamponSynchro) : null;
-		}
+		}*/
 		
 		public bool FichierDeDemandeExiste (Demande demande) {
-			return File.Exists(_dossierTamponSynchro + "\\" + demande.Fichier);
+			return File.Exists(_dossierTamponSynchro + "\\" + demande.FichierDemande);
 		}
 		
 		public void GenListeFichiers ()	
@@ -187,7 +188,7 @@ namespace BackupAirways.Synchros
 		}
 		
 		public void SupprimeDemande (Demande demande) {
-			File.Delete(_dossierTamponSynchro + "\\" + demande.Fichier);
+			File.Delete(_dossierTamponSynchro + "\\" + demande.FichierDemande);
 		}
 		
 		private void ecrireConfLocale () {

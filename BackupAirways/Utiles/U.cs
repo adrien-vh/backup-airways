@@ -32,7 +32,7 @@ namespace BackupAirways
 		    			restantALire -= nbOctetsLus;
 		    		}
 		    		if (nbOctetsLus == 0) {
-		    			retour = 0;
+		    			retour = 1;
 		    		} else {
 		    			retour = input.Position;
 		    		}
