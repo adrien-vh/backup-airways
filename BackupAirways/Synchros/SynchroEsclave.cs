@@ -7,11 +7,20 @@ namespace BackupAirways.Synchros
 	public class SynchroEsclave : Synchro
 	{	
 		
-		public SynchroEsclave(string nom, Conf conf) : base(nom, conf, TypeSynchro.Esclave)
-		{
+		/// <summary>
+		/// Constructeur 
+		/// </summary>
+		/// <param name="nom">Nom de la synchro</param>
+		/// <param name="conf">Conf de la synchro</param>
+		public SynchroEsclave(string nom, Conf conf) : base(nom, conf, TypeSynchro.Esclave) {
 			_fichierListeMd5 	= _dossierTamponSynchro + "\\" + conf.NomClient + ".md5";
 		}
 		
+		
+		/// <summary>
+		/// Compare les contenus maîtres et client et renvoie le DeltaMD5
+		/// </summary>
+		/// <returns>DeltaMD5 entre le maître et le client</returns>
 		public DeltaMd5 DeltaFichiersAvecMaitre () {
 			string fichierMaitre	= _dossierTamponSynchro + "\\" + C.FICHIER_MAITRE;
 			string fichierEsclave	= _dossierTamponSynchro + "\\" + _conf.NomClient + ".md5";
@@ -23,38 +32,32 @@ namespace BackupAirways.Synchros
 			var ajouts 			= new List<Md5Fichier>();
 			var suppressions 	= new List<Md5Fichier>();
 			
-			if (File.Exists(fichierEsclave) && File.Exists(fichierMaitre))
-			{
+			if (File.Exists(fichierEsclave) && File.Exists(fichierMaitre)) {
 			
 				md5Maitre 		= File.ReadAllLines(fichierMaitre);
 				md5Esclave 		= File.ReadAllLines(fichierEsclave);
 				
-				while (true)
-				{
+				while (true) {
 					if (pMaitre >= md5Maitre.Length && pEsclave >= md5Esclave.Length) break;
 					
-					if (pMaitre >= md5Maitre.Length)
-					{
+					if (pMaitre >= md5Maitre.Length) {
+						
 						suppressions.Add(Md5Fichier.FromString(md5Esclave[pEsclave]));
 						pEsclave++;
-					}
-					else if (pEsclave >= md5Esclave.Length)
-					{
+					} else if (pEsclave >= md5Esclave.Length) {
+						
 						ajouts.Add(Md5Fichier.FromString(md5Maitre[pMaitre]));
 						pMaitre++;
-					}
-					else if (string.Compare(md5Maitre[pMaitre], md5Esclave[pEsclave]) < 0)
-					{
+					} else if (string.Compare(md5Maitre[pMaitre], md5Esclave[pEsclave]) < 0) {
+						
 						ajouts.Add(Md5Fichier.FromString(md5Maitre[pMaitre]));
 						pMaitre++;
-					}
-					else if (string.Compare(md5Maitre[pMaitre], md5Esclave[pEsclave]) > 0)
-					{
+					} else if (string.Compare(md5Maitre[pMaitre], md5Esclave[pEsclave]) > 0) {
+						
 						suppressions.Add(Md5Fichier.FromString(md5Esclave[pEsclave]));
 						pEsclave++;
-					}
-					else if (string.Compare(md5Maitre[pMaitre], md5Esclave[pEsclave]) == 0)
-					{
+					} else if (string.Compare(md5Maitre[pMaitre], md5Esclave[pEsclave]) == 0) {
+						
 						pMaitre++;
 						pEsclave++;
 					}
@@ -62,16 +65,6 @@ namespace BackupAirways.Synchros
 				
 				_nbFichiersMaitre = md5Maitre.Length;
 			}
-			
-			/*foreach(string ajout in ajouts)
-			{
-				Logger.Information("Ajout :" + ajout);
-			}*/
-			/*
-			foreach(string suppression in suppressions)
-			{
-				Logger.Information("Suppression :" + suppression);
-			}*/
 			
 			return new DeltaMd5(ajouts, suppressions);
 		}
@@ -144,8 +137,11 @@ namespace BackupAirways.Synchros
 			return retour;
 		}
 		
-		public void FaireDemande (Demande demande) 
-		{
+		/// <summary>
+		/// Pose le fichier de demande dans le dossier tampon
+		/// </summary>
+		/// <param name="demande">Demande à faire</param>
+		public void FaireDemande (Demande demande) {
 			var fichierDemande = _dossierTamponSynchro + "\\" + demande.FichierDemande;
 			
 			if (!File.Exists(fichierDemande)) {
@@ -154,8 +150,15 @@ namespace BackupAirways.Synchros
 			
 		}
 		
-		public List<Demande> GenDemandes (List<Md5Fichier> md5fs, int nbMax)
-		{
+		
+		/// <summary>
+		/// Génère une liste de demandes
+		/// </summary>
+		/// <param name="md5fs">Liste des fichier à demander</param>
+		/// <param name="nbMax">Nombre max de demandes à retourner</param>
+		/// <returns></returns>
+		public List<Demande> GenDemandes (List<Md5Fichier> md5fs, int nbMax) {
+			
 			var			retour		= new List<Demande>();
 			string[] 	partsExistantes;
 			long		posCurseur	= 0;
@@ -184,17 +187,40 @@ namespace BackupAirways.Synchros
 			return retour;
 		}
 		
-		public void SupprimeFichier (Md5Fichier md5f)
-		{
-			if (File.Exists(_dossier + "\\" + md5f.Chemin))
-			{
+		
+		/// <summary>
+		/// Supprime un fichier synchronisé (le déplace dans le dossier de travail) et les demandes liées.
+		/// </summary>
+		/// <param name="md5f">Fichier à supprimer</param>
+		public void SupprimeFichier (Md5Fichier md5f) {
+			if (File.Exists(_dossier + "\\" + md5f.Chemin)) {
 				Directory.CreateDirectory(Path.GetDirectoryName(_dossier + "\\" + C.DOSSIER_TRAVAIL + "\\" + md5f.Chemin));
 				File.Move(_dossier + "\\" + md5f.Chemin, _dossier + "\\" + C.DOSSIER_TRAVAIL + "\\" + md5f.Chemin);
 			}
 			
-			foreach (string fichier in Directory.GetFiles(_dossierTamponSynchro, md5f.Md5 + "*." + _conf.NomClient + "*.dem"))
-			{
+			foreach (string fichier in Directory.GetFiles(_dossierTamponSynchro, md5f.Md5 + "*." + _conf.NomClient + "*.dem")) {
 				File.Delete(fichier);
+			}
+		}
+		
+		
+		/// <summary>
+		/// Suppression des fichiers de demandes qui n'on plus lieu d'être
+		/// </summary>
+		/// <param name="demandes">Liste des demandes</param>
+		public void SupprimeAncienneDemandes (List<Demande> demandes) {
+			var 	md5s = new List<string>();
+			string 	md5;
+			
+			foreach (Demande d in demandes) {
+				md5s.Add(d.Md5f.Md5);
+			}
+			
+			foreach (string fichierDemande in Directory.GetFiles(_dossierTamponSynchro, U.FichierDemande("*", "*", _conf.NomClient), SearchOption.TopDirectoryOnly)) {
+				md5 = Path.GetFileName(fichierDemande).Split('.')[0];
+				if (!md5s.Contains(md5)) {
+					File.Delete(fichierDemande);
+				}
 			}
 		}
 	}

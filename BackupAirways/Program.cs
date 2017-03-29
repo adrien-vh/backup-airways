@@ -3,11 +3,11 @@
 // TODO: -== FAIT ==- Ne générer les demandes que si elle n'existe pas déjà
 // TODO: Gérer le déplacement d'un dossier de synchro
 // TODO: -== FAIT ==- Ajouter la possibilité de créer un dossier depuis l'interface web
-// TODO: -== GÉRÉ AUTREMENT ==-Logger à passer en argument au webserver
+// TODO: -== GÉRÉ AUTREMENT ==- Logger à passer en argument au webserver
 // TODO: Avertissement si le dossier choisi pour une synchro n'est pas vide
 // TODO: -== FAIT ==- Revoir la classe mime pour ne pas instancier à chaque requête
 // TODO: Changer sauvegarde en synchro
-// TODO: Gérer les gros fichiers
+// TODO: -== FAIT ==- Gérer les gros fichiers
 // TODO: Revoir la fonction SynchroMaitre.SupprimeReponsesSansDemande (modification du format des fichiers de réponse)
 // TODO: Faire le ménage dans dossier de travail
 

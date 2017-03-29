@@ -34,7 +34,7 @@ namespace BackupAirways.Synchros
 		public void SupprimeReponsesSansDemande () {
 			string nomFichierSansExtension;
 			
-			foreach (string fichierReponse in Directory.GetFiles(_dossierTamponSynchro, "*." + C.EXT__REPONSE, SearchOption.TopDirectoryOnly))	{
+			foreach (string fichierReponse in Directory.GetFiles(_dossierTamponSynchro, U.FichierReponse("*", "*", "*"), SearchOption.TopDirectoryOnly))	{
 				
 				nomFichierSansExtension = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(fichierReponse));
 				

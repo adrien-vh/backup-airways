@@ -20,7 +20,7 @@ namespace BackupAirways.Synchros
 		public Demande (Md5Fichier md5f, string nomClient, long partStart = 0) {
 			_md5f 			= md5f;
 			_partStart 		= partStart;
-			_fichierDemande	= string.Format(C.FORMAT__FICHIER_DEMANDE, md5f.Md5, _partStart, nomClient);
+			_fichierDemande	= U.FichierDemande(md5f.Md5, _partStart.ToString(), nomClient);
 		}
 		
 		public Demande(string fichierDemande) {
@@ -34,11 +34,11 @@ namespace BackupAirways.Synchros
 		}
 		
 		public string FichierReponse(long partEnd) {
-			return string.Format(C.FORMAT__FICHIER_REPONSE, _md5f.Md5, _partStart, partEnd);
+			return U.FichierReponse(_md5f.Md5, _partStart.ToString(), partEnd.ToString());
 		}
 		
 		public string FichierReponseExistant(string dossier) {
-			var fichiers = Directory.GetFiles(dossier, string.Format(C.FORMAT__FICHIER_REPONSE, _md5f.Md5, _partStart, "*"), SearchOption.TopDirectoryOnly);
+			var fichiers = Directory.GetFiles(dossier, U.FichierReponse(_md5f.Md5, _partStart.ToString(), "*"), SearchOption.TopDirectoryOnly);
 			
 			return fichiers.Length > 0 ? fichiers[0] : null;			
 		}
