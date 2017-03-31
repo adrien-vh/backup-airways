@@ -91,15 +91,12 @@
         <!-- PAGE PRESENTANT LA LISTE DES SAUVEGARDES -->
         <div id="pageListeSauvegardes" class="page">
             
-            <div id="listeSauvegardes">
+            <div id="gestionSynchros">
                 <span class="sauvegarde ajout">
-                    <!--<div class="entete">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>-->
                     <div class="contenant">
                         <div class="contenu">
                             <div class="sous-contenu existant">
-                                <a href="#" class="lien-sous-contenu" data-ref="form">
+                                <a href="#" data-ref="form" rv-on-click="gui.montreSousContenu">
                                     <i class="fa fa-plus fa-3x" aria-hidden="true"></i><br>
                                     Initier une nouvelle sauvegarde.
                                 </a>
@@ -108,26 +105,101 @@
                                 <h3>Nouvelle sauvegarde</h3>
                                 <div class="form">
                                     <span class="label">Nom de la sauvegarde :</span>
-                                    <input type="text" id="inNomSauvegarde">
+                                    <input type="text" rv-value="gestionSynchros.nouvelleSynchro.nom" rv-on-keyup="gestionSynchros.valideNouvelleSynchro">
                                     <span class="label">Dossier à sauvegarder :</span>
-                                    <a href="#" id="dossierASauvegarder"></a><br><br>
-                                    <span class="message-erreur" id="erreurNouvelleSauvegarde">
+                                    <local-browser chemin="gestionSynchros.nouvelleSynchro.chemin" caller="gestionSynchros" on-change="gestionSynchros.valideNouvelleSynchro"></local-browser><br><br>
+                                    <span class="message-erreur" rv-show="gestionSynchros.nouvelleSynchro.erreur | nonVide">
                                         <i class="fa fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
-                                        <span></span>
+                                        <span>{ gestionSynchros.nouvelleSynchro.erreur }</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="cont-bouton existant">
-                        
-                    </div>
+                    <div class="cont-bouton existant"></div>
                     <div class="cont-bouton form">
-                        <a href="#" id="boutNouvelleSauvegarde"><i class="fa fa-floppy-o" aria-hidden="true"></i><br><span>Enregistrer<span></a>
-                        <a href="#" id="boutNouvelleSauvegarde" class="annuler"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
+                        <a href="#" rv-class-inactif="gestionSynchros.nouvelleSynchro.erreur | nonVide" rv-on-click="gestionSynchros.creerSynchro"><i class="fa fa-floppy-o" aria-hidden="true"></i><br><span>Enregistrer<span></a>
+                        <a href="#" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
                     </div>
                 </span>
+                <span rv-each-synchro="gestionSynchros.synchros">
+                    <span class="sauvegarde" rv-class-esclave="synchro.Type | eq 0" rv-class-maitre="synchro.Type | eq 1" rv-class-inutilisee="synchro.Type | eq 2">
+                        <div class="entete">
+                            <i class="fa" aria-hidden="true" rv-class-fa-desktop="synchro.Type | eq 1" rv-class-fa-cloud="synchro.Type | eq 0" rv-show="synchro.Type | neq 2"></i>
+                            <i class="fa fa-caret-right" aria-hidden="true" rv-show="synchro.Type | neq 2"></i>
+                            <i class="fa" aria-hidden="true" rv-class-fa-desktop="synchro.Type | eq 0" rv-class-fa-cloud="synchro.Type | gt 0" ></i>
+                        </div>
+                        <div class="titre">
+                            <h3>{ synchro.Nom }</h3>
+                            <div class="sous-titre"><b>{ synchro.NbFichiersMaitre }</b> fichiers depuis <b rv-class-souligne="synchro.Maitre | eq gestionSynchros.nomMachine">{ synchro.Maitre }</b></div>
+                        </div>
+                        <div class="contenant">
+                            <div class="contenu">
+                                <div class="sous-contenu existant">
+                                    <span class="label">Sauvegardes existantes :</span>
+                                    <span rv-each-client="synchro.Clients">
+                                        <i class="fa fa-refresh fa-spin fa-fw" rv-show="client.NbFichiers | neq synchro.NbFichiersMaitre"></i>
+                                        <i class="fa fa-check fa-fw" rv-show="client.NbFichiers | eq synchro.NbFichiersMaitre"></i>
+                                        <b rv-class-souligne="client.Client | eq gestionSynchros.nomMachine">{ client.Client }</b>
+                                        <span rv-show="client.NbFichiers | neq synchro.NbFichiersMaitre">(manque { synchro.NbFichiersMaitre | minus client.NbFichiers } fichiers)</span>
+                                        <span rv-show="client.NbFichiers | eq synchro.NbFichiersMaitre">(Complète)</span>
+                                        <a href="#" class="danger" rv-data-ref="client.Client | prefixe 'fin-recuperation-'" rv-on-click="gui.montreSousContenu"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+                                    </span>
+                                    <span class="message-erreur" rv-show="synchro.Clients | vide">
+                                        Aucune
+                                    </span>
+                                </div>
+                                <div class="sous-contenu recuperation" rv-if="synchro.Type | eq 2">
+                                    <h4>Récupérer sur cette machine :</h4>
+                                    <span class="label">Dossier de destination :</span>
+                                    <!--<a href="#" class="dossier-local" data-synchro="{ synho.Nom }"></a>-->
+                                    <local-browser chemin="synchro.cheminRecuperation"></local-browser>
+                                    <br>
+                                    <br>
+                                    <span class="message-erreur" rv-show="synchro.cheminRecuperation.val | vide">
+                                        <i class="fa fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
+                                        <span>Le dossier sélectionné n'est pas valide</span>
+                                    </span>
+                                </div>
+                                
+                                <div rv-each-client="synchro.Clients" rv-class="client.Client | prefixe 'sous-contenu fin-recuperation-'">
+                                    <br>
+                                    <br>
+                                    <span class="danger txt-grand txt-justify">
+                                        Êtes-vous sûr de vouloir arrêter de récupérer une sauvegarde de <b>&laquo;&nbsp;{ synchro.Nom }&nbsp;&raquo;</b> sur <b>&laquo;&nbsp;{ client.Client }&nbsp;&raquo;</b> (aucun fichier ne sera supprimé) ?
+                                    </span>
+                                </div>
+                                <div class="sous-contenu suppression">
+                                    <br>
+                                    <br>
+                                    <span class="danger txt-grand txt-justify">Êtes-vous sûr de vouloir supprimer la sauvegarde <b>&laquo; { synchro.Nom } &raquo;</b> (aucun fichier ne sera supprimé) ?</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cont-bouton existant">
+                            <a href="#" data-ref="recuperation" rv-show="synchro.Type | eq 2" rv-on-click="gui.montreSousContenu"><i class="fa fa-cloud-download" aria-hidden="true"></i><br><span>Récupérer<span></a>
+                            <a href="#" data-ref="suppression" rv-on-click="gui.montreSousContenu"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
+                        </div>
+                        <div class="cont-bouton recuperation">
+                            <a href="#" rv-if="synchro.Type | eq 2" rv-class-inactif="synchro.cheminRecuperation.val | vide" rv-on-click="gestionSynchros.joindreSynchro | call synchro"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
+                            <a href="#" class="annuler" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
+                        </div>
+                        <div rv-each-client="synchro.Clients" rv-class="client.Client | prefixe 'cont-bouton fin-recuperation-'">
+                            <a href="#" rv-on-click="gestionSynchros.quitterSynchro | call synchro client.Client"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
+                            <a href="#" class="annuler" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
+                        </div>
+                        <div class="cont-bouton suppression">
+                            <a href="#" rv-on-click="gestionSynchros.supprimerSynchro | call synchro"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
+                            <a href="#" class="annuler" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
+                        </div>
+                    </span>
+                </span>
             </div>
+
+            <div id="listeSauvegardes">
+                
+            </div>
+            
             
             
         </div>
@@ -247,6 +319,7 @@
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
     <script type="text/javascript" src="http://localhost:8000/C.js"></script>
+    <script type="text/javascript" src="js/rivets.bundled.min.js"></script>
     <script type="text/javascript" src="js/mustache.min.js"></script>
     <script type="text/javascript" src="js/jquery.LocalBrowser.js"></script>
     <script type="text/javascript" src="js/Serveur.js"></script>

@@ -263,8 +263,8 @@ namespace BackupAirways.GestionSynchros
 				traiteSynchrosEsclaves();
 				Logger.Log("Fin du traitement des synchros : " + sw.ElapsedMilliseconds + "ms");
 				sw.Stop();
-				//Thread.Sleep(C.INTERVALLE_SYNCHRO_MINUTES * 60 * 1000);
-				Thread.Sleep(2000);
+				Thread.Sleep(C.INTERVALLE_SYNCHRO_MINUTES * 60 * 1000);
+				//Thread.Sleep(2000);
 
 			}
 		}

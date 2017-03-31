@@ -123,6 +123,7 @@
     <EmbeddedResource Include="Gui\Web\js\Serveur.js" />
     <EmbeddedResource Include="Gui\Web\js\jquery.LocalBrowser.js" />
     <EmbeddedResource Include="Gui\Web\js\main.js" />
+    <EmbeddedResource Include="Gui\Web\js\rivets.bundled.min.js" />
     <EmbeddedResource Include="Gui\Web\js\mustache.min.js" />
   </ItemGroup>
   <ItemGroup>
