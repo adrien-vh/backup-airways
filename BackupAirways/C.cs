@@ -54,15 +54,17 @@ namespace BackupAirways
 								PARAM__FICHIERS_SEUL			= "fichiersseulement",
 								PARAM__DOSSIER_TAMPON			= "dossiertampon",
 								PARAM__NOM_MACHINE				= "nommachine",
+								PARAM__NOM_CLIENT				= "nomclient",
 								PARAM__EST_INITIALISE			= "estinitialise",
 								PARAM__SYNCHROS_MAITRES			= "synchrosmaitres",
 								PARAM__SYNCHROS_ESCLAVES		= "synchrosesclaves",
 								PARAM__SYNCHROS_INUTILISEES		= "synchrosinutilisees",
 		
-								REP__ERREUR						= "erreur",
-								REP__MESSAGE					= "message",
-								REP__CHEMIN_GDRIVE				= "chemingoogledrive",
-								REP__VALEUR						= "valeur",
+								PARAM__ERREUR					= "erreur",
+								PARAM__MESSAGE					= "message",
+								PARAM__CHEMIN_GDRIVE			= "chemingoogledrive",
+								PARAM__CHEMIN_DROPBOX			= "chemindropbox",
+								PARAM__CHEMIN_ONEDRIVE			= "cheminonedrive",
 								
 								VAL__OK							= "ok";
 	}

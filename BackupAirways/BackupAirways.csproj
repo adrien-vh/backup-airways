@@ -124,7 +124,12 @@
     <EmbeddedResource Include="Gui\Web\js\jquery.LocalBrowser.js" />
     <EmbeddedResource Include="Gui\Web\js\main.js" />
     <EmbeddedResource Include="Gui\Web\js\rivets.bundled.min.js" />
-    <EmbeddedResource Include="Gui\Web\js\mustache.min.js" />
+    <EmbeddedResource Include="Gui\Web\js\localBrowser.comp.js" />
+    <EmbeddedResource Include="Gui\Web\js\formatters.js" />
+    <EmbeddedResource Include="Gui\Web\js\GestionSynchros.js" />
+    <EmbeddedResource Include="Gui\Web\js\GuiSynchros.js" />
+    <EmbeddedResource Include="Gui\Web\js\ChoixDossierTampon.js" />
+    <EmbeddedResource Include="Gui\Web\js\ChoixNomClient.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GestionSynchros" />

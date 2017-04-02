@@ -14,8 +14,8 @@ namespace BackupAirways.Gui
 	public class WebGui
 	{
 		private readonly 	GestionnaireSynchros 	_gestionnaireSynchros;
-		private readonly	WebReponse				_reponseOk 				= WebReponse.OnePropJson(CJS.REP__MESSAGE, 	CJS.VAL__OK);
-		private readonly	WebReponse				_reponseErreurParams 	= WebReponse.OnePropJson(CJS.REP__ERREUR, 	"Ereur de paramètres");
+		private readonly	WebReponse				_reponseOk 				= WebReponse.OnePropJson(CJS.PARAM__MESSAGE, 	CJS.VAL__OK);
+		private readonly	WebReponse				_reponseErreurParams 	= WebReponse.OnePropJson(CJS.PARAM__ERREUR, 	"Ereur de paramètres");
 		private 			Server 					_webServer;
 		private				Thread					_threadWebServer;
 		
@@ -96,7 +96,13 @@ namespace BackupAirways.Gui
 		/// <param name="parametres">Non utilisé</param>
 		/// <returns></returns>
 		public WebReponse etatInitialisation(Dictionary<string, string> parametres)	{
-			return new WebReponse("{\"" + CJS.PARAM__EST_INITIALISE + "\" : " + (_gestionnaireSynchros.Initialise ? "true" : "false") + "}");
+			
+			return new WebReponse(
+				"{\"" + 
+					CJS.PARAM__EST_INITIALISE + "\" : " + (_gestionnaireSynchros.Initialise ? "true" : "false") + "," +
+					"\"" + CJS.PARAM__DOSSIER_TAMPON  + "\" : \"" + _gestionnaireSynchros.Conf.DossierTampon.Replace("\\", "\\\\") + "\"," +
+					"\"" + CJS.PARAM__NOM_CLIENT  + "\" : \"" + _gestionnaireSynchros.Conf.NomClient + "\"" +
+				"}");
 		}
 		
 		
@@ -191,10 +197,12 @@ namespace BackupAirways.Gui
 		public WebReponse getDrivesPaths (Dictionary<string, string> parametres) {
 			var retour 				= new Dictionary<string, string>();
 			var cheminGoogleDrive 	= System.Environment.GetEnvironmentVariable("USERPROFILE") + "\\Google Drive";
+			var cheminOneDrive 		= System.Environment.GetEnvironmentVariable("USERPROFILE") + "\\OneDrive";
+			var cheminDropbox 		= System.Environment.GetEnvironmentVariable("USERPROFILE") + "\\Dropbox";
 			
-			if (Directory.Exists(cheminGoogleDrive)) {
-				retour.Add(CJS.REP__CHEMIN_GDRIVE, cheminGoogleDrive);
-			}
+			retour.Add(CJS.PARAM__CHEMIN_GDRIVE, 	Directory.Exists(cheminGoogleDrive) ? cheminGoogleDrive : "");
+			retour.Add(CJS.PARAM__CHEMIN_ONEDRIVE,	Directory.Exists(cheminOneDrive) 	? cheminOneDrive : "");
+			retour.Add(CJS.PARAM__CHEMIN_DROPBOX, 	Directory.Exists(cheminDropbox) 	? cheminDropbox : "");
 			
 			return new WebReponse(JsonConvert.SerializeObject(retour));
 		}
@@ -325,12 +333,12 @@ namespace BackupAirways.Gui
 							}
 						}
 						catch (Exception e)	{
-							return WebReponse.OnePropJson(CJS.REP__ERREUR,  e.Message.Replace(@"\",@"\\"));
+							return WebReponse.OnePropJson(CJS.PARAM__ERREUR,  e.Message.Replace(@"\",@"\\"));
 						}
 										
 						return new WebReponse(JsonConvert.SerializeObject(donnees));
 					} else {
-						return WebReponse.OnePropJson(CJS.REP__ERREUR,  "Le disque " + parametres[CJS.PARAM__DOSSIER] + " n'existe pas");
+						return WebReponse.OnePropJson(CJS.PARAM__ERREUR,  "Le disque " + parametres[CJS.PARAM__DOSSIER] + " n'existe pas");
 					}
 				}
 			} else {

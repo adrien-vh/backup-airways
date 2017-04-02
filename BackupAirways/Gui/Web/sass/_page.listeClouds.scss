@@ -52,7 +52,6 @@
         &.actif {
             @include single-transition(all, 0.3s);
             cursor: pointer;
-            display: none;
             
             .nom-cloud {
                 @include single-transition(all, 0.3s);

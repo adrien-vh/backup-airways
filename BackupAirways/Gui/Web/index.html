@@ -19,47 +19,47 @@
             <span class="logo"><img src="images/logo.png"> Backup Airways</span>
         </div>
     </div>
-    <div class="section principale">
+    <div class="section principale" id="contenantGlobal">
         <!-- PAGE DE CHOIX DU DOSSIER TAMPON -->
-        <div id="pageChoixTampon" class="page">
+        <div id="pageChoixTampon" class="page" rv-show="choixDossierTampon.dossierChoisi | vide">
             <h2>Quel service de cloud voulez-vous utiliser pour faire communiquer vos ordinateurs :</h2>
             <hr>
             <div class="liste-cloud">
                 <div class="choix-cloud">
-                    <span class="actif gdrive">
+                    <span class="actif gdrive" rv-show="choixDossierTampon.dossierGoogleDrive | nonVide">
                         <i class="fleche fa fa-caret-right" aria-hidden="true"></i>
                         <img class="logo" src="images/gdrive_ico_64.png">
                         <span class="nom-cloud">Google Drive</span>
                         <br>
-                        <span class="chemin">E:\GoogleDrive</span>
+                        <span class="chemin">{ choixDossierTampon.dossierGoogleDrive }</span>
                     </span>
-                    <span class="inactif gdrive">
+                    <span class="inactif gdrive" rv-show="choixDossierTampon.dossierGoogleDrive | vide">
                         <img class="logo" src="images/gdrive_nb_ico_64.png">
                         <span class="nom-cloud">Google Drive</span>
                         <br>
                         <span class="chemin">Google Drive n'a pas été trouvé sur cet ordinateur</span>
                     </span>
-                    <span class="actif onedrive">
+                    <span class="actif onedrive" rv-show="choixDossierTampon.dossierOneDrive | nonVide">
                         <i class="fleche fa fa-caret-right" aria-hidden="true"></i>
                         <img class="logo" src="images/onedrive_ico_64.png">
                         <span class="nom-cloud">One Drive</span>
                         <br>
-                        <span class="chemin">E:\GoogleDrive</span>
+                        <span class="chemin">{ choixDossierTampon.dossierOneDrive }</span>
                     </span>
-                    <span class="inactif onedrive">
+                    <span class="inactif onedrive" rv-show="choixDossierTampon.dossierOneDrive | vide">
                         <img class="logo" src="images/onedrive_nb_ico_64.png">
                         <span class="nom-cloud">One Drive</span>
                         <br>
                         <span class="chemin">One Drive n'a pas été trouvé sur cet ordinateur</span>
                     </span>
-                    <span class="actif dropbox">
+                    <span class="actif dropbox" rv-show="choixDossierTampon.dossierDropbox | nonVide">
                         <i class="fleche fa fa-caret-right" aria-hidden="true"></i>
                         <img class="logo" src="images/dropbox_ico_64.png">
                         <span class="nom-cloud">Dropbox</span>
                         <br>
-                        <span class="chemin">C:\Users\Adrien\dropbox</span>
+                        <span class="chemin">{ choixDossierTampon.dossierDropbox }</span>
                     </span>
-                    <span class="inactif dropbox">
+                    <span class="inactif dropbox" rv-show="choixDossierTampon.dossierDropbox | vide">
                         <img class="logo" src="images/dropbox_nb_ico_64.png">
                         <span class="nom-cloud">Dropbox</span>
                         <br>
@@ -71,8 +71,9 @@
                         <span class="nom-cloud">Autre dossier</span>
                         <span class="chemin"></span>
                         <br>
+                        <local-browser chemin="choixDossierTampon.dossierChoisiTmp" caller="gestionSynchros" on-change="gestionSynchros.valideNouvelleSynchro"></local-browser>
                         <!--<span class="chemin">E:\GoogleDrive</span>-->
-                        <a href="#" class="dossier-local"></a>
+                        <!--<a href="#" class="dossier-local"></a>-->
                     </span>
                 </div>
             </div>
@@ -81,7 +82,7 @@
         </div>
         
         <!-- PAGE DE CHOIX DU NOM DU CLIENT -->
-        <div id="pageChoixNom" class="page" style="display:block">
+        <div id="pageChoixNom" class="page" rv-show="choixDossierTampon.dossierChoisi | nonVide">
             <h2>Choisissez un nom pour cet ordinateur</h2>
             <input id="inNomMachine" type="text" value="">
             <span class="message-erreur" id="erreurNomClient"></span>
@@ -89,7 +90,7 @@
         </div>
         
         <!-- PAGE PRESENTANT LA LISTE DES SAUVEGARDES -->
-        <div id="pageListeSauvegardes" class="page">
+        <div id="pageListeSauvegardes" class="page"  rv-show="choixNomClient.nomChoisi | nonVide">
             
             <div id="gestionSynchros">
                 <span class="sauvegarde ajout">
@@ -118,8 +119,8 @@
                     </div>
                     <div class="cont-bouton existant"></div>
                     <div class="cont-bouton form">
-                        <a href="#" rv-class-inactif="gestionSynchros.nouvelleSynchro.erreur | nonVide" rv-on-click="gestionSynchros.creerSynchro"><i class="fa fa-floppy-o" aria-hidden="true"></i><br><span>Enregistrer<span></a>
-                        <a href="#" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
+                        <a href="#" rv-class-inactif="gestionSynchros.nouvelleSynchro.erreur | nonVide" rv-on-click="gestionSynchros.creerSynchro"><i class="fa fa-floppy-o" aria-hidden="true"></i><br><span>Enregistrer</span></a>
+                            <a href="#" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler</span></a>
                     </div>
                 </span>
                 <span rv-each-synchro="gestionSynchros.synchros">
@@ -177,152 +178,40 @@
                             </div>
                         </div>
                         <div class="cont-bouton existant">
-                            <a href="#" data-ref="recuperation" rv-show="synchro.Type | eq 2" rv-on-click="gui.montreSousContenu"><i class="fa fa-cloud-download" aria-hidden="true"></i><br><span>Récupérer<span></a>
-                            <a href="#" data-ref="suppression" rv-on-click="gui.montreSousContenu"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
+                            <a href="#" data-ref="recuperation" rv-show="synchro.Type | eq 2" rv-on-click="gui.montreSousContenu"><i class="fa fa-cloud-download" aria-hidden="true"></i><br><span>Récupérer</span></a>
+                                <a href="#" data-ref="suppression" rv-on-click="gui.montreSousContenu"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer</span></a>
                         </div>
                         <div class="cont-bouton recuperation">
-                            <a href="#" rv-if="synchro.Type | eq 2" rv-class-inactif="synchro.cheminRecuperation.val | vide" rv-on-click="gestionSynchros.joindreSynchro | call synchro"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
-                            <a href="#" class="annuler" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
+                            <a href="#" rv-if="synchro.Type | eq 2" rv-class-inactif="synchro.cheminRecuperation.val | vide" rv-on-click="gestionSynchros.joindreSynchro | call synchro"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider</span></a>
+                            <a href="#" class="annuler" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler</span></a>
                         </div>
                         <div rv-each-client="synchro.Clients" rv-class="client.Client | prefixe 'cont-bouton fin-recuperation-'">
-                            <a href="#" rv-on-click="gestionSynchros.quitterSynchro | call synchro client.Client"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
-                            <a href="#" class="annuler" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
+                            <a href="#" rv-on-click="gestionSynchros.quitterSynchro | call synchro client.Client"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider</span></a>
+                            <a href="#" class="annuler" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler</span></a>
                         </div>
                         <div class="cont-bouton suppression">
-                            <a href="#" rv-on-click="gestionSynchros.supprimerSynchro | call synchro"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
-                            <a href="#" class="annuler" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
+                            <a href="#" rv-on-click="gestionSynchros.supprimerSynchro | call synchro"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer</span></a>
+                            <a href="#" class="annuler" rv-on-click="gui.cacheSousContenu"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler</span></a>
                         </div>
                     </span>
                 </span>
             </div>
-
-            <div id="listeSauvegardes">
-                
-            </div>
-            
-            
-            
         </div>
     </div>
     
-    <div style="display:none">
-        <a href="#" id="BoutStop">Stop</a>
-        <div id="parent"></div>
-        <div id="contenu"></div>
-        
-    </div>
     
-    <script id="tplSynchro" type="x-tmpl-mustache">
-        <span class="sauvegarde {{classe}}">
-            {{#maitre}}
-            <div class="entete">
-                <i class="fa fa-desktop" aria-hidden="true"></i>
-                <i class="fa fa-caret-right" aria-hidden="true"></i>
-                <i class="fa fa-cloud" aria-hidden="true"></i>
-            </div>
-            {{/maitre}}
-            {{#esclave}}
-            <div class="entete">
-                <i class="fa fa-cloud" aria-hidden="true"></i>
-                <i class="fa fa-caret-right" aria-hidden="true"></i>
-                <i class="fa fa-desktop" aria-hidden="true"></i>
-            </div>
-            {{/esclave}}
-            {{#inutilisee}}
-            <div class="entete">
-                <i class="fa fa-cloud" aria-hidden="true"></i>
-            </div>
-            {{/inutilisee}}
-            <div class="titre">
-                <h3>{{ Nom }}</h3>
-                <div class="sous-titre"><b>{{ NbFichiersMaitre }}</b> fichiers depuis <b {{#maitre}}class="souligne"{{/maitre}}>{{ Maitre }}</b></div>
-            </div>
-            <div class="contenant">
-                <div class="contenu">
-                    <div class="sous-contenu existant">
-                        <span class="label">Sauvegardes existantes :</span>
-                        {{#Clients}}
-                        {{^complete}}
-                        <i class="fa fa-refresh fa-spin fa-fw"></i>
-                        {{/complete}}
-                        {{#complete}}
-                        <i class="fa fa-check fa-fw"></i>
-                        {{/complete}}
-                         <b class="{{#estClientLocal}}souligne{{/estClientLocal}}">{{Client}}</b>
-                        {{^complete}}
-                        (manque <b>{{deltaFichiers}}</b> fichiers)
-                        {{/complete}}
-                        {{#complete}}
-                        (complète)
-                        {{/complete}}
-                        
-                        <a href="#" class="danger lien-sous-contenu bouton-supprime-client" data-ref="fin-recuperation" data-client="{{Client}}"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
-                        {{/Clients}}
-                        {{^Clients}}
-                        <span class="message-erreur">
-                            Aucune
-                        </span>
-                        {{/Clients}}
-                    </div>
-                    <div class="sous-contenu recuperation">
-                        <h4>Récupérer sur cette machine :</h4>
-                        <span class="label">Dossier de destination :</span>
-                        <a href="#" class="dossier-local" data-synchro="{{ Nom }}"></a>
-                        <br>
-                        <br>
-                        <span class="message-erreur">
-                            <i class="fa fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
-                            <span>Le dossier sélectionné n'est pas valide</span>
-                        </span>
-                        <!--<br>
-                        <br>
-                        <div class="txt-center">
-                            <a href="#" class="bouton inactif" data-synchro="{{ Nom }}">Valider</a>
-                        </div>-->
-                    </div>
-                    <div class="sous-contenu fin-recuperation">
-                        <br>
-                        <br>
-                        <span class="danger txt-grand txt-justify">
-                            Êtes-vous sûr de vouloir arrêter de récupérer une sauvegarde de <b>&laquo;&nbsp;{{ Nom }}&nbsp;&raquo;</b> sur <b>&laquo;&nbsp;<span class="nom-client"></span>&nbsp;&raquo;</b> (aucun fichier ne sera supprimé) ?
-                        </span>
-                    </div>
-                    <div class="sous-contenu suppression">
-                        <br>
-                        <br>
-                        <span class="danger txt-grand txt-justify">Êtes-vous sûr de vouloir supprimer la sauvegarde <b>&laquo; {{ Nom }} &raquo;</b> (aucun fichier ne sera supprimé) ?</span>
-                    </div>
-
-
-                    <!--<a href="#" class="bouton warning" data-synchro="{{ Nom }}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>-->
-                </div>
-            </div>
-            <div class="cont-bouton existant">
-                {{#inutilisee}}<a href="#" data-ref="recuperation" class="lien-sous-contenu"><i class="fa fa-cloud-download" aria-hidden="true"></i><br><span>Récupérer<span></a>{{/inutilisee}}
-                <a href="#" data-ref="suppression" class="lien-sous-contenu"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
-            </div>
-            <div class="cont-bouton recuperation">
-                <a href="#" class="inactif confirme-recuperation" data-synchro="{{Nom}}"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
-                <a href="#" class="annuler"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
-            </div>
-            <div class="cont-bouton fin-recuperation">
-                <a href="#" data-synchro="{{Nom}}" data-client="" class="confirme-fin-recuperation"><i class="fa fa-check" aria-hidden="true"></i><br><span>Valider<span></a>
-                <a href="#" class="annuler"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
-            </div>
-            <div class="cont-bouton suppression">
-                <a href="#" class="confirme-suppression" data-synchro="{{Nom}}"><i class="fa fa-trash-o" aria-hidden="true"></i><br><span>Supprimer<span></a>
-                <a href="#" class="annuler"><i class="fa fa-times" aria-hidden="true"></i><br><span>Annuler<span></a>
-            </div>
-            
-        </span>
-    </script>
-
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
     <script type="text/javascript" src="http://localhost:8000/C.js"></script>
     <script type="text/javascript" src="js/rivets.bundled.min.js"></script>
     <script type="text/javascript" src="js/mustache.min.js"></script>
     <script type="text/javascript" src="js/jquery.LocalBrowser.js"></script>
     <script type="text/javascript" src="js/Serveur.js"></script>
+    <script type="text/javascript" src="js/formatters.js"></script>
+    <script type="text/javascript" src="js/localBrowser.comp.js"></script>
+    <script type="text/javascript" src="js/ChoixDossierTampon.js"></script>
+    <script type="text/javascript" src="js/ChoixNomClient.js"></script>
+    <script type="text/javascript" src="js/GestionSynchros.js"></script>
+    <script type="text/javascript" src="js/GuiSynchros.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
