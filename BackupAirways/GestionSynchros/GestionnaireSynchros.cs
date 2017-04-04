@@ -239,8 +239,8 @@ namespace BackupAirways.GestionSynchros
 		public void setDossierTampon(string chemin) {
 			chemin = chemin.WithoutEndingSlash();
 			
-			if (chemin.Substring(chemin.Length - 4) != ".saw") {
-				chemin =  chemin + "\\.saw";
+			if (!chemin.EndsWith(C.DOSSIER_TRAVAIL)) {
+				chemin =  chemin + "\\" + C.DOSSIER_TRAVAIL;
 			}
 			
 			Directory.CreateDirectory(chemin);

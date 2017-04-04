@@ -7,7 +7,7 @@ function main() {
     var serveur = new Serveur("http://localhost:8000/"),
         gestionSynchros = new GestionSynchros(serveur),
         choixDossierTampon = new ChoixDossierTampon(serveur),
-        choixNomClient = new ChoixNomClient();
+        choixNomClient = new ChoixNomClient(serveur);
 
     serveur.post(
         CJS.ACTION__ETAT_INITIALISATION,

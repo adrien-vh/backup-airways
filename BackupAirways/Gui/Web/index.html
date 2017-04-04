@@ -26,7 +26,7 @@
             <hr>
             <div class="liste-cloud">
                 <div class="choix-cloud">
-                    <span class="actif gdrive" rv-show="choixDossierTampon.dossierGoogleDrive | nonVide">
+                    <span class="actif gdrive" rv-show="choixDossierTampon.dossierGoogleDrive | nonVide" rv-on-click="gui.choisiDrive">
                         <i class="fleche fa fa-caret-right" aria-hidden="true"></i>
                         <img class="logo" src="images/gdrive_ico_64.png">
                         <span class="nom-cloud">Google Drive</span>
@@ -39,7 +39,7 @@
                         <br>
                         <span class="chemin">Google Drive n'a pas été trouvé sur cet ordinateur</span>
                     </span>
-                    <span class="actif onedrive" rv-show="choixDossierTampon.dossierOneDrive | nonVide">
+                    <span class="actif onedrive" rv-show="choixDossierTampon.dossierOneDrive | nonVide" rv-on-click="gui.choisiDrive">
                         <i class="fleche fa fa-caret-right" aria-hidden="true"></i>
                         <img class="logo" src="images/onedrive_ico_64.png">
                         <span class="nom-cloud">One Drive</span>
@@ -52,7 +52,7 @@
                         <br>
                         <span class="chemin">One Drive n'a pas été trouvé sur cet ordinateur</span>
                     </span>
-                    <span class="actif dropbox" rv-show="choixDossierTampon.dossierDropbox | nonVide">
+                    <span class="actif dropbox" rv-show="choixDossierTampon.dossierDropbox | nonVide" rv-on-click="gui.choisiDrive">
                         <i class="fleche fa fa-caret-right" aria-hidden="true"></i>
                         <img class="logo" src="images/dropbox_ico_64.png">
                         <span class="nom-cloud">Dropbox</span>
@@ -65,26 +65,27 @@
                         <br>
                         <span class="chemin">Dropbox n'a pas été trouvé sur cet ordinateur</span>
                     </span>
-                    <span class="actif autre-cloud">
+                    <span class="actif autre-cloud" rv-on-click="gui.choisiDrive">
                         <i class="fleche fa fa-caret-right" aria-hidden="true"></i>
                         <img class="logo" src="images/cloud_ico_64.png">
                         <span class="nom-cloud">Autre dossier</span>
-                        <span class="chemin"></span>
+                        <span class="chemin">{ choixDossierTampon.dossierAutre.val }</span>
                         <br>
-                        <local-browser chemin="choixDossierTampon.dossierChoisiTmp" caller="gestionSynchros" on-change="gestionSynchros.valideNouvelleSynchro"></local-browser>
+                        <local-browser chemin="choixDossierTampon.dossierAutre" caller="choixDossierTampon" on-change="choixDossierTampon.dossierLocalChoisi"></local-browser>
                         <!--<span class="chemin">E:\GoogleDrive</span>-->
                         <!--<a href="#" class="dossier-local"></a>-->
                     </span>
                 </div>
             </div>
             <hr>
-            <div class="txt-center"><a href="#" id="boutConfirmeDossierTampon" class="bouton gros inactif">Confirmer</a></div>
+            { choixDossierTampon.dossierChoisiTmp.val }
+            <div class="txt-center"><a href="#" class="bouton gros" rv-class-inactif="choixDossierTampon.dossierChoisiTmp.val | vide" rv-on-click="choixDossierTampon.valideDossierTampon" >Confirmer</a></div>
         </div>
         
         <!-- PAGE DE CHOIX DU NOM DU CLIENT -->
         <div id="pageChoixNom" class="page" rv-show="choixDossierTampon.dossierChoisi | nonVide">
             <h2>Choisissez un nom pour cet ordinateur</h2>
-            <input id="inNomMachine" type="text" value="">
+            <input id="inNomMachine" type="text" rv-value="choixNomClient.nomChoisiTmp">
             <span class="message-erreur" id="erreurNomClient"></span>
             <div class="txt-center"><a href="#" id="boutConfirmeNomMachine" class="bouton gros inactif">Confirmer</a></div>
         </div>

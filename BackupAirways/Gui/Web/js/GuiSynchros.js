@@ -27,3 +27,11 @@ GuiSynchros.cacheSousContenu = function (e) {
 
     $(this).parents(".sauvegarde").find(".contenu").animate({ marginTop: "0px" }, 300);
 };
+
+GuiSynchros.choisiDrive = function (e, ctx) {
+    $(".choix-cloud > span").removeClass("choisi");
+    $(this).addClass("choisi");
+    
+    ctx.choixDossierTampon.dossierChoisiTmp.val = $(this).find(".chemin").html();
+    console.log("ici");
+};
