@@ -78,16 +78,15 @@
                 </div>
             </div>
             <hr>
-            { choixDossierTampon.dossierChoisiTmp.val }
             <div class="txt-center"><a href="#" class="bouton gros" rv-class-inactif="choixDossierTampon.dossierChoisiTmp.val | vide" rv-on-click="choixDossierTampon.valideDossierTampon" >Confirmer</a></div>
         </div>
         
         <!-- PAGE DE CHOIX DU NOM DU CLIENT -->
-        <div id="pageChoixNom" class="page" rv-show="choixDossierTampon.dossierChoisi | nonVide">
+        <div id="pageChoixNom" class="page" rv-show="choixDossierTampon.dossierChoisi | nonVideVide choixNomClient.nomChoisi">
             <h2>Choisissez un nom pour cet ordinateur</h2>
-            <input id="inNomMachine" type="text" rv-value="choixNomClient.nomChoisiTmp">
-            <span class="message-erreur" id="erreurNomClient"></span>
-            <div class="txt-center"><a href="#" id="boutConfirmeNomMachine" class="bouton gros inactif">Confirmer</a></div>
+            <input id="inNomMachine" type="text" rv-value="choixNomClient.nomChoisiTmp" rv-on-keyup="choixNomClient.testNomTmp">
+            <span class="message-erreur" rv-show="choixNomClient.erreur | nonVide">{ choixNomClient.erreur }</span>
+            <div class="txt-center"><a href="#" class="bouton gros" rv-class-inactif="choixNomClient.erreur | nonVide" rv-on-click="choixNomClient.valideNomClient">Confirmer</a></div>
         </div>
         
         <!-- PAGE PRESENTANT LA LISTE DES SAUVEGARDES -->

@@ -35,6 +35,7 @@ GestionSynchros.prototype.valideNouvelleSynchro = function (e, ctrl) {
 };
 
 GestionSynchros.prototype.getSynchros = function () {
+    console.log(this);
     var me = this;
 
     me.serveur.post(

@@ -246,6 +246,7 @@ namespace BackupAirways.GestionSynchros
 			Directory.CreateDirectory(chemin);
 			
 			_conf.DossierTampon = chemin;
+			recupereClients();
 		}
 		
 		/// <summary>
